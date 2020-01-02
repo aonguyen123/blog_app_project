@@ -1,18 +1,30 @@
 import React from 'react';
-import Taskboard from './../containers/Taskboard/index'
-import SignIn from './../containers/SignIn/index';
-import NotFound from './../containers/NotFound/index';
+import SignIn from '../containers/page/SignIn/index';
+import NotFound from '../containers/page/NotFound/index';
+import Home from './../containers/page/Home/index';
+import SignUp from '../containers/page/SignUp/index'
+import ImportFile from './../containers/page/Importfile/ImportFile';
 
 const routes = [
     {
         path: '/',
         exact: true,
-        main: (location) => <Taskboard location={location} />
+        main: (location) => <Home location={location} />
     },
     {
         path: '/signin',
         exact: false,
         main: () => <SignIn />
+    },
+    {
+        path: '/signup',
+        exact: false,
+        main: () => <SignUp />
+    },
+    {
+        path: '/importFile',
+        exact: false,
+        main: () => <ImportFile />
     },
     {
         path: '',
