@@ -1,0 +1,21 @@
+.popover {
+    position: relative;
+    width: 336px;
+}
+.badge {
+    font-size: 16px;
+}
+.noticeButton {
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.icon {
+    padding: 4px;
+    vertical-align: middle;
+    font-size: 16px;
+}
+.tabs {
+    text-align: center;
+    margin-bottom: 0;
+}

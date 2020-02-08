@@ -1,0 +1,10 @@
+.content-layout-basic {
+    padding: 24px;
+    background: #fff;
+    min-height: 100vh;
+}
+.header-layout-basic {
+    background: #fff;
+    padding: 0px;
+    border-bottom: 1px solid #f5f5f5;
+}

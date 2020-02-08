@@ -1,0 +1,1 @@
+export { login, getInfo } from './authenticated.action';

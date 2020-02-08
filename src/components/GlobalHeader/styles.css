@@ -1,0 +1,58 @@
+.menuBar {
+    overflow: auto;
+    box-shadow: 0 0 30px #f3f1f1;
+}
+
+.menuCon .ant-menu-item {
+    padding: 0px 5px;
+}
+.menuCon .ant-menu-submenu-title {
+    padding: 10px 20px;
+}
+.menuCon .ant-menu-item a,
+.menuCon .ant-menu-submenu-title a {
+    padding: 10px 15px;
+}
+.menuCon .ant-menu-horizontal {
+    border-bottom: none;
+}
+.menuCon .leftMenu {
+    float: left;
+}
+.menuCon .rightMenu {
+    float: right;
+}
+
+.barsMenu {
+    float: right;
+    margin: 15px 20px 0 0;
+    display: none !important;
+}
+.ant-drawer-body {
+    padding: 0;
+}
+.ant-drawer-body .ant-menu-horizontal > .ant-menu-item,
+.ant-drawer-body .ant-menu-horizontal > .ant-menu-submenu {
+    display: inline-block;
+    width: 100%;
+}
+.ant-drawer-body .ant-menu-horizontal {
+    border-bottom: none;
+}
+.ant-drawer-body .ant-menu-horizontal > .ant-menu-item:hover {
+    border-bottom-color: transparent;
+}
+
+@media (max-width: 767px) {
+    .barsMenu {
+        display: inline-block !important;
+    }
+    .leftMenu,
+    .rightMenu {
+        display: none;
+    }
+    .menuCon .ant-menu-item,
+    .menuCon .ant-menu-submenu-title {
+        padding: 1px 20px;
+    }
+}

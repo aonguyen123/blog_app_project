@@ -1,0 +1,20 @@
+.logo-header
+{
+    width: 199px;
+    float: left;
+    height: 63px;
+}
+.logo-header a
+{
+    padding: 19px 20px;
+}
+.logo-header a span
+{
+    text-transform: capitalize;
+    font-size: 20px;
+    padding: 10px;
+}
+.logo-header a img
+{
+    margin-bottom: 10px;
+}
