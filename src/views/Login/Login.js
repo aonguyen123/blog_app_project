@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { GridContent } from '@ant-design/pro-layout';
 import { Divider, Row, Col, Icon, Button, Form, Input } from 'antd';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 
 import { login } from './../../actions';
 import { AlertErrors } from './../../components';
@@ -57,7 +58,7 @@ function LoginForm(props) {
                                 className='icon-login'
                                 type="login"
                             />
-                            <span style={{ color: '#08c' }}>Login</span>
+                            <span style={{ color: '#08c' }}><FormattedMessage id='login.login' /></span>
                         </Divider>
                         {notice && <AlertErrors message={notice} type="error" />}
                         <Form.Item hasFeedback>
@@ -65,12 +66,11 @@ function LoginForm(props) {
                                 rules: [
                                     {
                                         type: 'email',
-                                        message:
-                                            'The input is not valid E-mail!'
+                                        message: formatMessage({id: 'login.validEmail'})
                                     },
                                     {
                                         required: true,
-                                        message: 'Please input your Email!'
+                                        message: formatMessage({id: 'login.requiredEmail'})
                                     },
                                     {
                                         validator: validate
@@ -85,7 +85,7 @@ function LoginForm(props) {
                                             style={{ color: 'rgba(0,0,0,.25)' }}
                                         />
                                     }
-                                    placeholder="Email"
+                                    placeholder={formatMessage({id: 'login.email'})}
                                 />
                             )}
                         </Form.Item>
@@ -94,15 +94,14 @@ function LoginForm(props) {
                                 rules: [
                                     {
                                         required: true,
-                                        message: 'Please input your Password!'
+                                        message: formatMessage({id: 'login.requiredPassword'})
                                     },
                                     {
                                         validator: validate
                                     },
                                     {
                                         min: 6,
-                                        message:
-                                            'Password at least 6 characters'
+                                        message: formatMessage({id: 'login.lengPassword'})
                                     }
                                 ]
                             })(
@@ -115,7 +114,7 @@ function LoginForm(props) {
                                     }
                                     allowClear
                                     type="password"
-                                    placeholder="Password"
+                                    placeholder={formatMessage({id: 'login.password'})}
                                 />
                             )}
                         </Form.Item>
@@ -127,10 +126,10 @@ function LoginForm(props) {
                                 icon="login"
                                 loading={iconLoading}
                             >
-                                Log in
+                                <FormattedMessage id='login.login' />
                             </Button>
                             <div>
-                                Other login methods
+                                <FormattedMessage id='login.loginMethod' />
                                 <Button
                                     className="btn-google"
                                     type="dashed"
@@ -149,7 +148,7 @@ function LoginForm(props) {
                                     type="link"
                                     href="foo"
                                 >
-                                    Register
+                                    <FormattedMessage id='login.register' />
                                 </Button>
                             </div>
                         </Form.Item>

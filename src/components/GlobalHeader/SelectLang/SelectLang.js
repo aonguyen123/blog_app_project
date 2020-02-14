@@ -1,22 +1,23 @@
 import React from 'react';
 import { GlobalOutlined } from '@ant-design/icons';
-import { getLocale, setLocale } from 'umi-plugin-react/locale';
+import { getLocale, setLocale, formatMessage } from 'umi-plugin-react/locale';
 import { Menu } from 'antd';
-import { HeaderDropdown } from './../../components';
+import { HeaderDropdown } from '../..';
 import './styles.css';
 
 export default function SelectLang() {
     const selectedLang = getLocale();
+
     const changeLang = ({ key }) => setLocale(key);
 
     const locales = ['vi-VN', 'en-US'];
     const languageLabels = {
-        'vi-VN': 'Viet Nam',
-        'en-US': 'English'
+        'vi-VN': formatMessage({id: 'globalHeader.vietnamese'}),
+        'en-US': formatMessage({id: 'globalHeader.english'})
     };
     const languageIcons = {
         'vi-VN': '🇨🇳',
-        'en-US': '🇺🇸'
+        'en-US': '🇺🇸',
     };
     const langMenu = (
         <Menu selectedKeys={[selectedLang]} onClick={changeLang}>
@@ -34,7 +35,7 @@ export default function SelectLang() {
     return (
         <HeaderDropdown overlay={langMenu} placement="bottomRight">
             <span className='dropDown-lang'>
-                <GlobalOutlined title="Change Language" />
+                <GlobalOutlined title={formatMessage({id: 'globalHeader.lang'})} />
             </span>
         </HeaderDropdown>
     );

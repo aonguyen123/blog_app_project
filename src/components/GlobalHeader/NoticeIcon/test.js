@@ -2,8 +2,8 @@ import React from 'react';
 import { BellOutlined } from '@ant-design/icons';
 import { Badge, Spin, Tabs, Card, Menu, Row, Col } from 'antd';
 import useMergeValue from 'use-merge-value';
-import NoticeList from './../NoticeList';
-import HeaderDropdown from './../../HeaderDropdown';
+import NoticeList from '../NoticeList';
+import HeaderDropdown from '../HeaderDropdown';
 import './styles.css';
 
 const { TabPane } = Tabs;

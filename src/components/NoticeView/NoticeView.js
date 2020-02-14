@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Tag, message } from 'antd';
 import moment from 'moment';
-import NoticeIcon from './NoticeIcon';
+import NoticeIcon from '../NoticeIcon';
 
 const dataSource = [
     {

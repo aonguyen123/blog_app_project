@@ -7,7 +7,6 @@ import {
     LangContext,
     _setLocaleContext
 } from 'umi-plugin-locale/lib/locale';
-import { getLocale } from 'umi-plugin-react/locale';
 
 const InjectedWrapper = (() => {
     let sfc = (props, context) => {
@@ -35,11 +34,11 @@ const localeInfo = {
     'en-US': {
         messages: {
             ...(locale => (locale.__esModule ? locale.default : locale))(
-                require('E:/web_ungdung/frontend/src/locales/en-US.js')
+                require('./../../locales/en-US')
             ),
-            // ...(locale => (locale.__esModule ? locale.default : locale))(
-            //     require('E:/myApp/src/pages/account/settings/locales/en-US.js')
-            // ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Login/locales/en-US')
+            ),
         },
         locale: 'en-US',
         antd: require('antd/lib/locale-provider/en_US'),
@@ -49,11 +48,11 @@ const localeInfo = {
     'vi-VN': {
         messages: {
             ...(locale => (locale.__esModule ? locale.default : locale))(
-                require('E:/web_ungdung/frontend/src/locales/vi-VN.js')
+                require('./../../locales/vi-VN')
             ),
-            // ...(locale => (locale.__esModule ? locale.default : locale))(
-            //     require('E:/myApp/src/pages/account/settings/locales/zh-CN.js')
-            // ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Login/locales/vi-VN')
+            ),
         },
         locale: 'en',
         antd: require('antd/lib/locale-provider/vi_VN'),
@@ -73,13 +72,7 @@ class LocaleWrapper extends React.Component {
             data: require('@formatjs/intl-pluralrules/dist/locale-data/en'),
             momentLocale: 'en-us'
         };
-
-        const runtimeLocale =
-            require('umi/_runtimePlugin') || {};
-        const runtimeLocaleDefault =
-            typeof runtimeLocale.default === 'function'
-                ? runtimeLocale.default()
-                : runtimeLocale.default;
+  
         if (
             useLocalStorage &&
             typeof localStorage !== 'undefined' &&
@@ -87,8 +80,6 @@ class LocaleWrapper extends React.Component {
             localeInfo[localStorage.getItem('umi_locale')]
         ) {
             appLocale = localeInfo[localStorage.getItem('umi_locale')];
-        } else if (localeInfo[runtimeLocaleDefault]) {
-            appLocale = localeInfo[runtimeLocaleDefault];
         } else {
             appLocale = localeInfo['en-US'] || appLocale;
         }
@@ -96,17 +87,6 @@ class LocaleWrapper extends React.Component {
         window.g_langSeparator = baseSeparator || '-';
         appLocale.data && addLocaleData(appLocale.data);
 
-        const runtimeLocaleMessagesType = typeof runtimeLocale.messages;
-        if (
-            runtimeLocaleMessagesType === 'object' ||
-            runtimeLocaleMessagesType === 'function'
-        ) {
-            const runtimeMessage =
-                runtimeLocaleMessagesType === 'object'
-                    ? runtimeLocale.messages[appLocale.locale]
-                    : runtimeLocale.messages()[appLocale.locale];
-            Object.assign(appLocale.messages, runtimeMessage || {});
-        }
         return appLocale;
     }
     reloadAppLocale = () => {

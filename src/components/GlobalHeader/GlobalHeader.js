@@ -3,6 +3,8 @@ import { Button, Drawer } from 'antd';
 import LeftLogo from './LeftLogo';
 import RightMenu from './RightMenu';
 import HeaderSearch from './../HeaderSearch';
+import MenuReponsive from './MenuReponsive';
+import NoticeIcon from './NoticeIcon';
 import './styles.css';
 
 export default function GlobalHeader() {
@@ -31,14 +33,16 @@ export default function GlobalHeader() {
                     onClick={showDrawer} 
                     type='primary'
                 />
+                <div className="repoMenu">
+                    <NoticeIcon />
+                </div>
                 <Drawer
-                    title="Basic Drawer"
                     placement="right"
-                    closable={false}
+                    closable
                     onClose={onClose}
                     visible={visible}
                 >
-                    <RightMenu />
+                    <MenuReponsive />
                 </Drawer>
             </div>
         </nav>
