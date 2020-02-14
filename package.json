@@ -1,7 +1,10 @@
 {
   "name": "react-antd",
   "version": "0.1.0",
-  "private": true,
+  "author": "AoNguyen",
+  "email": "aonguyen113@gmail.com",
+  "licence": "MIT",
+  "private": false,
   "dependencies": {
     "@ant-design/icons": "4.0.0-alpha.19",
     "@ant-design/pro-layout": "^4.10.10",
