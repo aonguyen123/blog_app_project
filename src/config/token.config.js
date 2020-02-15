@@ -1,4 +1,4 @@
-import jwt_decode from 'jwt-decode';
+import jwt from 'jsonwebtoken';
 
 export function setToken(token) {
     if (Object.keys(token).length !== 0) {
@@ -20,7 +20,7 @@ export function checkToken() {
     return true;
 };
 export function checkExpiredToken(token) {
-    const decode = jwt_decode(token);
+    const decode = jwt.decode(token);
     const currentTime = Date.now() / 1000;
     if (decode.exp < currentTime) {
         return false;
