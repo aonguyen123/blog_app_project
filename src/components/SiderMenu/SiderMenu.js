@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { siderMenu } from './../../constants/sider-menu';
@@ -7,6 +7,7 @@ import './styles.css';
 const { Sider } = Layout;
 
 export default function SiderMenu() {
+    const [broken, setBroken] = useState('')
 
     const renderSiderMenu = () => {
         return siderMenu.map(menu => {
@@ -19,7 +20,9 @@ export default function SiderMenu() {
         })
     }
 
-    const handleBreak = broken => {};
+    const handleBreak = broken => {
+        broken ? setBroken({position: "absolute", zIndex: '99'}) : setBroken('');
+    };
     const handleCollapse = (collapsed, type) => {};
 
     return (
@@ -30,11 +33,13 @@ export default function SiderMenu() {
             collapsedWidth="0"
             onBreakpoint={handleBreak}
             onCollapse={handleCollapse}
+            style={{...broken}}
         >
             <Menu
                 theme="light"
                 mode="inline"
                 defaultSelectedKeys={['4']}
+                style={{height: '100vh'}}
             >
                 {renderSiderMenu()}
             </Menu>

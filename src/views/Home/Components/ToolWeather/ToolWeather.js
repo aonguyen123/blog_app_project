@@ -1,13 +1,15 @@
-import React from 'react';
-import { Card, Icon } from 'antd';
-import {
-    ChartCard,
-    MiniArea,
-} from 'ant-design-pro/lib/Charts';
-import NumberInfo from 'ant-design-pro/lib/NumberInfo';
+import React, { useState, useEffect } from 'react';
+import { Card, Icon, Result } from 'antd';
+import { ChartCard, MiniArea } from 'ant-design-pro/lib/Charts';
 import moment from 'moment';
 
-export default function ToolWeather() {
+export default function ToolWeather(props) {
+    const { geocode, errors } = props;
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        (geocode || errors.message) && setLoading(false);
+    }, [geocode, errors.message]);
+
     const visitData = [];
     const beginDay = new Date().getTime();
     for (let i = 0; i < 20; i += 1) {
@@ -20,27 +22,21 @@ export default function ToolWeather() {
     }
 
     return (
-        <Card size="small" title="Today weather" style={{ height: '100%' }}>
-            <Card.Meta
-                description="Weather"
-                title="Binh Tan, Tay Son, Binh Dinh"
-                avatar={<Icon type="cloud" style={{ fontSize: '20px' }} />}
-            />
-
-            <ChartCard
-                title="搜索用户数量"
-                total={8846}
-                contentHeight={163}
-                bordered={false}
-            >
-                <NumberInfo
-                    subTitle={<span>本周访问</span>}
-                    total={12321}
-                    status="up"
-                    subTotal={17.1}
+        <Card
+            size="small"
+            loading={loading}
+            title="Today weather"
+        >
+            {errors.message ? (
+                <Result
+                    icon={<Icon type="warning" />}
+                    title={errors.message}
                 />
-                <MiniArea line height={45} data={visitData} />
-            </ChartCard>
+            ) : (
+                <ChartCard title={geocode} contentHeight={282} bordered={false}>
+                    <MiniArea line height={75} data={visitData} />
+                </ChartCard>
+            )}
         </Card>
     );
 }

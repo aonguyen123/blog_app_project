@@ -1,21 +1,29 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col } from 'antd';
-//import { GlobalLoading } from './../../components';
 import { ToolPost, ListContent, ToolWeather } from './Components';
-import './styles.css';
+import allActions from './../../actions';
 
 function Home(props) {
+    const { history } = props;
+    const geocode = useSelector(state => state.currentPlace.geocode);
+    const errors = useSelector(state => state.errors);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if(navigator.geolocation)
         {
-            navigator.geolocation.getCurrentPosition((posi) => {
-                const lat = posi.coords.latitude;
-                const long = posi.coords.longitude;
-                console.log(lat, long)
-            })
+            function success(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                dispatch(allActions.geocodeActions.getCurrentPlace(lat, lon, history));
+            }
+            function error(err) {
+                dispatch(allActions.geocodeActions.getCurrentPlace(37.8267, -122.4233, history));
+            }
+            navigator.geolocation.getCurrentPosition(success, error)
         }
-    })
+    }, [dispatch, history])
     
     return (
         <>
@@ -24,7 +32,10 @@ function Home(props) {
                     <ToolPost />
                 </Col>
                 <Col lg={14} md={14} sm={24}>
-                    <ToolWeather />
+                    <ToolWeather 
+                        geocode={geocode} 
+                        errors={errors}
+                    />
                 </Col>
             </Row>
             <Row gutter={[20, 20]}>

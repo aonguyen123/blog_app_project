@@ -1,2 +1,0 @@
-(window["webpackJsonpreact-antd"]=window["webpackJsonpreact-antd"]||[]).push([[13],{963:function(t,e,a){"use strict";a.r(e);var n=a(0),r=a.n(n),c=a(960),o=a(115);function i(){return r.a.createElement(c.a,{status:"403",title:"401",subTitle:"Sorry, you are not authorized to access this page.",extra:r.a.createElement(o.a,{href:"/login",type:"primary"},"Back")})}a.d(e,"default",(function(){return i}))}}]);
-//# sourceMappingURL=13.8d648a3a.chunk.js.map

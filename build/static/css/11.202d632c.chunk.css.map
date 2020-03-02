@@ -1,1 +1,0 @@
-{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA,MACI,SAAU,CACV,QAAS,CACT,gBAAiB,CACjB,yFAA4F,CAC5F,YACJ","file":"11.202d632c.chunk.css","sourcesContent":[".root {\r\n    padding: 0;\r\n    margin: 0;\r\n    position: 'fixed';\r\n    background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');\r\n    height: 100vh;\r\n}\r\n"]}

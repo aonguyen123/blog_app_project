@@ -1,0 +1,30 @@
+.main {
+    flex-direction: column;
+    border: 1px solid #ebebeb;
+}
+.main .ant-list-split .ant-list-item:last-child {
+    border-bottom: 1px solid red;
+}
+.main .ant-list-item {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+.leftMenu-account {
+    width: 100%;
+        border: none;
+}
+.leftMenu-account .ant-menu-inline {
+    border: none;
+}
+.leftMenu-account .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    font-weight: bold;
+}
+.right-account {
+    padding: 26px;
+}
+.right-account .title {
+    margin-bottom: 12px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+}

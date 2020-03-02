@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GridContent } from '@ant-design/pro-layout';
 import { Divider, Row, Col, Icon, Button, Form, Input } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 
-import { login } from './../../actions';
+import allActions from './../../actions';
 import { AlertErrors } from './../../components';
 import './styles.css';
 
 function LoginForm(props) {
-    const { auth, login, errors, history } = props;
+    const { history } = props;
     const { getFieldDecorator } = props.form;
+
+    const auth = useSelector(state => state.auth);
+    const errors = useSelector(state => state.errors);
+    const dispatch = useDispatch();
 
     const [iconLoading, setIconLoading] = useState(false);
     const [notice, setNotice] = useState('');
@@ -31,7 +35,7 @@ function LoginForm(props) {
         props.form.validateFields((err, values) => {
             if (!err) {   
                 setIconLoading(true);
-                login(values.email, values.password, history);
+                dispatch(allActions.authenticatedActions.login(values.email, values.password, history));
             }
         });
     };
@@ -160,12 +164,4 @@ function LoginForm(props) {
 }
 const SignIn = Form.create({ name: 'login' })(LoginForm);
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    errors: state.errors
-});
-
-export default connect(
-    mapStateToProps,
-    { login }
-)(SignIn);
+export default SignIn;

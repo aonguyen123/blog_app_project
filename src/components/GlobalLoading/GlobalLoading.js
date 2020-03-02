@@ -3,10 +3,11 @@ import { Spin } from 'antd';
 
 import './styles.css';
 
-export default function GlobalLoading() {
+export default function GlobalLoading(props) {
+    const { ...rest } = props;
     return (        
         <div className='global-loading'>
-            <Spin size='large' tip='Loading' />
+            <Spin {...rest} tip='Loading' />
         </div>
     )
 }

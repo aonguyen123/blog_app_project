@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from 'antd'
-import { getInfo } from './../../actions';
+import allActions from './../../actions';
 
 function About(props) {
-    const { getInfo, history } = props;
+    const { history } = props;
+    const info = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        getInfo(history);
-    }, [getInfo, history]);
+        dispatch(allActions.authenticatedActions.getInfo(history));
+    }, [history, dispatch]);
 
     return (
         <>
@@ -18,7 +20,4 @@ function About(props) {
     )
 }
 
-const mapStateToProps = state => ({
-    info: state.auth
-});
-export default connect(mapStateToProps, {getInfo})(About);
+export default About;

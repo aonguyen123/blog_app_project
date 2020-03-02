@@ -12,12 +12,14 @@ const MinimalLayout = lazy(() => import('../layouts/MinimalLayout'));
 const LoginPage = lazy(() => import('../views/Login'));
 const HomePage = lazy(() => import('../views/Home'));
 const About = lazy(() => import('../views/About'));
+const Account = lazy(() => import('./../views/Account'));
+const Setting = lazy(() => import('./../views/Setting'));
 const AuthenticatedPage = lazy(() => import('./../views/Authenticated'));
 const NotFoundPage = lazy(() => import('./../views/NotFound'));
 
 export default function Router() {
     return (
-        <Suspense fallback={<GlobalLoading />}>
+        <Suspense fallback={<GlobalLoading size='large' />}>
             <Switch>
                 <Redirect exact from='/' to='/home' />
                 <PrivateRouter
@@ -31,6 +33,18 @@ export default function Router() {
                     exact
                     layout={BasicLayout}
                     path='/about'
+                />
+                <PrivateRouter
+                    component={Account}
+                    exact
+                    layout={BasicLayout}
+                    path='/account'
+                />
+                <PrivateRouter
+                    component={Setting}
+                    exact
+                    layout={BasicLayout}
+                    path='/setting'
                 />
                 <PublishRouter
                     component={LoginPage}

@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import { List, message, Avatar, Spin, Card, Icon, Row, Col } from 'antd';
-import axios from 'axios';
-import { BASE_URI } from './../../../../constants/base_url';
-
+import { List, message, Avatar, Spin, Row, Col } from 'antd';
+import { DislikeTwoTone, LikeTwoTone, MessageTwoTone } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroller';
 import './styles.css';
 
 export default function ManyComponent() {
     const [listData, setListData] = useState([]);
     const [hasMoreItems, setHasMoreItems] = useState(true);
-    const [loading, setLoading] = useState(false);
 
-    const IconText = ({ type, text }) => (
+    const IconText = ({ icon, text }) => (
         <span>
-            <Icon type={type} style={{ marginRight: 8 }} />
-            {text}
+            {icon} {text}
         </span>
     );
 
@@ -42,11 +38,9 @@ export default function ManyComponent() {
                     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
             }
         ];
-        setLoading(true);
         if (listData.length === 20) {
             message.warning('Infinite List loaded all');
             setHasMoreItems(false);
-            setLoading(false);
             return;
         }
         setTimeout(setListData([...listData, ...data]), 5000);
@@ -58,13 +52,7 @@ export default function ManyComponent() {
             },
             {
                 src: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-            },
-            {
-                src: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-            },
-            {
-                src: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-            }
+            },           
         ];
         return images.map((value, key) => {
             return (
@@ -88,24 +76,25 @@ export default function ManyComponent() {
             >
                 <List
                     itemLayout="vertical"
-                    size="small"
+                    size="large"
                     dataSource={listData}
                     renderItem={item => (
                         <List.Item
+                            style={{marginTop: '13px'}}
                             key={item.title}
                             actions={[
                                 <IconText
-                                    type="like-o"
+                                    icon={<LikeTwoTone />}
                                     text="156"
-                                    key="list-vertical-like-o"
+                                    key="list-vertical-like"
                                 />,
                                 <IconText
-                                    type="dislike-o"
+                                    icon={<DislikeTwoTone />}
                                     text="156"
-                                    key="list-vertical-like-o"
+                                    key="list-vertical-dislike"
                                 />,
                                 <IconText
-                                    type="message"
+                                    icon={<MessageTwoTone />}
                                     text="2"
                                     key="list-vertical-message"
                                 />
@@ -117,7 +106,9 @@ export default function ManyComponent() {
                                 description='12/12/2020'
                             />
                             <Row gutter={[16, 16]}>
-                                <Col>{item.content}</Col>
+                                <Col xl={24} lg={24} md={24} sm={24}>
+                                    {item.content}
+                                </Col>
                             </Row>
                             <Row gutter={[16, 16]}>
                                 <Col xl={24} lg={24} md={24} sm={24}>
