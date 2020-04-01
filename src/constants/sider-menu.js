@@ -1,16 +1,29 @@
 import React from 'react';
-import { UserOutlined, HistoryOutlined, MessageOutlined } from '@ant-design/icons';
+import {
+    UserOutlined,
+    HistoryOutlined,
+    MessageOutlined,
+    CloudOutlined
+} from '@ant-design/icons';
 export const siderMenu = [
     {
-        'id': 'menu.friend',
-        'icon': <UserOutlined />,
+        id: 'menu.friend',
+        icon: <UserOutlined />,
+        link: '/friend'
     },
     {
-        'id': 'menu.history',
-        'icon': <HistoryOutlined />,
+        id: 'menu.history',
+        icon: <HistoryOutlined />,
+        link: '/history'
     },
     {
-        'id': 'menu.message',
-        'icon': <MessageOutlined />,
+        id: 'menu.message',
+        icon: <MessageOutlined />,
+        link: '/message'
     },
+    {
+        id: 'menu.weather',
+        icon: <CloudOutlined />,
+        link: '/weather'
+    }
 ];

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ButtonSize } from './button';
+import { SizeType } from '../config-provider/SizeContext';
 export interface ButtonGroupProps {
-    size?: ButtonSize;
+    size?: SizeType;
     style?: React.CSSProperties;
     className?: string;
     prefixCls?: string;

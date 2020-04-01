@@ -2,8 +2,8 @@ import * as React from 'react';
 import DropdownButton from './dropdown-button';
 import { ConfigConsumerProps } from '../config-provider';
 declare const Placements: ["topLeft", "topCenter", "topRight", "bottomLeft", "bottomCenter", "bottomRight"];
-declare type Placement = (typeof Placements)[number];
-declare type OverlayFunc = () => React.ReactNode;
+declare type Placement = typeof Placements[number];
+declare type OverlayFunc = () => React.ReactElement;
 declare type Align = {
     points?: [string, string];
     offset?: [number, number];
@@ -18,7 +18,7 @@ declare type Align = {
 };
 export interface DropDownProps {
     trigger?: ('click' | 'hover' | 'contextMenu')[];
-    overlay: React.ReactNode | OverlayFunc;
+    overlay: React.ReactElement | OverlayFunc;
     onVisibleChange?: (visible: boolean) => void;
     visible?: boolean;
     disabled?: boolean;
@@ -40,11 +40,11 @@ export default class Dropdown extends React.Component<DropDownProps, any> {
     static defaultProps: {
         mouseEnterDelay: number;
         mouseLeaveDelay: number;
-        placement: "bottomRight" | "topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter";
     };
     getTransitionName(): string;
-    renderOverlay: (prefixCls: string) => {} | null | undefined;
-    renderDropDown: ({ getPopupContainer: getContextPopupContainer, getPrefixCls, }: ConfigConsumerProps) => JSX.Element;
+    renderOverlay: (prefixCls: string) => React.ReactElement<any, string | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)> | null) | (new (props: any) => React.Component<any, any, any>)>;
+    getPlacement(direction?: string): "bottomRight" | "topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter";
+    renderDropDown: ({ getPopupContainer: getContextPopupContainer, getPrefixCls, direction, }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }
 export {};

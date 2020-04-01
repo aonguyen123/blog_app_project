@@ -22,6 +22,6 @@ export interface CommentProps {
 }
 export default class Comment extends React.Component<CommentProps, {}> {
     renderNested: (prefixCls: string, children: any) => JSX.Element;
-    renderComment: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderComment: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

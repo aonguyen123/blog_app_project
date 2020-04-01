@@ -1,30 +1,37 @@
-import jwt from 'jsonwebtoken';
-import { checkToken, getToken, checkExpiredToken } from './../config';
+import allConfigs from './../config';
+import allCommons from './../common';
 
-export function checkMe() {
-    if (checkToken()) {
-        try
+function checkMe(...rest) {
+    const { match, history } = rest[0];
+    if(match.url === '/home')
+    {
+        allConfigs.menuConfigs.setSelectedMenu();
+    }
+
+    if (allConfigs.tokenConfigs.checkToken()) {
+        const token = allConfigs.tokenConfigs.getToken();
+        const { accessToken, refreshToken } = token;
+        const expired_accessToken = allConfigs.tokenConfigs.checkExpiredToken(accessToken);
+        if(!expired_accessToken)
         {
-            
-            const tokenString = getToken();
-            const token = JSON.parse(tokenString);
-            const accessToken = token.accessToken;
-            const refreshToken = token.refreshToken;
-            if(! checkExpiredToken(refreshToken))
-            {
+            allCommons.callAPICommon.callAPI('/auth/refreshToken', 'POST', {refreshToken})
+            .then(res => {
+                const {accessToken} = res.data;
+                allConfigs.tokenConfigs.setToken({accessToken, refreshToken});
+                allConfigs.setAuthTokenConfigs.setAuthToken(accessToken);
+                return true;
+            })
+            .catch(e => {
+                allConfigs.tokenConfigs.removeToken();
+                history.push('/login');
                 return false;
-            }
-            const decode = jwt.decode(accessToken);
-            if(decode === null || undefined)
-            {
-                return false;
-            }
-            return true;
+            })
         }
-        catch(e)
-        {
-            return false;
-        }
+        return true;
     }
     return false;
+}
+
+export default {
+    checkMe
 }

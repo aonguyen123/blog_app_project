@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import LeftLogo from './LeftLogo';
 import RightMenu from './RightMenu';
 import HeaderSearch from './../HeaderSearch';
@@ -29,7 +30,7 @@ export default function GlobalHeader() {
                 </div>
                 <Button 
                     className="barsMenu" 
-                    icon='menu' 
+                    icon={<MenuOutlined />}
                     onClick={showDrawer} 
                     type='primary'
                 />

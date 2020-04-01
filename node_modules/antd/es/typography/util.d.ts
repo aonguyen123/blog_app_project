@@ -1,5 +1,9 @@
 import * as React from 'react';
-declare const _default: (originEle: HTMLElement, rows: number, content: React.ReactNode, fixedContent: React.ReactNode[], ellipsisStr: string) => {
+interface Option {
+    rows: number;
+    suffix?: string;
+}
+declare const _default: (originEle: HTMLElement, option: Option, content: React.ReactNode, fixedContent: React.ReactNode[], ellipsisStr: string) => {
     content: React.ReactNode;
     text: string;
     ellipsis: boolean;

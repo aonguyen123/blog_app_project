@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { ConfigConsumerProps } from '../config-provider';
 export { ScrollNumberProps } from './ScrollNumber';
 export interface BadgeProps {
@@ -27,24 +26,18 @@ export default class Badge extends React.Component<BadgeProps, any> {
         dot: boolean;
         overflowCount: number;
     };
-    static propTypes: {
-        count: PropTypes.Requireable<PropTypes.ReactNodeLike>;
-        showZero: PropTypes.Requireable<boolean>;
-        dot: PropTypes.Requireable<boolean>;
-        overflowCount: PropTypes.Requireable<number>;
-    };
-    getNumberedDispayCount(): string | number | null;
-    getDispayCount(): string | number | null;
+    getNumberedDisplayCount(): string | number | null;
+    getDisplayCount(): string | number | null;
     getScrollNumberTitle(): string | number | undefined;
     getStyleWithOffset(): React.CSSProperties | undefined;
-    getBadgeClassName(prefixCls: string): string;
+    getBadgeClassName(prefixCls: string, direction?: string): string;
     hasStatus(): boolean;
     isZero(): boolean;
     isDot(): boolean;
     isHidden(): boolean;
     renderStatusText(prefixCls: string): JSX.Element | null;
-    renderDispayComponent(): React.ReactElement<any, string | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)> | null) | (new (props: any) => React.Component<any, any, any>)> | undefined;
+    renderDisplayComponent(): React.ReactElement<any, string | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)> | null) | (new (props: any) => React.Component<any, any, any>)> | undefined;
     renderBadgeNumber(prefixCls: string, scrollNumberPrefixCls: string): JSX.Element | null;
-    renderBadge: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderBadge: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

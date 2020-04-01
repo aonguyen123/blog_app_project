@@ -47,6 +47,6 @@ export default class Tabs extends React.Component<TabsProps, any> {
     removeTab: (targetKey: string, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     handleChange: (activeKey: string) => void;
     createNewTab: (targetKey: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    renderTabs: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderTabs: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

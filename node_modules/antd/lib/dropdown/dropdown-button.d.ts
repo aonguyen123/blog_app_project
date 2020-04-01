@@ -9,18 +9,18 @@ export interface DropdownButtonProps extends ButtonGroupProps, DropDownProps {
     htmlType?: ButtonHTMLType;
     disabled?: boolean;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
-    /**
-     * @since 3.17.0
-     */
     icon?: React.ReactNode;
     href?: string;
     children?: React.ReactNode;
     title?: string;
+    buttonsRender?: (buttons: React.ReactNode[]) => React.ReactNode[];
 }
 export default class DropdownButton extends React.Component<DropdownButtonProps, any> {
+    static __ANT_BUTTON: boolean;
     static defaultProps: {
         placement: "bottomRight" | "topLeft" | "topCenter" | "topRight" | "bottomLeft" | "bottomCenter" | undefined;
         type: DropdownButtonType;
+        buttonsRender: (buttons: React.ReactNode[]) => React.ReactNode[];
     };
     renderButton: ({ getPopupContainer: getContextPopupContainer, getPrefixCls, }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;

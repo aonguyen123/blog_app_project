@@ -1,66 +1,73 @@
 import {
-    GET_CURRENT_PLACE,
-    GET_ERRORS_PLACE,
-    CLEAN_ERRORS_PLACE,
-    GET_ERRORS,
+    GET_WEATHER,
+    GET_DISTRICTS,
+    GET_DISTRICTS_ERROR,
+    GET_DISTRICTS_SUCCESS,
     GET_PROVINCES,
-    GET_DISTRICT,
-    FETCHING_DISTRICT,
-    FETCHING_DISTRICT_SUCCESS
+    GET_PROVINCES_ERROR,
+    GET_PROVINCES_SUCCESS,
+    GET_WEATHER_SUCCESS
 } from './../constants/types';
-import { callAPI, getAccessToken } from './../common';
-import axios from 'axios';
+import { message } from 'antd';
 
-const getCurrentPlace = (lat, lon, history) => async dispatch => {
-    const result = await getAccessToken(history);
-    if (result) {
-        callAPI(`/weather/get-geocode?latitude=${lat}&longitude=${lon}`)
-            .then(res => {
-                dispatch({
-                    type: GET_CURRENT_PLACE,
-                    payload: res.data
-                });
-                dispatch({
-                    type: CLEAN_ERRORS_PLACE,
-                    payload: {}
-                })
-            })
-            .catch(err => {
-                dispatch({
-                    type: GET_ERRORS_PLACE,
-                    payload: err.response.data
-                });
-            });
+const getWeather = (lat, lon, history) => {
+    return {
+        type: GET_WEATHER,
+        payload: {
+            lat, lon, history
+        }
     }
 };
-const getProvinces = () => async dispatch => {
-    axios
-        .get('https://dc.tintoc.net/app/api-customer/public/provinces?size=65')
-        .then(res => {
-            dispatch({
-                type: GET_PROVINCES,
-                payload: res.data
-            });
-        });
-};
-const getDistricts = (province) => dispatch => {
-    dispatch({
-        type: FETCHING_DISTRICT
-    });
-    axios.get(`https://dc.tintoc.net/app/api-customer/public/districts?provinceId.equals=${province}`)
-    .then(res => {
-        dispatch({
-            type: GET_DISTRICT,
-            payload: res.data
-        });
-        dispatch({
-            type: FETCHING_DISTRICT_SUCCESS,
-        });
-    })
+const getWeatherSuccess = data => {
+    return {
+        type: GET_WEATHER_SUCCESS,
+        payload: data
+    }
 }
 
+const getProvinces = () => {
+    return {
+        type: GET_PROVINCES
+    };
+};
+const getProvincesSuccess = data => {
+    return {
+        type: GET_PROVINCES_SUCCESS,
+        payload: data
+    };
+};
+const getProvincesError = error => {
+    message.error(error);
+    return {
+        type: GET_PROVINCES_ERROR
+    };
+};
+const getDistricts = provinceId => {
+    return {
+        type: GET_DISTRICTS,
+        payload: provinceId
+    };
+};
+const getDistrictsSuccess = data => {
+    return {
+        type: GET_DISTRICTS_SUCCESS,
+        payload: data
+    };
+};
+const getDistrictsError = error => {
+    message.error(error);
+    return {
+        type: GET_DISTRICTS_ERROR
+    };
+};
+
 export default {
-    getCurrentPlace,
+    getWeather,
+    getWeatherSuccess,
     getProvinces,
-    getDistricts
+    getProvincesSuccess,
+    getProvincesError,
+    getDistricts,
+    getDistrictsSuccess,
+    getDistrictsError
 };

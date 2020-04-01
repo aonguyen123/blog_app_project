@@ -77,6 +77,6 @@ export default class List<T> extends React.Component<ListProps<T>, ListState> {
     renderItem: (item: any, index: number) => {} | null | undefined;
     isSomethingAfterLastItem(): boolean;
     renderEmpty: (prefixCls: string, renderEmpty: (componentName?: string | undefined) => React.ReactNode) => JSX.Element;
-    renderList: ({ getPrefixCls, renderEmpty }: ConfigConsumerProps) => JSX.Element;
+    renderList: ({ getPrefixCls, renderEmpty, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

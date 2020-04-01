@@ -21,9 +21,6 @@ export interface LocaleProviderProps {
     _ANT_MARK__?: string;
 }
 export default class LocaleProvider extends React.Component<LocaleProviderProps, any> {
-    static propTypes: {
-        locale: PropTypes.Requireable<object>;
-    };
     static defaultProps: {
         locale: {};
     };

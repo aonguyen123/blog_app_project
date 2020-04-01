@@ -1,13 +1,21 @@
-import { LOGIN, GET_INFO} from '../constants/types';
+import {
+    LOGIN_SUCCESS,
+    REGISTER_SUCCESS,
+} from '../constants/types';
 
-const initialState = {};
+const initialState = {
+    message: ''
+};
 export default function(state = initialState, action) {
-    switch(action.type)
-    {
-        case LOGIN:
-            return action.payload;
-        case GET_INFO:
-            return action.payload;
+    switch (action.type) {
+        case LOGIN_SUCCESS:
+            return {
+                ...state
+            };
+        case REGISTER_SUCCESS:
+            return {
+                ...state,
+            };
         default:
             return state;
     }

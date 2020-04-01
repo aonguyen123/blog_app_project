@@ -1,29 +1,58 @@
 import jwt from 'jsonwebtoken';
 
-export function setToken(token) {
-    if (Object.keys(token).length !== 0) {
-        return localStorage.setItem('_id-access', JSON.stringify(token));
-    }
+const setToken = ({accessToken, refreshToken}) => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
 };
-export function getToken() {
-    const token = localStorage.getItem('_id-access');
+const getToken = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    const token = {
+        accessToken,
+        refreshToken
+    }
     return token;
 };
-export function removeToken() {
-    return localStorage.removeItem('_id-access');
+const removeToken = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
 };
-export function checkToken() {
-    const id_access = localStorage.getItem('_id-access');
-    if (!id_access) {
+
+const checkToken = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!accessToken || !refreshToken) {
         return false;
     }
     return true;
 };
-export function checkExpiredToken(token) {
+
+const checkExpiredToken = token => {
     const decode = jwt.decode(token);
-    const currentTime = Date.now() / 1000;
-    if (decode.exp < currentTime) {
-        return false;
+    if(decode)
+    {
+        const currentTime = Date.now() / 1000;
+        if (decode.exp < currentTime) {
+            return false;
+        }
+        return true;
     }
-    return true;
+    return null;
+};
+
+const getIdUser = () => {
+    return localStorage.getItem('_id');
+};
+const setIdUser = id => {
+    return localStorage.setItem('_id', id);
+}
+
+export default {
+    setToken,
+    getToken,
+    removeToken,
+    checkToken,
+    checkExpiredToken,
+    getIdUser,
+    setIdUser
 };

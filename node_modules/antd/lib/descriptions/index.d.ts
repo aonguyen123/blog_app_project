@@ -1,13 +1,5 @@
 import * as React from 'react';
-import { Breakpoint, BreakpointMap } from '../_util/responsiveObserve';
-export interface DescriptionsItemProps {
-    prefixCls?: string;
-    className?: string;
-    label?: React.ReactNode;
-    children: React.ReactNode;
-    span?: number;
-}
-declare const DescriptionsItem: React.SFC<DescriptionsItemProps>;
+import { Breakpoint } from '../_util/responsiveObserve';
 export interface DescriptionsProps {
     prefixCls?: string;
     className?: string;
@@ -20,18 +12,8 @@ export interface DescriptionsProps {
     layout?: 'horizontal' | 'vertical';
     colon?: boolean;
 }
-declare class Descriptions extends React.Component<DescriptionsProps, {
-    screens: BreakpointMap;
-}> {
-    static defaultProps: DescriptionsProps;
-    static Item: typeof DescriptionsItem;
-    state: {
-        screens: BreakpointMap;
-    };
-    token: string;
-    componentDidMount(): void;
-    componentWillUnmount(): void;
-    getColumn(): number;
-    render(): JSX.Element;
+declare function Descriptions({ prefixCls: customizePrefixCls, title, column, colon, bordered, layout, children, className, style, size, }: DescriptionsProps): JSX.Element;
+declare namespace Descriptions {
+    var Item: React.SFC<import("./Item").DescriptionsItemProps>;
 }
 export default Descriptions;

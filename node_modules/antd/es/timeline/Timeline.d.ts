@@ -17,6 +17,6 @@ export default class Timeline extends React.Component<TimelineProps, any> {
         reverse: boolean;
         mode: string;
     };
-    renderTimeline: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderTimeline: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

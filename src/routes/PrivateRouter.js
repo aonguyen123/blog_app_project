@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { checkMe } from './../common';
+import allCommons from './../common';
 
 function PrivateRouter(props) {
     const { component: Component, layout: Layout, ...rest } = props;
@@ -8,7 +8,7 @@ function PrivateRouter(props) {
         <Route
             {...rest}
             render={matchProps => (
-                checkMe() ? <Layout><Component {...matchProps} /></Layout> : <Redirect to="/login" />
+                allCommons.checkMeCommon.checkMe(matchProps) ? <Layout {...matchProps}><Component {...matchProps} /></Layout> : <Redirect to="/login" />
             )}
         />
     );

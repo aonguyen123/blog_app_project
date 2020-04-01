@@ -38,7 +38,7 @@ export default class Collapse extends React.Component<CollapseProps, any> {
         expandIconPosition: string;
     };
     renderExpandIcon: (panelProps: PanelProps | undefined, prefixCls: string) => {} | null | undefined;
-    renderCollapse: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderCollapse: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }
 export {};

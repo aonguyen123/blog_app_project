@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ProgressProps, ProgressGradient } from './progress';
+import { ProgressGradient, ProgressProps, StringGradients } from './progress';
 interface LineProps extends ProgressProps {
     prefixCls: string;
     children: React.ReactNode;
@@ -13,7 +13,7 @@ interface LineProps extends ProgressProps {
  *   '100%': '#ffffff'
  * }
  */
-export declare const sortGradient: (gradients: ProgressGradient) => {};
+export declare const sortGradient: (gradients: StringGradients) => string;
 /**
  * {
  *   '0%': '#afc163',

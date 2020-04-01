@@ -4,12 +4,6 @@
     overflow: auto;
     padding: 8px 24px;
 }
-.loading-content {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    text-align: center;
-}
 .ant-list-item:first-child {
     padding-top: 0;
 }

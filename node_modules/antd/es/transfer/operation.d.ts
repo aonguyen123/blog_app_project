@@ -9,6 +9,7 @@ export interface TransferOperationProps {
     rightActive?: boolean;
     style?: React.CSSProperties;
     disabled?: boolean;
+    direction?: 'ltr' | 'rtl';
 }
-declare const Operation: ({ disabled, moveToLeft, moveToRight, leftArrowText, rightArrowText, leftActive, rightActive, className, style, }: TransferOperationProps) => JSX.Element;
+declare const Operation: ({ disabled, moveToLeft, moveToRight, leftArrowText, rightArrowText, leftActive, rightActive, className, style, direction, }: TransferOperationProps) => JSX.Element;
 export default Operation;

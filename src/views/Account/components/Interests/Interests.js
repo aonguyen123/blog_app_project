@@ -48,7 +48,7 @@ export default function Interests() {
         <div className="tags">
             <div className="tagsTitle">Interests</div>
             {newTags.map(item => (
-                <Tag key={item.key} closable onClose={() => handleClose(item)}>
+                <Tag key={item.key} closable color='gold' onClose={() => handleClose(item)}>
                     {item.label}
                 </Tag>
             ))}

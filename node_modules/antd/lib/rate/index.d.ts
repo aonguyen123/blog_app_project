@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { ConfigConsumerProps } from '../config-provider';
 export interface RateProps {
     prefixCls?: string;
@@ -20,10 +19,6 @@ interface RateNodeProps {
     index: number;
 }
 export default class Rate extends React.Component<RateProps, any> {
-    static propTypes: {
-        prefixCls: PropTypes.Requireable<string>;
-        character: PropTypes.Requireable<PropTypes.ReactNodeLike>;
-    };
     static defaultProps: {
         character: JSX.Element;
     };
@@ -32,7 +27,7 @@ export default class Rate extends React.Component<RateProps, any> {
     characterRender: (node: React.ReactNode, { index }: RateNodeProps) => {} | null | undefined;
     focus(): void;
     blur(): void;
-    renderRate: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderRate: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }
 export {};

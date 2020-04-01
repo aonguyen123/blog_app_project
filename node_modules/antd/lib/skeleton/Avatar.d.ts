@@ -1,13 +1,12 @@
 import * as React from 'react';
-export interface SkeletonAvatarProps {
-    prefixCls?: string;
-    className?: string;
-    style?: object;
-    size?: 'large' | 'small' | 'default' | number;
+import { ConfigConsumerProps } from '../config-provider';
+import { SkeletonElementProps } from './Element';
+export interface AvatarProps extends Omit<SkeletonElementProps, 'shape'> {
     shape?: 'circle' | 'square';
 }
-declare class SkeletonAvatar extends React.Component<SkeletonAvatarProps, any> {
-    static defaultProps: Partial<SkeletonAvatarProps>;
+declare class SkeletonAvatar extends React.Component<AvatarProps, any> {
+    static defaultProps: Partial<AvatarProps>;
+    renderSkeletonAvatar: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }
 export default SkeletonAvatar;

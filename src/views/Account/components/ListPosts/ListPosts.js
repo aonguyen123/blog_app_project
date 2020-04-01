@@ -1,56 +1,125 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { List, Avatar } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
 import { DislikeTwoTone, LikeTwoTone, MessageTwoTone } from '@ant-design/icons';
-import './styles.css';
-import mock from './mock';
+import moment from 'moment';
+import {
+    ExtraContent,
+    ModalViewImage,
+    FetchDataLoading,
+    RenderImageListContent,
+} from './../../../../components';
+import allActions from './../../../../actions';
+import allConfigs from './../../../../config';
 import PostListContent from './../PostListContent/PostListContent';
+import './styles.css';
 
-export default function ListPosts() {
+const ListPosts = ({userInfo}) => {
+    const [previewVisible, setPreviewVisible] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const postsById = useSelector(state => state.postReducer.postsById);
+    const hasMorePostsById = useSelector(state => state.postReducer.hasMoreItemsById);
+    const nextPageById = useSelector(state => state.postReducer.nextPageById);
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const idUser = allConfigs.tokenConfigs.getIdUser();
+
     const IconText = ({ icon, text }) => (
         <span>
             {icon} {text}
         </span>
     );
+    const handleCancel = () => setPreviewVisible(false);
+
+    const loadItems = () => {
+        if(Object.keys(userInfo).length !== 0)
+        {
+            const page_size = 10;
+            dispatch(
+                allActions.postActions.fetchPostById(idUser, nextPageById, page_size, history)
+            );
+        }
+    };
+
+    const onPreview = async file => {
+        setPreviewImage(file.url);
+        setPreviewVisible(true);
+    };
+    const onRemove = file => {
+        console.log(file);
+    };
 
     return (
-        <List
-            size="large"
-            className="articleList"
-            rowKey="id"
-            itemLayout="vertical"
-            dataSource={mock}
-            renderItem={item => (
-                <List.Item
-                    key={item.id}
-                    actions={[
-                        <IconText
-                            key="like"
-                            icon={<LikeTwoTone />}
-                            text={item.like}
-                        />,
-                        <IconText
-                            key="dislike"
-                            icon={<DislikeTwoTone />}
-                            text={item.star}
-                        />,
-                        <IconText
-                            key="message"
-                            icon={<MessageTwoTone />}
-                            text={item.message}
-                        />
-                    ]}
+        <>
+            <InfiniteScroll
+                pageStart={nextPageById}
+                loadMore={loadItems}
+                hasMore={hasMorePostsById}
+            >
+                <List
+                    size="large"
+                    className="articleList"
+                    rowKey="id"
+                    itemLayout="vertical"
+                    dataSource={postsById}
+                    renderItem={item => (
+                        <List.Item
+                            key={item.id}
+                            actions={[
+                                <IconText
+                                    key="like"
+                                    icon={<LikeTwoTone />}
+                                    text={item.like}
+                                />,
+                                <IconText
+                                    key="dislike"
+                                    icon={<DislikeTwoTone />}
+                                    text={item.star}
+                                />,
+                                <IconText
+                                    key="message"
+                                    icon={<MessageTwoTone />}
+                                    text={item.message}
+                                />
+                            ]}
+                            extra={[<ExtraContent key="more" />]}
+                        >
+                            <List.Item.Meta
+                                title={userInfo.nickname}
+                                avatar={
+                                    <Avatar src={userInfo.avatar} />
+                                }
+                                description={moment(item.createdAt).fromNow()}
+                            />
+                                <PostListContent data={item.content} mentions={item.mentions} />
+
+
+                            <RenderImageListContent
+                                images={item.images}
+                                idUser={item.idUser}
+                                onPreview={onPreview}
+                                onRemove={onRemove}
+                            />
+                        </List.Item>
+                    )}
                 >
-                    <List.Item.Meta
-                        title={
-                            <a className="listItemMetaTitle" href={item.href}>
-                                {item.title}
-                            </a>
-                        }
-                        avatar={<Avatar src='https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' />}
-                    />
-                    <PostListContent data={item} />
-                </List.Item>
-            )}
-        />
+                    {hasMorePostsById && (
+                        <div className="listPost-loading-content">
+                            <FetchDataLoading />
+                        </div>
+                    )}
+                </List>
+            </InfiniteScroll>
+            <ModalViewImage
+                handleCancel={handleCancel}
+                previewImage={previewImage}
+                previewVisible={previewVisible}
+            />
+        </>
     );
-}
+};
+
+export default ListPosts;

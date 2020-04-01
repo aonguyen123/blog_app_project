@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import BreadcrumbItem from './BreadcrumbItem';
 import BreadcrumbSeparator from './BreadcrumbSeparator';
 import { ConfigConsumerProps } from '../config-provider';
@@ -24,15 +23,9 @@ export default class Breadcrumb extends React.Component<BreadcrumbProps, any> {
     static defaultProps: {
         separator: string;
     };
-    static propTypes: {
-        prefixCls: PropTypes.Requireable<string>;
-        separator: PropTypes.Requireable<PropTypes.ReactNodeLike>;
-        routes: PropTypes.Requireable<any[]>;
-    };
-    componentDidMount(): void;
     getPath: (path: string, params: any) => string;
     addChildPath: (paths: string[], childPath: string | undefined, params: any) => string[];
     genForRoutes: ({ routes, params, separator, itemRender, }: BreadcrumbProps) => JSX.Element[];
-    renderBreadcrumb: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderBreadcrumb: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

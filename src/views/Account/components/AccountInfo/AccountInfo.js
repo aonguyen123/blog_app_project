@@ -5,38 +5,37 @@ import './styles.css';
 import Interests from '../Interests/Interests';
 import Skill from '../Skill/Skill';
 
-export default function AccountInfo() {
-
+export default function AccountInfo({userInfo, loadingFetchData}) {
+    
     return (
         <Card
             style={{
                 marginBottom: 24
             }}
-            //loading={dataLoading}
+            loading={loadingFetchData}
         >
             <div className="avatarHolder">
                 <img
                     alt="avatar"
-                    src="https://avatars1.githubusercontent.com/u/8186664?s=460&v=4"
+                    src={userInfo.avatar}
                 />
-                <div className="name">ao nguyen</div>
+                <div className="name">{userInfo.nickname}</div>
                 <div>
-                    muốn thành công phải trải qua nhìu thất bại. Trên đường đời
-                    có dại mới có khôn
+                    {userInfo.description}
                 </div>
             </div>
             <div className="detail">
                 <p>
                     <PhoneOutlined className="icon-title" />
-                    90890867676
+                    {userInfo.phonenumber}
                 </p>
                 <p>
                     <MailOutlined className="icon-title" />
-                    aonguyen@gmail.comg
+                    {userInfo.email}
                 </p>
                 <p>
                     <EnvironmentOutlined className="icon-title" />
-                    phu hung binh tan tay son binh dinh
+                    {`${userInfo.district} - ${userInfo.provinceOrCity}`}
                 </p>
             </div>
             <Divider dashed />

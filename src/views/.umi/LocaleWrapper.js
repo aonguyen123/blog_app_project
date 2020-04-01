@@ -5,7 +5,7 @@ import {
     IntlProvider,
     intlShape,
     LangContext,
-    _setLocaleContext
+    _setLocaleContext,
 } from 'umi-plugin-locale/lib/locale';
 
 const InjectedWrapper = (() => {
@@ -19,15 +19,16 @@ const InjectedWrapper = (() => {
     return sfc;
 })();
 
+import moment from 'moment';
 import 'moment/locale/vi';
+moment.locale('en');
 
 const baseSeparator = '-';
 const useLocalStorage = true;
 
-import { LocaleProvider, version } from 'antd';
-import 'moment/locale/vi';
+import { ConfigProvider, version } from 'antd';
 
-let defaultAntd = require('antd/lib/locale-provider/en_US');
+let defaultAntd = require('antd/es/locale/en_US');
 defaultAntd = defaultAntd.default || defaultAntd;
 
 const localeInfo = {
@@ -39,11 +40,14 @@ const localeInfo = {
             ...(locale => (locale.__esModule ? locale.default : locale))(
                 require('./../Login/locales/en-US')
             ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Home/locales/en-US')
+            ),
         },
         locale: 'en-US',
-        antd: require('antd/lib/locale-provider/en_US'),
+        antd: require('antd/es/locale/en_US'),
         data: require('@formatjs/intl-pluralrules/dist/locale-data/en'),
-        momentLocale: 'en-us'
+        momentLocale: ''
     },
     'vi-VN': {
         messages: {
@@ -53,9 +57,12 @@ const localeInfo = {
             ...(locale => (locale.__esModule ? locale.default : locale))(
                 require('./../Login/locales/vi-VN')
             ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Home/locales/vi-VN')
+            ),
         },
         locale: 'en',
-        antd: require('antd/lib/locale-provider/vi_VN'),
+        antd: require('antd/es/locale/vi_VN'),
         data: require('@formatjs/intl-pluralrules/dist/locale-data/vi'),
         momentLocale: 'vi-vn'
     },
@@ -70,7 +77,7 @@ class LocaleWrapper extends React.Component {
             locale: 'en-US',
             messages: {},
             data: require('@formatjs/intl-pluralrules/dist/locale-data/en'),
-            momentLocale: 'en-us'
+            momentLocale: 'en-us',
         };
   
         if (
@@ -79,14 +86,15 @@ class LocaleWrapper extends React.Component {
             localStorage.getItem('umi_locale') &&
             localeInfo[localStorage.getItem('umi_locale')]
         ) {
+            moment.locale(localeInfo[localStorage.getItem('umi_locale')].momentLocale);
             appLocale = localeInfo[localStorage.getItem('umi_locale')];
         } else {
+            moment.locale('en');
             appLocale = localeInfo['en-US'] || appLocale;
         }
         window.g_lang = appLocale.locale;
         window.g_langSeparator = baseSeparator || '-';
         appLocale.data && addLocaleData(appLocale.data);
-
         return appLocale;
     }
     reloadAppLocale = () => {
@@ -123,7 +131,7 @@ class LocaleWrapper extends React.Component {
             </IntlProvider>
         );
         // avoid antd ConfigProvider not found
-        let AntdProvider = LocaleProvider;
+        let AntdProvider = ConfigProvider;
         const [major, minor] = `${version || ''}`.split('.');
         // antd 3.21.0 use ConfigProvider not LocaleProvider
         const isConfigProvider =
@@ -133,19 +141,17 @@ class LocaleWrapper extends React.Component {
                 AntdProvider = require('antd/lib/config-provider').default;
             } catch (e) {}
         }
-
         return (
             <AntdProvider
                 locale={
                     appLocale.antd
-                        ? appLocale.antd.default || appLocale.antd
+                        ? appLocale.antd.default
                         : defaultAntd
                 }
             >
                 {ret}
             </AntdProvider>
         );
-        return ret;
     }
 }
 export default LocaleWrapper;

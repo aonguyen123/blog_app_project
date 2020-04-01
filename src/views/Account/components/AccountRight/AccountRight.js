@@ -1,48 +1,49 @@
-import React, { useState, lazy, Suspense } from 'react';
-import { GlobalLoading } from './../../../../components';
+import React, { useState, lazy, Suspense, useMemo } from 'react';
+import { LazyLoading } from './../../../../components';
 import { Card } from 'antd';
 
 const ListPosts = lazy(() => import('./../ListPosts/ListPosts'));
 
-const operationTabList = [
-    {
-        key: 'posts',
-        tab: (
-            <span>
-                Posts{' '}
-                <span
-                    style={{
-                        fontSize: 14
-                    }}
-                >
-                    (8)
-                </span>
-            </span>
-        )
-    },
-    {
-        key: 'applications',
-        tab: (
-            <span>
-                应用{' '}
-                <span
-                    style={{
-                        fontSize: 14
-                    }}
-                >
-                    (8)
-                </span>
-            </span>
-        )
-    }
-];
-
 export default function AccountRight(props) {
+    const { userInfo, postsById } = props;
+
     const [tabKey, setTabKey] = useState('posts');
 
-    const renderChildrenByTabKey = tabKey => {
+    const operationTabList = [
+        {
+            key: 'posts',
+            tab: (
+                <span>
+                    Posts{' '}
+                    <span
+                        style={{
+                            fontSize: 14
+                        }}
+                    >
+                        {`(${postsById.length})`}
+                    </span>
+                </span>
+            )
+        },
+        {
+            key: 'applications',
+            tab: (
+                <span>
+                    应用{' '}
+                    <span
+                        style={{
+                            fontSize: 14
+                        }}
+                    >
+                        (8)
+                    </span>
+                </span>
+            )
+        }
+    ];
+    const renderChildrenByTabKey = (tabKey, userInfo) => {
         if (tabKey === 'posts') {
-            return <ListPosts />;
+            return <ListPosts userInfo={userInfo} />;
         }
 
         if (tabKey === 'applications') {
@@ -50,6 +51,8 @@ export default function AccountRight(props) {
         }
         return null;
     };
+    const renderChildren = useMemo(() => renderChildrenByTabKey(tabKey, userInfo), [tabKey, userInfo]);
+
     const onTabChange = key => {
         setTabKey(key);
     };
@@ -61,8 +64,8 @@ export default function AccountRight(props) {
             activeTabKey={tabKey}
             onTabChange={onTabChange}
         >
-            <Suspense fallback={<GlobalLoading size="small" />}>
-                {renderChildrenByTabKey(tabKey)}
+            <Suspense fallback={<LazyLoading size="small" />}>
+                {renderChildren}
             </Suspense>
         </Card>
     );

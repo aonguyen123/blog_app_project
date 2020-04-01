@@ -1,5 +1,6 @@
 declare const locale: {
     lang: {
+        locale: string;
         placeholder: string;
         rangePlaceholder: string[];
         today: string;

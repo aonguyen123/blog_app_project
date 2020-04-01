@@ -1,87 +1,62 @@
-import React, { useState } from 'react';
-import { List, message, Avatar, Spin, Row, Col } from 'antd';
+import React, { useState, memo } from 'react';
 import { DislikeTwoTone, LikeTwoTone, MessageTwoTone } from '@ant-design/icons';
+import { Avatar, Col, List, Row } from 'antd';
+import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
+import { useDispatch, useSelector } from 'react-redux';
+import allActions from './../../../../actions';
+import {
+    ContentPopover,
+    FetchDataLoading,
+    RenderImageListContent,
+    ModalViewImage, 
+    ExtraContent
+} from './../../../../components';
 import './styles.css';
 
-export default function ManyComponent() {
-    const [listData, setListData] = useState([]);
-    const [hasMoreItems, setHasMoreItems] = useState(true);
+const ListContent = memo(({history}) => {
+    const [previewVisible, setPreviewVisible] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const posts = useSelector(state => state.postReducer.posts);
+    const hasMorePosts = useSelector(state => state.postReducer.hasMoreItems);
+    const nextPage = useSelector(state => state.postReducer.nextPage);
+    const dispatch = useDispatch();
 
     const IconText = ({ icon, text }) => (
         <span>
             {icon} {text}
         </span>
     );
-
-    const loadItems = page => {
-        // axios
-        //     .get(BASE_URI + '/getAllData', {
-        //         params: {
-        //             page,
-        //             page_size: 20
-        //         }
-        //     })
-        //     .then(res => {
-        //         const items = res.data;
-        //         setTracks([...tracks, ...items.users]);
-        //     })
-        //     .catch(err => {
-        //         setHasMoreItems(false);
-        //     });
-        const data = [
-            {
-                title: 'ao nguyen',
-                avatar:
-                    'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                content:
-                    'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
-            }
-        ];
-        if (listData.length === 20) {
-            message.warning('Infinite List loaded all');
-            setHasMoreItems(false);
-            return;
-        }
-        setTimeout(setListData([...listData, ...data]), 5000);
+    const handleCancel = () => setPreviewVisible(false);
+    const loadItems = () => {
+        const page_size = 10;
+        dispatch(
+            allActions.postActions.fetchPost(history, nextPage, page_size)
+        );
     };
-    const renderImage = () => {
-        const images = [
-            {
-                src: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-            },
-            {
-                src: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-            },           
-        ];
-        return images.map((value, key) => {
-            return (
-                <div key={key} style={{float: 'left', margin: '3px'}}>
-                    <Avatar
-                        shape="square"
-                        size={164}
-                        src={value.src}
-                    />
-                </div>
-            )
-        });
+    const onPreview = async file => {
+        setPreviewImage(file.url);
+        setPreviewVisible(true);
+    };
+    const onRemove = file => {
+        console.log(file);
     };
 
     return (
         <div className="list-content">
             <InfiniteScroll
-                pageStart={0}
+                pageStart={nextPage}
                 loadMore={loadItems}
-                hasMore={hasMoreItems}
+                hasMore={hasMorePosts}
             >
                 <List
                     itemLayout="vertical"
                     size="large"
-                    dataSource={listData}
+                    dataSource={posts}
                     renderItem={item => (
                         <List.Item
-                            style={{marginTop: '13px'}}
-                            key={item.title}
+                            style={{ marginTop: '13px' }}
+                            key={item._id}
                             actions={[
                                 <IconText
                                     icon={<LikeTwoTone />}
@@ -99,125 +74,61 @@ export default function ManyComponent() {
                                     key="list-vertical-message"
                                 />
                             ]}
+                            extra={[<ExtraContent key='more' />]}
                         >
                             <List.Item.Meta
-                                avatar={<Avatar src={item.avatar} />}
-                                title={item.title}
-                                description='12/12/2020'
+                                avatar={<Avatar src={item.idUser.avatar} />}
+                                title={item.idUser.nickname}
+                                description={moment(item.createdAt).fromNow()}
                             />
+                            {item.content ? (
+                                <Row gutter={[16, 16]}>
+                                    <Col xl={24} lg={24} md={24} sm={24}>
+                                        {item.content}
+                                    </Col>
+                                </Row>
+                            ) : null}
+                            {item.mentions.length > 0 ? (
+                                <Row gutter={[10, 10]}>
+                                    <Col xl={24} lg={24} md={24} sm={24}>
+                                        {item.mentions.map(value => (
+                                            <ContentPopover
+                                                key={value._id}
+                                                user={value.idUser}
+                                            />
+                                        ))}
+                                    </Col>
+                                </Row>
+                            ) : null}
                             <Row gutter={[16, 16]}>
                                 <Col xl={24} lg={24} md={24} sm={24}>
-                                    {item.content}
-                                </Col>
-                            </Row>
-                            <Row gutter={[16, 16]}>
-                                <Col xl={24} lg={24} md={24} sm={24}>
-                                    {renderImage()}
+                                    <RenderImageListContent
+                                        images={item.images}
+                                        idUser={item.idUser._id}
+                                        onPreview={onPreview}
+                                        onRemove={onRemove}
+                                    />
                                 </Col>
                             </Row>
                         </List.Item>
                     )}
                 >
-                    {hasMoreItems && (
+                    {hasMorePosts && (
                         <div className="loading-content">
-                            <Spin />
+                            <FetchDataLoading
+                                tooltip="loading"
+                            />
                         </div>
                     )}
                 </List>
             </InfiniteScroll>
+            <ModalViewImage
+                handleCancel={handleCancel}
+                previewImage={previewImage}
+                previewVisible={previewVisible}
+            />
         </div>
     );
-}
+});
 
-// export default class InfiniteListExample extends React.Component {
-//   state = {
-//     data: [],
-//     loading: false,
-//     hasMore: true,
-//   };
-
-//   componentDidMount() {
-//     // this.fetchData(res => {
-//     //   this.setState({
-//     //     data: res.results,
-//     //   });
-//     // });
-//     this.setState({
-//         data: [{
-//             id: '1',
-//             name: 'ao nguyen',
-//             email: 'aonguyen@gmail.com'
-//         }]
-//     });
-//   }
-
-// //   fetchData = callback => {
-// //     reqwest({
-// //       url: fakeDataUrl,
-// //       type: 'json',
-// //       method: 'get',
-// //       contentType: 'application/json',
-// //       success: res => {
-// //         callback(res);
-// //       },
-// //     });
-// //   };
-
-//   handleInfiniteOnLoad = () => {
-//     let { data } = this.state;
-//     this.setState({
-//       loading: true,
-//     });
-//     if (data.length > 14) {
-//       message.warning('Infinite List loaded all');
-//       this.setState({
-//         hasMore: false,
-//         loading: false,
-//       });
-//       return;
-//     }
-//     this.fetchData(res => {
-//       data = data.concat(res.results);
-//       this.setState({
-//         data,
-//         loading: false,
-//       });
-//     });
-//   };
-
-//   render() {
-//     return (
-//       <div className="list-content">
-//         <InfiniteScroll
-//           initialLoad={false}
-//           pageStart={0}
-//           loadMore={this.handleInfiniteOnLoad}
-//           hasMore={!this.state.loading && this.state.hasMore}
-//           useWindow={false}
-//         >
-//           <List
-//             dataSource={this.state.data}
-//             renderItem={item => (
-//               <List.Item key={item.id}>
-//                 <List.Item.Meta
-//                   avatar={
-//                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-//                   }
-//                   title={<a href="https://ant.design">{item.name}</a>}
-//                   description={item.email}
-//                 />
-//                 <div>Content</div>
-//               </List.Item>
-//             )}
-//           >
-//             {this.state.loading && this.state.hasMore && (
-//               <div className="loading-content">
-//                 <Spin />
-//               </div>
-//             )}
-//           </List>
-//         </InfiniteScroll>
-//       </div>
-//     );
-//   }
-// }
+export default ListContent;

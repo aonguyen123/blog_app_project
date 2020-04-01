@@ -1,9 +1,22 @@
 import React from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Upload, Button, Row, Col } from 'antd';
+import allCommons from './../../../../common';
+import allConfigs from './../../../../config';
+import { BASE_URI } from './../../../../constants/base_url';
 import './styles.css';
 
-export default function AvatarSettingView() {
+export default function AvatarSettingView({userInfo}) {
+    
+    const propsUpload = {
+        beforeUpload: file => {
+            allCommons.uploadCommon.beforeUpload(file);
+        },
+        action: `${BASE_URI}/user/upload-avatar`,
+        headers: {
+            'x-access-token': allConfigs.tokenConfigs.getToken().accessToken
+        }
+    };
     return (
         <div>
             <Row type="flex" justify="center">
@@ -11,11 +24,11 @@ export default function AvatarSettingView() {
                     <div className="avatar_title">Avatar</div>
                     <div className="avatar-setting">
                         <img
-                            src="https://avatars1.githubusercontent.com/u/8186664?s=460&v=4"
+                            src={userInfo.avatar}
                             alt="avatar"
                         />
                     </div>
-                    <Upload showUploadList={false}>
+                    <Upload {...propsUpload}>
                         <div className="button_view-setting">
                             <Button>
                                 <UploadOutlined />

@@ -1,10 +1,9 @@
 import React from 'react';
-import logo from './../../../assets/logo.svg';
 import { Link } from 'react-router-dom';
+import logo from './../../../assets/logo.svg';
 import './styles.css';
 
 export default function LeftLogo() {
-
     return (
         <div className='logo-header'>
             <Link to='/home'>

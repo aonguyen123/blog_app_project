@@ -1,50 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { GridContent } from '@ant-design/pro-layout';
-import { Divider, Row, Col, Icon, Button, Form, Input } from 'antd';
+import {
+    LoginOutlined,
+    UserOutlined,
+    LockOutlined,
+    GoogleOutlined,
+    FacebookOutlined,
+} from '@ant-design/icons';
+import {
+    Divider,
+    Row,
+    Col,
+    Button,
+    Form,
+    Input
+} from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 
 import allActions from './../../actions';
-import { AlertErrors } from './../../components';
 import './styles.css';
 
-function LoginForm(props) {
+export default function Login(props) {
     const { history } = props;
-    const { getFieldDecorator } = props.form;
+    const loadingButton = useSelector(state => state.uiReducer.loadingButton);
 
-    const auth = useSelector(state => state.auth);
-    const errors = useSelector(state => state.errors);
     const dispatch = useDispatch();
 
-    const [iconLoading, setIconLoading] = useState(false);
-    const [notice, setNotice] = useState('');
-
-    useEffect(() => {
-        setNotice(errors.message);
-    }, [errors]);
-    useEffect(() => {
-        setIconLoading(false);
-    }, [auth, errors]);
-    useEffect(() => {
-        setNotice('');
-    }, [auth]);
-
-    const handleSubmit = e => {
-        e.preventDefault();
-        setNotice('');
-        props.form.validateFields((err, values) => {
-            if (!err) {   
-                setIconLoading(true);
-                dispatch(allActions.authenticatedActions.login(values.email, values.password, history));
-            }
-        });
-    };
-    const validate = (rule, value, callback) => {
-        const { form } = props;
-        if (value) {
-            form.validateFields(['confirm'], { force: true });
-        }
-        callback();
+    const onFinish = values => {
+        dispatch(
+            allActions.authenticatedActions.signin(values.email, values.password, history)
+        );
     };
 
     return (
@@ -55,106 +42,100 @@ function LoginForm(props) {
                 align="middle"
                 style={{ minHeight: '100vh' }}
             >
-                <Col lg={7} md={10} sm={15} xs={20}>
-                    <Form onSubmit={handleSubmit} className="login-form">
+                <Col xl={7} lg={7} md={10} sm={15} xs={24}>
+                    <Form onFinish={onFinish}>
                         <Divider>
-                            <Icon
-                                className='icon-login'
-                                type="login"
+                            <LoginOutlined
+                                style={{ marginRight: '8px', color: '#08c' }}
                             />
-                            <span style={{ color: '#08c' }}><FormattedMessage id='login.login' /></span>
+                            <span style={{ color: '#08c' }}>
+                                <FormattedMessage id="login.login" />
+                            </span>
                         </Divider>
-                        {notice && <AlertErrors message={notice} type="error" />}
-                        <Form.Item hasFeedback>
-                            {getFieldDecorator('email', {
-                                rules: [
-                                    {
-                                        type: 'email',
-                                        message: formatMessage({id: 'login.validEmail'})
-                                    },
-                                    {
-                                        required: true,
-                                        message: formatMessage({id: 'login.requiredEmail'})
-                                    },
-                                    {
-                                        validator: validate
-                                    }
-                                ]
-                            })(
-                                <Input
-                                    allowClear
-                                    prefix={
-                                        <Icon
-                                            type="user"
-                                            style={{ color: 'rgba(0,0,0,.25)' }}
-                                        />
-                                    }
-                                    placeholder={formatMessage({id: 'login.email'})}
-                                />
-                            )}
+                        <Form.Item
+                            hasFeedback
+                            name="email"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: formatMessage({
+                                        id: 'login.requiredEmail'
+                                    })
+                                },
+                                {
+                                    type: 'email',
+                                    message: formatMessage({
+                                        id: 'login.validEmail'
+                                    })
+                                }
+                            ]}
+                        >
+                            <Input
+                                allowClear
+                                prefix={<UserOutlined />}
+                                placeholder={formatMessage({
+                                    id: 'login.email'
+                                })}
+                            />
                         </Form.Item>
-                        <Form.Item hasFeedback>
-                            {getFieldDecorator('password', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: formatMessage({id: 'login.requiredPassword'})
-                                    },
-                                    {
-                                        validator: validate
-                                    },
-                                    {
-                                        min: 6,
-                                        message: formatMessage({id: 'login.lengPassword'})
-                                    }
-                                ]
-                            })(
-                                <Input.Password
-                                    prefix={
-                                        <Icon
-                                            type="lock"
-                                            style={{ color: 'rgba(0,0,0,.25)' }}
-                                        />
-                                    }
-                                    allowClear
-                                    type="password"
-                                    placeholder={formatMessage({id: 'login.password'})}
-                                />
-                            )}
+                        <Form.Item
+                            hasFeedback
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: formatMessage({
+                                        id: 'login.requiredPassword'
+                                    })
+                                },
+                                {
+                                    min: 6,
+                                    message: formatMessage({
+                                        id: 'login.lengPassword'
+                                    })
+                                }
+                            ]}
+                        >
+                            <Input.Password
+                                prefix={<LockOutlined />}
+                                allowClear
+                                type="password"
+                                placeholder={formatMessage({
+                                    id: 'login.password'
+                                })}
+                            />
                         </Form.Item>
                         <Form.Item>
                             <Button
                                 type="primary"
                                 htmlType="submit"
                                 className="login-form-button"
-                                icon="login"
-                                loading={iconLoading}
+                                icon={<LoginOutlined />}
+                                loading={loadingButton}
                             >
-                                <FormattedMessage id='login.login' />
+                                <FormattedMessage id="login.login" />
                             </Button>
-                            <div>
-                                <FormattedMessage id='login.loginMethod' />
-                                <Button
-                                    className="btn-google"
-                                    type="dashed"
-                                    shape="circle"
-                                    icon="google"
-                                    size="default"
-                                />
-                                <Button
-                                    type="dashed"
-                                    shape="circle"
-                                    icon="facebook"
-                                    size="default"
-                                />
-                                <Button
-                                    className="btn-register"
-                                    type="link"
-                                    href="foo"
-                                >
-                                    <FormattedMessage id='login.register' />
-                                </Button>
-                            </div>
+                        </Form.Item>
+                        <Form.Item>
+                            <FormattedMessage id="login.loginMethod" />
+                            <Button
+                                className="btn-google"
+                                type="dashed"
+                                shape="circle"
+                                icon={<GoogleOutlined />}
+                                size="default"
+                            />
+                            <Button
+                                type="dashed"
+                                shape="circle"
+                                icon={<FacebookOutlined />}
+                                size="default"
+                            />
+                            <Button className="btn-register" type="link">
+                                <Link to="/register">
+                                    <FormattedMessage id="login.register" />
+                                </Link>
+                            </Button>
                         </Form.Item>
                     </Form>
                 </Col>
@@ -162,6 +143,3 @@ function LoginForm(props) {
         </GridContent>
     );
 }
-const SignIn = Form.create({ name: 'login' })(LoginForm);
-
-export default SignIn;

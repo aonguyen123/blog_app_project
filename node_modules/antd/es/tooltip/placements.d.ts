@@ -1,3 +1,4 @@
+import { BuildInPlacements } from 'rc-trigger';
 export interface AdjustOverflow {
     adjustX?: 0 | 1;
     adjustY?: 0 | 1;
@@ -13,4 +14,4 @@ export declare function getOverflowOptions(autoAdjustOverflow: boolean | AdjustO
     adjustX: number;
     adjustY: number;
 };
-export default function getPlacements(config?: PlacementsConfig): any;
+export default function getPlacements(config?: PlacementsConfig): BuildInPlacements;

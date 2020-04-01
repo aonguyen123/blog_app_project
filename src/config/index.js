@@ -1,2 +1,10 @@
-export { setAuthToken } from './setAuthToken.config';
-export { setToken, getToken, removeToken, checkToken, checkExpiredToken } from './token.config';
+import menuConfigs from './menu.config';
+import tokenConfigs from './token.config';
+import setAuthTokenConfigs from './setAuthToken.config';
+
+const allConfigs = {
+    menuConfigs,
+    tokenConfigs,
+    setAuthTokenConfigs,
+}
+export default allConfigs;

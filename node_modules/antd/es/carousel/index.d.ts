@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Settings } from 'react-slick';
+import { Settings } from '@ant-design/react-slick';
 import { ConfigConsumerProps } from '../config-provider';
 export declare type CarouselEffect = 'scrollx' | 'fade';
 export declare type DotPosition = 'top' | 'bottom' | 'left' | 'right';
@@ -29,6 +29,6 @@ export default class Carousel extends React.Component<CarouselProps, {}> {
     next(): void;
     prev(): void;
     goTo(slide: number, dontAnimate?: boolean): void;
-    renderCarousel: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderCarousel: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

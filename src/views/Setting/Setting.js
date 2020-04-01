@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import { BasicSetting, SercuritySetting } from './components';
@@ -11,9 +12,10 @@ const menuMap = {
     notification: 'Message Notification'
 };
 
-export default function Setting() {
+export default function Setting(props) {
     const [selectKey, setSelectKey] = useState('base');
     const [mode, setMode] = useState('horizontal');
+    const userInfo = useSelector(state => state.userReducer.userInfo);
     let auto = undefined;
 
     const getMenu = () => {
@@ -27,7 +29,7 @@ export default function Setting() {
     const renderChildren = () => {
         switch (selectKey) {
             case 'base':
-                return <BasicSetting />;
+                return <BasicSetting userInfo={userInfo} />;
 
             case 'security':
                 return <SercuritySetting />;

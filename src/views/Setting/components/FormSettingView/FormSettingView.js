@@ -5,139 +5,122 @@ const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
-function FormSetting(props) {
-    const { getFieldDecorator } = props.form;
-
-    const handleSubmit = e => {
-        e.preventDefault();
-        props.form.validateFields((err, values) => {
-            if (!err) {   
-                console.log('sss')
-            }
-        });
+export default function FormSettingView(props) {
+    const handleFinish = values => {
+        console.log(values);
     };
-    const prefixSelector = getFieldDecorator('prefix', {
-        initialValue: '84'
-    })(
-        <Select style={{ width: 70 }}>
+    const prefixSelector = (
+        <Select style={{ width: 70 }} value='84'>
             <Option value="84">+84</Option>
         </Select>
     );
-    const validatorGeographic = (_, value, callback) => {
-        const { province, district } = value;
-
-        if (!province.key) {
-            callback('Please input your province or city!');
-        }
-
-        if (!district.key) {
-            callback('Please input your district!');
-        }
-
-        callback();
-    };
-    const validate = (rule, value, callback) => {
-        const { form } = props;
+    const checkProvince = (rule, value) => {
         if (value) {
-            form.validateFields(['confirm'], { force: true });
+            const { province, district } = value;
+            if (province || district) {
+                if (!province.key) {
+                    return Promise.reject(
+                        'Please input your province or city!'
+                    );
+                }
+                if (!district.key) {
+                    return Promise.reject('Please input your district!');
+                }
+            }
         }
-        callback();
+        return Promise.resolve();
     };
 
     return (
         <div>
             <Row>
                 <Col xl={15} lg={15} md={15} sm={24} xs={24}>
-                    <Form onSubmit={handleSubmit}>
-                        <Item label="Email">
-                            {getFieldDecorator('email', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input your email'
-                                    },
-                                    {
-                                        validator: validate
-                                    }
-                                ]
-                            })(<Input />)}
+                    <Form
+                        onFinish={handleFinish}
+                        layout="vertical"
+                        initialValues={{
+                            country: 'Việt Nam',
+                            prefix: '84'
+                        }}
+                    >
+                        <Item
+                            label="Email"
+                            name="email"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your email'
+                                }
+                            ]}
+                        >
+                            <Input />
                         </Item>
-                        <Item label="Nickname">
-                            {getFieldDecorator('nickname', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input your nickname'
-                                    },
-                                    {
-                                        validator: validate
-                                    }
-                                ]
-                            })(
-                                <Input />
-                            )}
+                        <Item
+                            label="Nickname"
+                            name="nickname"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your nickname'
+                                }
+                            ]}
+                        >
+                            <Input />
                         </Item>
-                        <Item label="Personal profile">
-                            {getFieldDecorator('personalProfile', {
-                                rules: [
-                                    {
-                                        validator: validate
-                                    }
-                                ]
-                            })(
-                                <TextArea rows={3} />
-                            )}
+                        <Item label="Personal profile" name="profile">
+                            <TextArea rows={3} />
                         </Item>
-                        <Item label="Phone Number">
-                            {getFieldDecorator('phone', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message:
-                                            'Please input your phone number!'
-                                    },
-                                    {
-                                        validator: validate
-                                    }
-                                ]
-                            })(
-                                <Input
-                                    type="number"
-                                    addonBefore={prefixSelector}
-                                    style={{ width: '100%' }}
-                                />
-                            )}
+                        <Item
+                            label="Phone Number"
+                            name="phone"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your phone number!'
+                                }
+                            ]}
+                        >
+                            <Input
+                                type="number"
+                                addonBefore={prefixSelector}
+                                style={{ width: '100%' }}
+                            />
                         </Item>
-                        <Item label="Country">
-                            {getFieldDecorator('country', {
-                                initialValue: 'Vietnam',
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input your country!'
-                                    }
-                                ]
-                            })(
-                                <Select style={{ width: '100%' }}>
-                                    <Option value="Vietnam">Việt Nam</Option>
-                                </Select>
-                            )}
+                        <Item
+                            label="Country"
+                            name="country"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your country!'
+                                }
+                            ]}
+                        >
+                            <Select style={{ width: '100%' }}>
+                                <Option value="Việt Nam">Việt Nam</Option>
+                                <Option value="tets">test</Option>
+                            </Select>
                         </Item>
-                        <Item label="Province or city">
-                            {getFieldDecorator('geographic', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input your province or city'
-                                    },
-                                    {
-                                        validator: validate
-                                    }
-                                ]
-                            })(<GeographicView />)}
+                        <Item
+                            label="Province or city"
+                            name="province"
+                            rules={[
+                                {
+                                    required: true,
+                                    message:
+                                        'Please input your province or city'
+                                },
+                                {
+                                    validator: checkProvince
+                                }
+                            ]}
+                        >
+                            <GeographicView />
                         </Item>
                         <Item>
-                            <Button type='primary' htmlType='submit'>Update Information</Button>
+                            <Button type="primary" htmlType="submit">
+                                Update Information
+                            </Button>
                         </Item>
                     </Form>
                 </Col>
@@ -145,8 +128,3 @@ function FormSetting(props) {
         </div>
     );
 }
-
-const FormSettingViews = Form.create({ name: 'form-settings-account' })(
-    FormSetting
-);
-export default FormSettingViews;

@@ -1,13 +1,17 @@
 import React from 'react';
+import { ContentPopover } from './../../../../components';
 import './styles.css';
 
 export default function PostListContent(props) {
-    const { data } = props;
+    const { data, mentions } = props;
+
     return (
         <div className='listContent'>
-            <div className='description'>{data.content}</div>
+            <div className='description'>{data}</div>
             <div className='extra'>
-                <a href={data.href}>{data.owner}</a> 发布在 <a href={data.href}>{data.href}</a>
+                {mentions.map(value => (
+                    <ContentPopover key={value._id} user={value.idUser} />
+                ))}
             </div>
         </div>
     );

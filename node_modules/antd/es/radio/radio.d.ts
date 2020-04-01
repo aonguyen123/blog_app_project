@@ -1,25 +1,20 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import RadioGroup from './group';
 import RadioButton from './radioButton';
-import { RadioProps, RadioChangeEvent, RadioGroupContext } from './interface';
+import { RadioProps, RadioChangeEvent } from './interface';
 import { ConfigConsumerProps } from '../config-provider';
-export default class Radio extends React.Component<RadioProps, {}> {
+export default class Radio extends React.PureComponent<RadioProps, {}> {
     static Group: typeof RadioGroup;
     static Button: typeof RadioButton;
     static defaultProps: {
         type: string;
     };
-    static contextTypes: {
-        radioGroup: PropTypes.Requireable<any>;
-    };
-    context: any;
+    static contextType: React.Context<import("./interface").RadioGroupContextProps | null>;
     private rcCheckbox;
-    shouldComponentUpdate(nextProps: RadioProps, nextState: {}, nextContext: RadioGroupContext): boolean;
     saveCheckbox: (node: any) => void;
     onChange: (e: RadioChangeEvent) => void;
     focus(): void;
     blur(): void;
-    renderRadio: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;
+    renderRadio: ({ getPrefixCls, direction }: ConfigConsumerProps) => JSX.Element;
     render(): JSX.Element;
 }

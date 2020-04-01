@@ -1,49 +1,29 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Row, Col } from 'antd';
-import { ToolPost, ListContent, ToolWeather } from './Components';
-import allActions from './../../actions';
+import { ToolPost, ListContent } from './Components';
 
-function Home(props) {
+export default function Home(props) {
     const { history } = props;
-    const geocode = useSelector(state => state.currentPlace.geocode);
-    const errors = useSelector(state => state.errors);
-    const dispatch = useDispatch();
+    const userInfo = useSelector(state => state.userReducer.userInfo);    
 
-    useEffect(() => {
-        if(navigator.geolocation)
-        {
-            function success(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                dispatch(allActions.geocodeActions.getCurrentPlace(lat, lon, history));
-            }
-            function error(err) {
-                dispatch(allActions.geocodeActions.getCurrentPlace(37.8267, -122.4233, history));
-            }
-            navigator.geolocation.getCurrentPosition(success, error)
-        }
-    }, [dispatch, history])
-    
     return (
         <>
             <Row gutter={[20, 20]}>
-                <Col lg={10} md={10}>
-                    <ToolPost />
+                <Col xl={14} lg={14} md={14} sm={24} xs={24}>
+                    <ToolPost history={history} userInfo={userInfo} />
                 </Col>
-                <Col lg={14} md={14} sm={24}>
-                    <ToolWeather 
-                        geocode={geocode} 
-                        errors={errors}
-                    />
+                <Col xl={10} lg={10} md={10} sm={24} xs={24}>
+                    {/* <Affix offsetTop={20}>
+                        
+                    </Affix> */}
                 </Col>
             </Row>
             <Row gutter={[20, 20]}>
-                <Col>
-                    <ListContent />
+                <Col xl={14} lg={14} md={14} sm={24} xs={24}>
+                    <ListContent history={history} />
                 </Col>
             </Row>
         </>
     );
 }
-export default Home;

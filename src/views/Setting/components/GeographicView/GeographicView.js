@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spin, Select, Row, Col } from 'antd';
 import allActions from './../../../../actions';
@@ -9,20 +9,28 @@ const nullSelectItem = {
     key: ''
 };
 
-const GeographicView = forwardRef((props, ref) => {
+export default function GeographicView({ value = {}, onChange }) {
     const dispatch = useDispatch();
-    const provinces = useSelector(state => state.provincesReducer.provinces);
-    const districts = useSelector(state => state.provincesReducer.districts);
-    const loading = useSelector(
-        state => state.provincesReducer.loadingProvince
+    const provinces = useSelector(state => state.geocodeReducer.provinces);
+    const districts = useSelector(state => state.geocodeReducer.districts);
+    const loadingFetchData = useSelector(
+        state => state.uiReducer.loadingFetchData
     );
 
     useEffect(() => {
         dispatch(allActions.geocodeActions.getProvinces());
     }, [dispatch]);
 
+    const triggerChange = changedValue => {
+        if (onChange) {
+            onChange({
+                ...value,
+                ...changedValue
+            });
+        }
+    };
+
     const conversionObject = () => {
-        const { value } = props;
         if (!value) {
             return {
                 province: nullSelectItem,
@@ -54,40 +62,37 @@ const GeographicView = forwardRef((props, ref) => {
         }
         return [];
     };
-    const selectProvinceItem = item => {
-        const { onChange } = props;
-
-        dispatch(allActions.geocodeActions.getDistricts(item.key));
-        if (onChange) {
-            onChange({
-                province: item,
-                district: nullSelectItem
-            });
-        }
+    const handleChangeDistrictItem = newDistrict => {
+        triggerChange({
+            district: newDistrict,
+            province: value.province
+        })
     };
-    const selectDistrictItem = item => {
-        const { value, onChange } = props;
-
-        if (value && onChange) {
-            onChange({
-                province: value.province,
-                district: item
-            });
-        }
+    const handleChangeProvince = newProvince => {
+        triggerChange({
+            province: newProvince,
+            district: nullSelectItem
+        });
+        dispatch(allActions.geocodeActions.getDistricts(newProvince.key));
     };
-    const { province, district } = conversionObject();
+    const {province, district} = conversionObject();
+
     return (
         <Row>
             <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                <Spin spinning={loading} wrapperClassName="row" size="small">
+                <Spin spinning={loadingFetchData} wrapperClassName="row" size="small">
                     <Select
                         showSearch
                         className="item"
-                        onSelect={selectProvinceItem}
-                        loading={provinces.length !== 0 ? false : true}
-                        labelInValue
+                        onChange={handleChangeProvince}
                         value={province}
-                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        style={{float: 'left'}}
+                        labelInValue
+                        filterOption={(input, option) =>
+                            option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                        }
                     >
                         {getProvinceOption()}
                     </Select>
@@ -95,9 +100,14 @@ const GeographicView = forwardRef((props, ref) => {
                         showSearch
                         className="item"
                         labelInValue
+                        style={{float: 'right'}}
                         value={district}
-                        onSelect={selectDistrictItem}
-                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        onChange={handleChangeDistrictItem}
+                        filterOption={(input, option) =>
+                            option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                        }
                     >
                         {getDistrictOption()}
                     </Select>
@@ -105,6 +115,4 @@ const GeographicView = forwardRef((props, ref) => {
             </Col>
         </Row>
     );
-});
-
-export default GeographicView;
+};

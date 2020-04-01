@@ -1,51 +1,91 @@
-import { LOGIN, GET_INFO, GET_ERRORS, LOGIN_ERRORS, CLEAN_ERRORS_LOGIN } from '../constants/types';
-import { setAuthToken, setToken, removeToken } from './../config';
-import { callAPI, getAccessToken } from '../common';
+import { message } from 'antd';
+import {
+    LOGIN_ERRORS,
+    LOGIN_SUCCESS,
+    REFRESH_TOKEN_EXPIRED,
+    REGISTER,
+    REGISTER_ERROR,
+    REGISTER_SUCCESS,
+    SIGN_IN,
+    SIGN_OUT,
+    SIGN_OUT_SUCCESS,
+} from '../constants/types';
 
-const login = (email, password, history) => dispatch => {
-    callAPI('/auth/login', 'POST', { email, password })
-        .then(res => {
-            dispatch({
-                type: LOGIN,
-                payload: res.data
-            });
-            dispatch({
-                type: CLEAN_ERRORS_LOGIN,
-                payload: {}
-            })
-            setAuthToken(res.data.accessToken);
-            setToken(res.data);
-            history.push('/');
-        })
-        .catch(err => {
-            dispatch({
-                type: LOGIN_ERRORS,
-                payload: err.response.data
-            });
-        });
+const register = (data, history) => {
+    return {
+        type: REGISTER,
+        payload: {
+            data,
+            history
+        }
+    };
+};
+const registerSuccess = notice => {
+    message.success(notice);
+    return {
+        type: REGISTER_SUCCESS
+    };
+};
+const registerError = error => {
+    message.error(error);
+    return {
+        type: REGISTER_ERROR
+    };
 };
 
-const getInfo = history => async dispatch => {
-    const result = await getAccessToken(history);
-    if (result) {
-        callAPI('/user/greet-me-protected?name=aonguyen')
-            .then(res => {
-                dispatch({
-                    type: GET_INFO,
-                    payload: res.data
-                })
-            })
-            .catch(err => {
-                removeToken();
-                history.push('/not-authenticated');
-                dispatch ({
-                    type: GET_ERRORS,
-                    payload: err.response.data
-                });
-            });
-    }
+const signoutSuccess = notice => {
+    message.info(notice);
+    return {
+        type: SIGN_OUT_SUCCESS
+    };
 };
+const signout = (history) => {
+    return {
+        type: SIGN_OUT,
+        payload: {
+            history
+        }
+    };
+};
+
+const signin = (email, password, history) => {
+    return {
+        type: SIGN_IN,
+        payload: {
+            email,
+            password,
+            history
+        }
+    };
+};
+const loginSuccess = notice => {
+    message.success(notice);
+    return {
+        type: LOGIN_SUCCESS
+    };
+};
+const loginErrors = error => {
+    message.error(error);
+    return {
+        type: LOGIN_ERRORS
+    };
+};
+const refreshTokenExpired = () => {
+    return {
+        type: REFRESH_TOKEN_EXPIRED
+    };
+};
+
 export default {
-    login,
-    getInfo
-}
+    register,
+    registerSuccess,
+    registerError,
+
+    refreshTokenExpired,
+
+    signout,
+    signoutSuccess,
+    signin,
+    loginSuccess,
+    loginErrors
+};

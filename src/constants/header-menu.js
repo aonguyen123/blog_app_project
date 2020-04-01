@@ -3,12 +3,12 @@ import { UserOutlined, SettingOutlined } from '@ant-design/icons';
 export const headerMenu = [
     {
         id: 'globalHeader.account',
-        icon: <UserOutlined />,
+        icon: <UserOutlined className='icon-menu' />,
         link: '/account'
     },
     {
         id: 'globalHeader.setting',
-        icon: <SettingOutlined />,
+        icon: <SettingOutlined className='icon-menu' />,
         link: '/setting'
     }
 ]

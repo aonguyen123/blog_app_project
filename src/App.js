@@ -6,16 +6,15 @@ import { createBrowserHistory } from 'history';
 import store from './store';
 import LocaleWrapper from './views/.umi/LocaleWrapper';
 import Routes from './routes/Router';
-import { getToken, checkToken, setAuthToken } from './config';
+import allConfigs from './config';
+import { ScrollToTop } from './components';
 import './App.css';
 
 const browserHistory = createBrowserHistory();
 
-if (checkToken()) {
-    const tokenString = getToken();
-    const token = JSON.parse(tokenString);
-    const accessToken = token.accessToken;
-    setAuthToken(accessToken);
+if (allConfigs.tokenConfigs.checkToken()) {
+    const token = allConfigs.tokenConfigs.getToken().accessToken;
+    allConfigs.setAuthTokenConfigs.setAuthToken(token);
 }
 
 export default function App() {
@@ -23,6 +22,7 @@ export default function App() {
         <Provider store={store}>
             <LocaleWrapper>
                 <Router history={browserHistory}>
+                    <ScrollToTop />
                     <Routes />
                 </Router>
             </LocaleWrapper>
