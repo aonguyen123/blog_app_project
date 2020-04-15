@@ -1,4 +1,6 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Menu } from 'antd';
 import { LogoutOutlined, GlobalOutlined } from '@ant-design/icons';
 import {
@@ -9,11 +11,15 @@ import {
 } from 'umi-plugin-react/locale';
 import { Link } from 'react-router-dom';
 import allConfigs from './../../../config';
+import allActions from './../../../actions';
 import { headerMenu } from './../../../constants/header-menu';
 
 const { SubMenu } = Menu;
 
 export default function MenuReponsive() {
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     const lang = getLocale();
     const selectedMenu = allConfigs.menuConfigs.getSelectedMenu();
     const changeLang = ({ key }) => setLocale(key);
@@ -37,6 +43,9 @@ export default function MenuReponsive() {
         ));
     const onSelect = (item) => {
         allConfigs.menuConfigs.setSelectedMenu(item.key);
+    }
+    const onLogout = () => {
+        dispatch(allActions.authenticatedActions.signout(history));
     }
 
     return (
@@ -77,11 +86,9 @@ export default function MenuReponsive() {
                     ))}
                 </SubMenu>
                 <Menu.Divider />
-                <Menu.Item key='logout'>
-                    <Link to="/logout">
+                <Menu.Item key='logout' onClick={onLogout}>
                         <LogoutOutlined />
                         <FormattedMessage id="globalHeader.logout" />
-                    </Link>
                 </Menu.Item>
             </Menu>
         </>

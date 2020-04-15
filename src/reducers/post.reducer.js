@@ -9,9 +9,14 @@ import {
     FETCH_POSTS_BY_ID_SUCCESS,
     FETCH_POSTS_BY_ID_OVER,
     SIGN_OUT_SUCCESS,
+    SET_POST,
+    SET_URL_IMAGE,    
 } from './../constants/types';
 
 const initialState = {
+    postFetch: {},  
+    postByIdFetch: {},
+    postCreate: {},
     mentions: [],
     posts: [],
     hasMoreItems: true,
@@ -19,6 +24,9 @@ const initialState = {
     postsById: [],
     nextPageById: 1,
     hasMoreItemsById: true,
+    post: '',
+    urlImages: [],
+    isCreatePostSuccess: false
 }
 
 export default function(state = initialState, action) {
@@ -26,7 +34,8 @@ export default function(state = initialState, action) {
     {
         case CREATE_POST:
             return {
-                ...state
+                ...state,
+                postCreate: action.payload
             }
         case CREATE_POST_SUCCESS:
             return {
@@ -36,7 +45,22 @@ export default function(state = initialState, action) {
                 nextPage: 1,
                 nextPageById: 1,
                 postsById: [],
-                hasMoreItemsById: true
+                hasMoreItemsById: true,
+                post: '',
+                urlImages: [],
+                isCreatePostSuccess: true
+            }
+        case SET_POST:
+            return {
+                ...state,
+                post: action.payload,
+                isCreatePostSuccess: false
+            }
+        case SET_URL_IMAGE:
+            return {
+                ...state,
+                urlImages: action.payload,
+                isCreatePostSuccess: false
             }
         case SET_MENTIONS:
             return {
@@ -45,7 +69,8 @@ export default function(state = initialState, action) {
             }
         case FETCH_POST:
             return {
-                ...state
+                ...state,
+                postFetch: action.payload
             }
         case FETCH_POST_SUCCESS:
             return {
@@ -60,7 +85,8 @@ export default function(state = initialState, action) {
             }
         case FETCH_POSTS_BY_ID:
             return {
-                ...state
+                ...state,
+                postByIdFetch: action.payload
             }
         case FETCH_POSTS_BY_ID_SUCCESS:
             return {

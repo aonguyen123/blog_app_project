@@ -1,20 +1,20 @@
 import React, { useState, memo } from 'react';
 import { DislikeTwoTone, LikeTwoTone, MessageTwoTone } from '@ant-design/icons';
-import { Avatar, Col, List, Row } from 'antd';
+import { Avatar, Col, List, Row, Skeleton } from 'antd';
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import allActions from './../../../../actions';
 import {
     ContentPopover,
-    FetchDataLoading,
     RenderImageListContent,
     ModalViewImage, 
     ExtraContent
 } from './../../../../components';
+import Extra from './../Extra';
 import './styles.css';
 
-const ListContent = memo(({history}) => {
+const ListContent = memo(() => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const posts = useSelector(state => state.postReducer.posts);
@@ -31,7 +31,7 @@ const ListContent = memo(({history}) => {
     const loadItems = () => {
         const page_size = 10;
         dispatch(
-            allActions.postActions.fetchPost(history, nextPage, page_size)
+            allActions.postActions.fetchPost(nextPage, page_size)
         );
     };
     const onPreview = async file => {
@@ -74,11 +74,11 @@ const ListContent = memo(({history}) => {
                                     key="list-vertical-message"
                                 />
                             ]}
-                            extra={[<ExtraContent key='more' />]}
+                            extra={[<ExtraContent key='more' menu={Extra} />]}
                         >
                             <List.Item.Meta
-                                avatar={<Avatar src={item.idUser.avatar} />}
-                                title={item.idUser.nickname}
+                                avatar={<Avatar src={item.idUser.photoURL} />}
+                                title={item.idUser.displayName}
                                 description={moment(item.createdAt).fromNow()}
                             />
                             {item.content ? (
@@ -114,11 +114,7 @@ const ListContent = memo(({history}) => {
                     )}
                 >
                     {hasMorePosts && (
-                        <div className="loading-content">
-                            <FetchDataLoading
-                                tooltip="loading"
-                            />
-                        </div>
+                        <Skeleton loading={hasMorePosts} active avatar></Skeleton>
                     )}
                 </List>
             </InfiniteScroll>

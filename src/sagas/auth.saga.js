@@ -1,49 +1,48 @@
 import { call, put } from 'redux-saga/effects';
 import allActions from './../actions';
-import { SUCCESS } from './../constants/status_code';
+import {
+    SUCCESS,
+    UNAUTHORIZED
+} from './../constants/status_code';
 import allServices from './../services';
 import allConfigs from './../config';
 
-function* requestRefreshToken(refreshToken) {
+function* authorize({ payload }) {
+    const { accessToken } = payload;
     try {
-        const response = yield call(
-            allServices.authService.refreshToken,
-            refreshToken
-        );
-        const { data, status } = response;
-        if (status === SUCCESS) {
-            return data.accessToken;
+        const resp = yield call(allServices.authService.authenticated, accessToken);
+        const { status } = resp;
+        if(status === SUCCESS)
+        {
+            yield put(allActions.authenticatedActions.authenticatedSuccess());
         }
-    } catch (e) {
-        yield put(allActions.authenticatedActions.refreshTokenExpired());
-        return null;
+    } catch (error) {
+        const { status } = error.response;
+        if(status === UNAUTHORIZED) {
+            const { refreshToken } = allConfigs.tokenConfigs.getToken();
+            yield put(allActions.authenticatedActions.reAuth(refreshToken));
+        }
     }
 }
-
-function* authorize() {
-    let token = yield call(allConfigs.tokenConfigs.getToken);
-    let { accessToken, refreshToken } = token;
-    const expired_accessToken = yield call(
-        allConfigs.tokenConfigs.checkExpiredToken,
-        accessToken
-    );
-    if (!expired_accessToken) {
-        const accessToken = yield call(requestRefreshToken, refreshToken);
-        if (accessToken) {
+function* reAuth({payload}) {
+    const { refreshToken } = payload;
+    try {
+        const resp = yield call(allServices.authService.refreshToken, refreshToken);
+        const { data, status } = resp;
+        if(status === SUCCESS)
+        {
             yield call(allConfigs.tokenConfigs.setToken, {
-                accessToken,
+                accessToken: data.accessToken,
                 refreshToken
             });
-            yield call(
-                allConfigs.setAuthTokenConfigs.setAuthToken,
-                accessToken
-            );
+            yield call(allConfigs.setAuthTokenConfigs.setAuthToken, data.accessToken);
+            yield put(allActions.authenticatedActions.reAuthSuccess());
             return true;
-        } else {
-            return false;
         }
+    } catch (error) {
+        yield put(allActions.authenticatedActions.reAuthFail());
+        return false;
     }
-    return true;
 }
 
 function* signout({ payload }) {
@@ -60,15 +59,13 @@ function* signin(email, password) {
             email,
             password
         );
-
         if (response.status === SUCCESS) {
-            const { message, ...rest } = response.data;
-            yield put(allActions.authenticatedActions.loginSuccess(message));
-            return rest;
+            return response.data;
         }
     } catch (e) {
+        const { data } = e.response;
         yield put(
-            allActions.authenticatedActions.loginErrors(e.response.data.message)
+            allActions.authenticatedActions.loginErrors(data.message)
         );
     }
 }
@@ -77,7 +74,7 @@ function* signInFlowSaga({ payload }) {
     yield put(allActions.uiActions.showLoadingButton());
     let data = yield call(signin, email, password);
     if (data) {
-        const { accessToken, refreshToken, _id } = data;
+        const { accessToken, refreshToken, _id, message } = data;
 
         yield call(allConfigs.tokenConfigs.setToken, {
             accessToken,
@@ -85,8 +82,8 @@ function* signInFlowSaga({ payload }) {
         });
         yield call(allConfigs.tokenConfigs.setIdUser, _id);
         yield call(allConfigs.setAuthTokenConfigs.setAuthToken, accessToken);
-
-        history.push('/');
+        yield put(allActions.authenticatedActions.loginSuccess(message));
+        history.push('/home');
     }
     yield put(allActions.uiActions.hideLoadingButton());
 }
@@ -99,10 +96,9 @@ function* register(data) {
             return message;
         }
     } catch (e) {
+        const { data } = e.response;
         yield put(
-            allActions.authenticatedActions.registerError(
-                e.response.data.message
-            )
+            allActions.authenticatedActions.registerError(data.message)
         );
     }
 }
@@ -122,7 +118,8 @@ const allAuthSaga = {
     signInFlowSaga,
     signout,
     authorize,
-    registerFlowSaga
+    registerFlowSaga,
+    reAuth
 };
 
 export default allAuthSaga;

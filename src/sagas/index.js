@@ -10,7 +10,9 @@ import {
     SIGN_IN,
     SIGN_OUT,
     FETCH_POSTS_BY_ID,
-    GET_WEATHER
+    GET_WEATHER,
+    AUTHENTICATED,
+    RE_AUTH
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
@@ -24,7 +26,7 @@ function* rootSaga() {
         takeLatest(GET_WEATHER, allGeocodeSaga.getWeatherFlowSaga),
 
         takeLatest(FETCH_USER, allUserSaga.fetchUserFlowSaga),      
-        takeLatest(SEARCH_USER, allUserSaga.searchUser),
+        takeLatest(SEARCH_USER, allUserSaga.searchUserFlowSaga),
 
         takeLatest(SIGN_IN, allAuthSaga.signInFlowSaga),
         takeLatest(SIGN_OUT, allAuthSaga.signout),
@@ -32,8 +34,10 @@ function* rootSaga() {
 
         takeLatest(CREATE_POST, allPostSaga.createPostFlowSaga),
         takeLatest(FETCH_POST, allPostSaga.fetchPostFlowSaga),
-        takeLatest(FETCH_POSTS_BY_ID, allPostSaga.fetchPostByIdFlowSaga)
+        takeLatest(FETCH_POSTS_BY_ID, allPostSaga.fetchPostByIdFlowSaga),
 
+        takeLatest(AUTHENTICATED, allAuthSaga.authorize),
+        takeLatest(RE_AUTH, allAuthSaga.reAuth)
     ]);
 }
 

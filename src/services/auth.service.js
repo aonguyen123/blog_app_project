@@ -14,8 +14,12 @@ const refreshToken = (refreshToken) => {
 const register = values => {
     return allCommons.callAPICommon.callAPI('/auth/register', 'POST', {values});
 }
+const authenticated = accessToken => {
+    return allCommons.callAPICommon.callAPI('/auth/authorize', 'POST', {accessToken});
+}
 
 export default {
+    authenticated,
     login,
     refreshToken,
     register,

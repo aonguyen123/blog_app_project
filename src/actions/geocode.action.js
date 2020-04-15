@@ -6,7 +6,8 @@ import {
     GET_PROVINCES,
     GET_PROVINCES_ERROR,
     GET_PROVINCES_SUCCESS,
-    GET_WEATHER_SUCCESS
+    GET_WEATHER_SUCCESS,
+    GET_WEATHER_ERROR
 } from './../constants/types';
 import { message } from 'antd';
 
@@ -14,17 +15,23 @@ const getWeather = (lat, lon, history) => {
     return {
         type: GET_WEATHER,
         payload: {
-            lat, lon, history
+            lat,
+            lon     
         }
-    }
+    };
 };
 const getWeatherSuccess = data => {
     return {
         type: GET_WEATHER_SUCCESS,
         payload: data
-    }
-}
-
+    };
+};
+const getWeatherError = notice => {
+    message.error(notice, 4);
+    return {
+        type: GET_WEATHER_ERROR
+    };
+};
 const getProvinces = () => {
     return {
         type: GET_PROVINCES
@@ -64,6 +71,7 @@ const getDistrictsError = error => {
 export default {
     getWeather,
     getWeatherSuccess,
+    getWeatherError,
     getProvinces,
     getProvincesSuccess,
     getProvincesError,

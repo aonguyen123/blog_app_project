@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PageHeader, Tag, Form, Card, Button } from 'antd';
+import { PageHeader, Tag, Form, Card, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import FormPost from './../FormPost';
@@ -8,19 +8,30 @@ import allActions from './../../../../actions';
 import allConfigs from './../../../../config';
 
 export default function ToolPost(props) {
-    const { history, userInfo } = props;
+    const { userCurrent } = props;
     const [mentionsChange, setMentionsChange] = useState([]);
+
     const [form] = Form.useForm();
     const dispatch = useDispatch();
 
     const mentions = useSelector(state => state.postReducer.mentions);
     const loadingButton = useSelector(state => state.uiReducer.loadingButton);
-    
+    const post = useSelector(state => state.postReducer.post);
+    const urlImages = useSelector(state => state.postReducer.urlImages);
+    const isCreatePostSuccess = useSelector(
+        state => state.postReducer.isCreatePostSuccess
+    );
+
+    useEffect(() => {
+        if (isCreatePostSuccess) {
+            form.resetFields();
+        }
+    }, [isCreatePostSuccess, form]);
 
     const checkMentions = (mentions, mentionChange) => {
         let result = [];
-        for (let i=0; i<mentionChange.length; i++) {
-            for (let j=0; j<mentions.length; j++) {
+        for (let i = 0; i < mentionChange.length; i++) {
+            for (let j = 0; j < mentions.length; j++) {
                 if (mentions[j].value === mentionChange[i].value) {
                     result.push(mentions[j].key);
                     break;
@@ -41,37 +52,37 @@ export default function ToolPost(props) {
     const handleClickPost = async () => {
         const idUser = allConfigs.tokenConfigs.getIdUser();
         const values = await form.validateFields();
-		const mentionsArr = checkMentions(mentions, mentionsChange);
-
-		const formData = new FormData();
+        const mentionsArr = checkMentions(mentions, mentionsChange);
+        let flag = true;
         if (values.upload_image !== undefined) {
             for (let i = 0; i < values.upload_image.length; i++) {
-                formData.append(
-                    'pictures',
-                    values.upload_image[i].originFileObj
-                );
+                if (values.upload_image[i].status === 'uploading') {
+                    flag = false;
+                    break;
+                }
             }
-		}
-		if(mentionsArr.length > 0 )
-		{
-			for (let i = 0; i < mentionsArr.length; i++) {
-				formData.append('mentionList', mentionsArr[i]);
-			}
-		}
-		formData.set('idUser', idUser);
-		values.posts !== undefined ? formData.set('posts', values.posts) : formData.set('posts', '');
-        dispatch(allActions.postActions.createPost(formData, history));
+        }
+        if (flag) {
+            dispatch(
+                allActions.postActions.createPost(
+                    values.posts,
+                    mentionsArr,
+                    idUser,
+                    urlImages
+                )
+            );
+        } else {
+            message.warning('Uploading photo, plase wait !!!', 4);
+        }
     };
     const changeMentions = mentionChange => {
         setMentionsChange(mentionChange);
     };
-    
     return (
         <Form form={form} onFinish={handleClickPost}>
             <Card
-                title={formatMessage({id: 'home.createPost'})}
+                title={formatMessage({ id: 'home.createPost' })}
                 size="small"
-                loading={Object.keys(userInfo).length === 0 ? true : false}
                 hoverable={true}
                 actions={[
                     <Button
@@ -79,18 +90,18 @@ export default function ToolPost(props) {
                         type="link"
                         htmlType="submit"
                         loading={loadingButton}
+                        disabled={
+                            urlImages.length === 0 && !post ? true : false
+                        }
                     >
-                        <FormattedMessage id='home.btnPost' />
+                        <FormattedMessage id="home.btnPost" />
                     </Button>
                 ]}
             >
                 <PageHeader
-                    title={userInfo.nickname}
+                    title={userCurrent.displayName}
                     tags={<Tag color="blue">Online</Tag>}
-                    avatar={{
-                        src: userInfo.avatar
-                        //'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
-                    }}
+                    avatar={{ src: userCurrent.photoURL }}
                     style={{ margin: '0px', padding: '0px' }}
                 >
                     <FormPost changeMentions={changeMentions} />

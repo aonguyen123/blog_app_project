@@ -1,1 +1,0 @@
-(window["webpackJsonpreact-antd"]=window["webpackJsonpreact-antd"]||[]).push([[22],{1119:function(n,a,e){"use strict";e.r(a);var t=e(0),c=e.n(t);e(899);function r(n){var a=n.children;return c.a.createElement("div",{className:"root"},c.a.createElement("div",{className:"main-minimal-layout"},a))}e.d(a,"default",(function(){return r}))},899:function(n,a,e){}}]);

@@ -1,9 +1,10 @@
-import { call, put, race, take } from 'redux-saga/effects';
+import { call, put, race, take, select } from 'redux-saga/effects';
 import allActions from './../actions';
-import { SUCCESS } from './../constants/status_code';
+import { SUCCESS, UNAUTHORIZED } from './../constants/status_code';
 import allServices from './../services';
 import allAuthSaga from './auth.saga';
 import { SIGN_OUT } from '../constants/types';
+import allConfigs from '../config';
 
 function* getProvinces() {
     yield put(allActions.uiActions.showLoadingFetchData());
@@ -55,32 +56,41 @@ function* getDistricts({ payload: provinceId }) {
 function* getCurrentPlace(lat, lon) {
     try {
         const { response } = yield race({
-            response: call(allServices.geocodeService.getCurrentPlace, lat, lon),
+            response: call(
+                allServices.geocodeService.getCurrentPlace,
+                lat,
+                lon
+            ),
             signout: take(SIGN_OUT)
         });
-        if(response && response.status === SUCCESS)
-        {
+        if (response && response.status === SUCCESS) {
             return response.data;
         }
     } catch (e) {
-        yield put(allActions.errorActions.serverError(e.response.data.message));
+        const { status, data } = e.response;
+        if(status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if(result) {
+                const payload = yield select(state => state.geocodeReducer.weatherFetch);
+                const { lat, lon } = payload;
+                const data = yield call(getCurrentPlace, lat, lon);
+                return data;
+            }
+            return false;
+        }
+        else {
+            yield put(allActions.geocodeActions.getWeatherError(data.message));
+        }        
     }
 }
 function* getWeatherFlowSaga({ payload }) {
-    const { lat, lon, history } = payload;
-    const { result } = yield race({
-        result: call(allAuthSaga.authorize),
-        signout: take(SIGN_OUT)
-    });
-    if (result) {
-        const data = yield call(getCurrentPlace, lat, lon);
-        if(data)
-        {
-            yield put(allActions.geocodeActions.getWeatherSuccess(data));
-        }
-    }
-    else if(!result) {
-        yield call(allAuthSaga.signout, {payload: { history }});
+    const { lat, lon } = payload;
+    const data = yield call(getCurrentPlace, lat, lon);
+    if (data) {
+        yield put(allActions.geocodeActions.getWeatherSuccess(data));
     }
 }
 

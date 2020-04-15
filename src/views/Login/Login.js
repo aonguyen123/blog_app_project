@@ -20,19 +20,31 @@ import {
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 
 import allActions from './../../actions';
+import allServices from './../../services';
 import './styles.css';
 
 export default function Login(props) {
     const { history } = props;
     const loadingButton = useSelector(state => state.uiReducer.loadingButton);
-
     const dispatch = useDispatch();
 
-    const onFinish = values => {
+    const onFinish = async values => {
         dispatch(
             allActions.authenticatedActions.signin(values.email, values.password, history)
         );
-    };
+    };  
+    const googleSignIn = async () => {
+        try {
+            await allServices.firebaseService.signInWithGoogle().then(result => {
+                let token = result.credential.accessToken;
+                console.log(token);
+                let user = result.user;
+                console.log(user);
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <GridContent>
@@ -119,6 +131,7 @@ export default function Login(props) {
                         <Form.Item>
                             <FormattedMessage id="login.loginMethod" />
                             <Button
+                                onClick={googleSignIn}
                                 className="btn-google"
                                 type="dashed"
                                 shape="circle"

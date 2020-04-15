@@ -1,42 +1,43 @@
 import React from 'react';
 import { Card, Divider } from 'antd';
-import { PhoneOutlined, EnvironmentOutlined, MailOutlined } from '@ant-design/icons';
+import {
+    PhoneOutlined,
+    EnvironmentOutlined,
+    MailOutlined
+} from '@ant-design/icons';
 import './styles.css';
 import Interests from '../Interests/Interests';
 import Skill from '../Skill/Skill';
 
-export default function AccountInfo({userInfo, loadingFetchData}) {
-    
+export default function AccountInfo({ userInfo }) {
     return (
         <Card
             style={{
                 marginBottom: 24
             }}
-            loading={loadingFetchData}
         >
             <div className="avatarHolder">
-                <img
-                    alt="avatar"
-                    src={userInfo.avatar}
-                />
-                <div className="name">{userInfo.nickname}</div>
-                <div>
-                    {userInfo.description}
-                </div>
+                <img alt="avatar" src={userInfo.photoURL} />
+                <div className="name">{userInfo.displayName}</div>
+                <div>{userInfo.description}</div>
             </div>
             <div className="detail">
-                <p>
-                    <PhoneOutlined className="icon-title" />
-                    {userInfo.phonenumber}
-                </p>
                 <p>
                     <MailOutlined className="icon-title" />
                     {userInfo.email}
                 </p>
-                <p>
-                    <EnvironmentOutlined className="icon-title" />
-                    {`${userInfo.district} - ${userInfo.provinceOrCity}`}
-                </p>
+                {userInfo.phonenumber && (
+                    <p>
+                        <PhoneOutlined className="icon-title" />
+                        {userInfo.phonenumber}
+                    </p>
+                )}
+                {userInfo.district && userInfo.provinceOrCity && (
+                    <p>
+                        <EnvironmentOutlined className="icon-title" />
+                        {`${userInfo.district} - ${userInfo.provinceOrCity}`}
+                    </p>
+                )}
             </div>
             <Divider dashed />
             <Interests />

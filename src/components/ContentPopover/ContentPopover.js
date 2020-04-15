@@ -9,10 +9,10 @@ export default function ContentPopover({ user }) {
                 <Avatar
                     size="large"
                     shape="square"
-                    src={user.avatar}
+                    src={user.photoURL}
                     className="listContent-avatar"
                 />
-                <div className="listContent-name">{user.nickname}</div>
+                <div className="listContent-name">{user.displayName}</div>
                 <div className="listContent-address">{`${user.district} - ${user.provinceOrCity}`}</div>
                 <div style={{ clear: 'left' }}></div>
                 <div className="listContent-story">{user.description}</div>
@@ -33,7 +33,7 @@ export default function ContentPopover({ user }) {
             content={showContent(user)}
             trigger="hover"
         >
-            <Tag color="cyan">{user.nickname}</Tag>
+            <Tag color="cyan">{user.displayName}</Tag>
         </Popover>
     );
 }

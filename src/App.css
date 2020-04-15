@@ -13,6 +13,9 @@
 .ant-list-vertical .ant-list-item-meta-title {
     margin-bottom: 0;
 }
+.ant-card-meta-detail > div:not(:last-child) {
+    margin-bottom: 0;
+}
 
 /* hide icon in input type number */
 input[type='number'] {
@@ -25,4 +28,13 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.loading-auth-global {
+    font-size: 24px;
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin: auto;
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { List, Avatar } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -14,6 +13,7 @@ import {
 import allActions from './../../../../actions';
 import allConfigs from './../../../../config';
 import PostListContent from './../PostListContent/PostListContent';
+import Extra from './../Extra';
 import './styles.css';
 
 const ListPosts = ({userInfo}) => {
@@ -24,7 +24,6 @@ const ListPosts = ({userInfo}) => {
     const nextPageById = useSelector(state => state.postReducer.nextPageById);
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const idUser = allConfigs.tokenConfigs.getIdUser();
 
     const IconText = ({ icon, text }) => (
@@ -39,7 +38,7 @@ const ListPosts = ({userInfo}) => {
         {
             const page_size = 10;
             dispatch(
-                allActions.postActions.fetchPostById(idUser, nextPageById, page_size, history)
+                allActions.postActions.fetchPostById(idUser, nextPageById, page_size)
             );
         }
     };
@@ -85,12 +84,12 @@ const ListPosts = ({userInfo}) => {
                                     text={item.message}
                                 />
                             ]}
-                            extra={[<ExtraContent key="more" />]}
+                            extra={[<ExtraContent key="more" menu={Extra} />]}
                         >
                             <List.Item.Meta
-                                title={userInfo.nickname}
+                                title={userInfo.displayName}
                                 avatar={
-                                    <Avatar src={userInfo.avatar} />
+                                    <Avatar src={userInfo.photoURL} />
                                 }
                                 description={moment(item.createdAt).fromNow()}
                             />

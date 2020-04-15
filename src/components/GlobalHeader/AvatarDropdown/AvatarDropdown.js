@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { Link, useHistory } from 'react-router-dom';
+import { LogoutOutlined } from '@ant-design/icons';
+import { Avatar, Menu } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import HeaderDropdown from '../../HeaderDropdown';
 import { headerMenu } from './../../../constants/header-menu';
 import allConfigs from './../../../config';
 import allActions from './../../../actions';
+import Context from './../../../context';
 import './styles.css';
 
 const AvatarDropdown = props => {
-    const { history } = props;
-
-    const userInfo = useSelector(state => state.userReducer.userInfo);
+    const history = useHistory();
+    const userCurrent = useContext(Context);
     const dispatch = useDispatch();
 
     const selectedMenu = allConfigs.menuConfigs.getSelectedMenu();
@@ -33,7 +32,7 @@ const AvatarDropdown = props => {
     };
     const onLogout = () => {
         dispatch(allActions.authenticatedActions.signout(history));
-    }
+    };
     const menuHeaderDropdown = (
         <Menu
             style={{ minWidth: '160px' }}
@@ -49,27 +48,19 @@ const AvatarDropdown = props => {
         </Menu>
     );
 
-    return userInfo && userInfo.nickname ? (
+    return (
         <HeaderDropdown overlay={menuHeaderDropdown} placement="bottomRight">
             <span className="dropDown-avatar">
                 <Avatar
+                    src={userCurrent.photoURL}
                     style={{ marginRight: '8px', backgroundColor: '#87d068' }}
                     className="avatar"
                     size="small"
-                    icon={<UserOutlined />}
                     alt="avatar"
                 />
-                <span>{userInfo.nickname}</span>
+                <span>{userCurrent.displayName}</span>
             </span>
         </HeaderDropdown>
-    ) : (
-        <Spin
-            size="small"
-            style={{
-                margin: '25px 0 0 20px',
-                textAlign: 'center'
-            }}
-        />
     );
 };
-export default withRouter(AvatarDropdown);
+export default AvatarDropdown;

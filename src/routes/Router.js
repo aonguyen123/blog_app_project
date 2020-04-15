@@ -1,9 +1,11 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { LazyLoading } from '../components';
 
-import { LazyLoading } from '../components'
-
-import PrivateRouter from './PrivateRouter'
+import PrivateRouter from './PrivateRouter';
 import PublishRouter from './PublishRouter';
 
 const BasicLayout = lazy(() => import('../layouts/BasicLayout'));
@@ -16,46 +18,71 @@ const About = lazy(() => import('../views/About'));
 const Account = lazy(() => import('./../views/Account'));
 const Setting = lazy(() => import('./../views/Setting'));
 const Weather = lazy(() => import('./../views/Weather'));
+const Messager = lazy(() => import('./../views/Messager'));
 const AuthenticatedPage = lazy(() => import('./../views/Authenticated'));
 const NotFoundPage = lazy(() => import('./../views/NotFound'));
 
 export default function Router() {
+    const loading = useSelector(state => state.auth.isLoading);
+    const isAuth = useSelector(state => state.auth.isAuth);
+
+    if (loading)
+        return (
+            <Spin
+                indicator={
+                    <LoadingOutlined className="loading-auth-global" spin />
+                }
+            />
+        );
     return (
-        <Suspense fallback={<LazyLoading size='large' />}>
+        <Suspense fallback={<LazyLoading size="large" />}>
             <Switch>
-                <Redirect exact from='/' to='/home' />
+                <Redirect exact from="/" to="/home" />
                 <PrivateRouter
                     component={HomePage}
+                    isAuth={isAuth}
                     exact
                     layout={BasicLayout}
-                    path='/home'
+                    path="/home"
                 />
                 <PrivateRouter
                     component={About}
+                    isAuth={isAuth}
                     exact
                     layout={BasicLayout}
-                    path='/about'
+                    path="/about"
                 />
                 <PrivateRouter
                     component={Account}
+                    isAuth={isAuth}
                     exact
                     layout={BasicLayout}
-                    path='/account'
+                    path="/account"
                 />
                 <PrivateRouter
                     component={Setting}
+                    isAuth={isAuth}
                     exact
                     layout={BasicLayout}
-                    path='/setting'
+                    path="/setting"
                 />
                 <PrivateRouter
                     component={Weather}
+                    isAuth={isAuth}
                     exact
                     layout={BasicLayout}
-                    path='/weather'
+                    path="/weather"
+                />
+                <PrivateRouter
+                    component={Messager}
+                    isAuth={isAuth}
+                    exact
+                    layout={BasicLayout}
+                    path="/message"
                 />
                 <PublishRouter
                     component={LoginPage}
+                    isAuth={isAuth}
                     exact
                     layout={MinimalLayout}
                     path="/login"
@@ -63,6 +90,7 @@ export default function Router() {
                 />
                 <PublishRouter
                     component={Register}
+                    isAuth={isAuth}
                     exact
                     layout={MinimalLayout}
                     path="/register"
@@ -70,20 +98,22 @@ export default function Router() {
                 />
                 <PublishRouter
                     component={AuthenticatedPage}
+                    isAuth={isAuth}
                     exact
                     layout={MinimalLayout}
-                    path='/not-authenticated'
+                    path="/not-authenticated"
                     restricted={false}
                 />
-                <PublishRouter 
+                <PublishRouter
                     component={NotFoundPage}
+                    isAuth={isAuth}
                     exact
                     layout={MinimalLayout}
                     path="/not-found"
                     restricted={false}
                 />
-                <Redirect to='/not-found' />
+                <Redirect to="/not-found" />
             </Switch>
         </Suspense>
-    )
+    );
 }
