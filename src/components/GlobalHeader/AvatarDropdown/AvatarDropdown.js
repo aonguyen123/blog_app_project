@@ -11,7 +11,7 @@ import allActions from './../../../actions';
 import Context from './../../../context';
 import './styles.css';
 
-const AvatarDropdown = props => {
+const AvatarDropdown = () => {
     const history = useHistory();
     const userCurrent = useContext(Context);
     const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const AvatarDropdown = props => {
             <span className="dropDown-avatar">
                 <Avatar
                     src={userCurrent.photoURL}
-                    style={{ marginRight: '8px', backgroundColor: '#87d068' }}
+                    style={{ marginRight: '8px' }}
                     className="avatar"
                     size="small"
                     alt="avatar"

@@ -1,9 +1,0 @@
-.list-content {
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
-    overflow: auto;
-    padding: 8px 24px;
-}
-.ant-list-item:first-child {
-    padding-top: 0;
-}

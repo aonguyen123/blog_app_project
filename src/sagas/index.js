@@ -12,12 +12,17 @@ import {
     FETCH_POSTS_BY_ID,
     GET_WEATHER,
     AUTHENTICATED,
-    RE_AUTH
+    RE_AUTH,
+    GET_STATUS_CHATS,
+    GET_ROOMS,
+    GET_CHATS,
+    CHECK_JOIN_ROOM
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
 import allUserSaga from './user.saga';
 import allGeocodeSaga from './geocode.saga';
+import allChatsSaga from './chats.saga';
 
 function* rootSaga() {
     yield all([
@@ -37,7 +42,12 @@ function* rootSaga() {
         takeLatest(FETCH_POSTS_BY_ID, allPostSaga.fetchPostByIdFlowSaga),
 
         takeLatest(AUTHENTICATED, allAuthSaga.authorize),
-        takeLatest(RE_AUTH, allAuthSaga.reAuth)
+        takeLatest(RE_AUTH, allAuthSaga.reAuth),
+
+        takeLatest(GET_STATUS_CHATS, allChatsSaga.getStatusChatsFlowSaga),
+        takeLatest(GET_ROOMS, allChatsSaga.getRoomsFlowSaga),
+        takeLatest(GET_CHATS, allChatsSaga.getChatsFlowSaga),
+        takeLatest(CHECK_JOIN_ROOM, allChatsSaga.checkJoinRoomFlowSaga)
     ]);
 }
 

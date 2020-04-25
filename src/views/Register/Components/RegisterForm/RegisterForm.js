@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Input, Tooltip, Button, Upload, message } from 'antd';
 import {
@@ -8,11 +8,14 @@ import {
 } from '@ant-design/icons';
 import allCommons from '../../../../common';
 import firebaseConfig from '../../../../firebase';
+import { UploadImage } from './../../../../components';
 import './styles.css';
 
+let uploadTask;
 export default function RegisterForm({ loadingButton, onFinish }) {
+    const [disable, setDisable] = useState(false);
     const [form] = Form.useForm();
-    let uploadTask;
+
     const checkNickname = (rule, value) => {
         if (value) {
             value = value.trim();
@@ -25,64 +28,24 @@ export default function RegisterForm({ loadingButton, onFinish }) {
         return Promise.resolve();
     };
     const uploadButton = (
-        <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
+        <Button style={{ width: '100%' }} icon={<UploadOutlined />} disabled={disable}>
             Click to upload
         </Button>
     );
-    const propsUpload = {
-        beforeUpload: file => {
-            if (!allCommons.uploadCommon.beforeUpload(file)) {
-                return false;
-            }
-        },
-        listType: 'picture'
-    };
+    const uploadSuccess = () => {
+        setDisable(false);
+    }
     const customRequest = option => {
-        if(uploadTask !== undefined)
-        {
-            uploadTask.cancel();
-        }
-        const hideAction = message.loading(
-            'Action uploading photo in progress...',
-            0
-        );
+        setDisable(disable => !disable);
         const { onSuccess, onError, file, onProgress } = option;
         uploadTask = firebaseConfig.firebase.storage
         .ref(`/images/${file.name}`)
         .put(file);
-
-        uploadTask.on(
-            'state_changed',
-            snapshot => {
-                let percent =
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                onProgress({ percent });
-            },
-            err => {
-                onError(err);
-                hideAction();
-                message.success('Cancel upload photo success', 4);
-            },
-            () => {
-                firebaseConfig.firebase.storage
-                    .ref('images')
-                    .child(file.name)
-                    .getDownloadURL()
-                    .then(urlFirebase => {
-                        const rs = {
-                            name: file.name,
-                            status: 'done',
-                            url: urlFirebase
-                        };
-                        onSuccess(rs, file);
-                        hideAction();
-                        message.success('Upload photo success', 4);
-                    });
-            }
-        );
+        UploadImage.customRequest(onSuccess, onError, file, onProgress, uploadTask, uploadSuccess);
     };
     const onRemove = file => {
-        uploadTask.cancel();
+        setDisable(false);
+        UploadImage.onRemove(file, uploadTask);
     };
     const normFile = ({ file, fileList }) => {
         const files = [];
@@ -202,6 +165,10 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                         message: 'Nickname cannot exceed 15 characters'
                     },
                     {
+                        min: 5,
+                        message: 'Nickname at least 5 character'
+                    },
+                    {
                         validator: checkNickname
                     }
                 ]}
@@ -222,7 +189,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                 ]}
             >
                 <Upload
-                    {...propsUpload}
+                    {...UploadImage.propsUpload()}
                     customRequest={customRequest}
                     onRemove={onRemove}
                 >

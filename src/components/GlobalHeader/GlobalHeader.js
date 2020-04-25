@@ -3,7 +3,6 @@ import { Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import LeftLogo from './LeftLogo';
 import RightMenu from './RightMenu';
-import HeaderSearch from './../HeaderSearch';
 import MenuReponsive from './MenuReponsive';
 import NoticeIcon from './NoticeIcon';
 import './styles.css';
@@ -19,20 +18,20 @@ export default function GlobalHeader() {
     };
 
     return (
-        <nav className="menuBar">
+        <nav
+            className="menu"
+            style={{ position: 'absolute', zIndex: 1, width: '100%' }}
+        >
             <LeftLogo />
             <div className="menuCon">
-                <div className="leftMenu">
-                    <HeaderSearch />
-                </div>
                 <div className="rightMenu">
                     <RightMenu />
                 </div>
-                <Button 
-                    className="barsMenu" 
+                <Button
+                    className="barsMenu"
                     icon={<MenuOutlined />}
-                    onClick={showDrawer} 
-                    type='primary'
+                    onClick={showDrawer}
+                    type="primary"
                 />
                 <div className="repoMenu">
                     <NoticeIcon />

@@ -3,7 +3,7 @@
     cursor: pointer;
     line-height: 64px;
     vertical-align: top;
-    margin-left: 20px;
+    margin: 0 10px;
 }
 .menu-avatar-dropdown .icon-menu {
     margin-right: 8px;

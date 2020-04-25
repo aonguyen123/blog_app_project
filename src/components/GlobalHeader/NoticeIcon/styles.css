@@ -9,6 +9,7 @@
     display: inline-block;
     cursor: pointer;
     transition: all 0.3s;
+    margin: 0 10px;
 }
 .icon {
     padding: 4px;

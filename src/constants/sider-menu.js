@@ -19,7 +19,7 @@ export const siderMenu = [
     {
         id: 'menu.message',
         icon: <MessageOutlined />,
-        link: '/message'
+        link: '/chats'
     },
     {
         id: 'menu.weather',

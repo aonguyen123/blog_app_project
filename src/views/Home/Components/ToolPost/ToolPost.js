@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PageHeader, Tag, Form, Card, Button, message } from 'antd';
+import { PageHeader, Form, Card, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import FormPost from './../FormPost';
@@ -100,7 +100,6 @@ export default function ToolPost(props) {
             >
                 <PageHeader
                     title={userCurrent.displayName}
-                    tags={<Tag color="blue">Online</Tag>}
                     avatar={{ src: userCurrent.photoURL }}
                     style={{ margin: '0px', padding: '0px' }}
                 >

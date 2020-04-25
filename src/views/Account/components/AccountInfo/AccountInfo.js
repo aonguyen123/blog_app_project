@@ -10,6 +10,7 @@ import Interests from '../Interests/Interests';
 import Skill from '../Skill/Skill';
 
 export default function AccountInfo({ userInfo }) {
+
     return (
         <Card
             style={{

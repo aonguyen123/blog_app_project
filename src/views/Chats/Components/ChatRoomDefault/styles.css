@@ -1,0 +1,17 @@
+.card_body_chat {
+    margin: 25px;
+}
+.msg_card_body {
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    height: 400px;
+}
+.msg_card_body::-webkit-scrollbar {
+    display: none;
+}
+
+.card-footer {
+    border-radius: 0 0 15px 15px !important;
+    border-top: 0 !important;
+}

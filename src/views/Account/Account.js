@@ -7,19 +7,19 @@ import Context from './../../context';
 
 export default function Account(props) {
     const postsById = useSelector(state => state.postReducer.postsById)
-    const userInfo = useContext(Context);
+    const { userCurrent } = useContext(Context);
 
     return (
         <GridContent>
             <Row gutter={16}>
                 <Col xl={8} lg={8} md={8} sm={24} xs={24}>
                     <AccountInfo
-                        userInfo={userInfo}
+                        userInfo={userCurrent}
                     />
                 </Col>
                 <Col xl={16} lg={16} md={16} sm={24} xs={24}>
                     <AccountRight 
-                        userInfo={userInfo} 
+                        userInfo={userCurrent} 
                         postsById={postsById}
                     />
                 </Col>

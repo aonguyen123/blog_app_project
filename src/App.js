@@ -8,19 +8,20 @@ import LocaleWrapper from './views/.umi/LocaleWrapper';
 import Routes from './routes/Router';
 import allConfigs from './config';
 import allActions from './actions';
-import { ScrollToTop } from './components';
 import './App.css';
 
 const browserHistory = createBrowserHistory();
 
-export default function App() {
+export default function App() {    
     useEffect(() => {
         if (!allConfigs.tokenConfigs.checkToken()) {
             store.dispatch(allActions.authenticatedActions.authenticatedFail());
         } else {
             const { accessToken } = allConfigs.tokenConfigs.getToken();
             allConfigs.setAuthTokenConfigs.setAuthToken(accessToken);
-            store.dispatch(allActions.authenticatedActions.authenticated(accessToken));
+            store.dispatch(
+                allActions.authenticatedActions.authenticated(accessToken)
+            );
         }
     });
 
@@ -28,7 +29,6 @@ export default function App() {
         <Provider store={store}>
             <LocaleWrapper>
                 <Router history={browserHistory}>
-                    <ScrollToTop />
                     <Routes />
                 </Router>
             </LocaleWrapper>

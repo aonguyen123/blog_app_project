@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react';
-import { DislikeTwoTone, LikeTwoTone, MessageTwoTone } from '@ant-design/icons';
+import { DislikeOutlined, LikeOutlined, CommentOutlined } from '@ant-design/icons';
 import { Avatar, Col, List, Row, Skeleton } from 'antd';
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -59,17 +59,17 @@ const ListContent = memo(() => {
                             key={item._id}
                             actions={[
                                 <IconText
-                                    icon={<LikeTwoTone />}
+                                    icon={<LikeOutlined />}
                                     text="156"
                                     key="list-vertical-like"
                                 />,
                                 <IconText
-                                    icon={<DislikeTwoTone />}
+                                    icon={<DislikeOutlined />}
                                     text="156"
                                     key="list-vertical-dislike"
                                 />,
                                 <IconText
-                                    icon={<MessageTwoTone />}
+                                    icon={<CommentOutlined />}
                                     text="2"
                                     key="list-vertical-message"
                                 />

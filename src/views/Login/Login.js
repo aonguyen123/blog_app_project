@@ -18,12 +18,11 @@ import {
     Input
 } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-
 import allActions from './../../actions';
 import allServices from './../../services';
 import './styles.css';
 
-export default function Login(props) {
+function Login(props) {
     const { history } = props;
     const loadingButton = useSelector(state => state.uiReducer.loadingButton);
     const dispatch = useDispatch();
@@ -156,3 +155,5 @@ export default function Login(props) {
         </GridContent>
     );
 }
+
+export default Login;

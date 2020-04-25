@@ -16,7 +16,7 @@ import { headerMenu } from './../../../constants/header-menu';
 
 const { SubMenu } = Menu;
 
-export default function MenuReponsive() {
+function MenuReponsive() {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -94,3 +94,4 @@ export default function MenuReponsive() {
         </>
     );
 }
+export default MenuReponsive;
