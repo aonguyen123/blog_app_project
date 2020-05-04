@@ -9,8 +9,9 @@ import './styles.css';
 import Interests from '../Interests/Interests';
 import Skill from '../Skill/Skill';
 
-export default function AccountInfo({ userInfo }) {
-
+export default function AccountInfo({ userInfo, userCurrentId }) {
+    
+    console.log(userInfo)
     return (
         <Card
             style={{
@@ -41,7 +42,7 @@ export default function AccountInfo({ userInfo }) {
                 )}
             </div>
             <Divider dashed />
-            <Interests />
+            <Interests idUser={userInfo._id} userCurrentId={userCurrentId} />
             <Divider
                 style={{
                     marginTop: 16

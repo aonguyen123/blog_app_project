@@ -5,7 +5,9 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_ERROR,
     SEARCH_USER_ERROR,
-    GET_USERS_ONLINE,
+    FETCH_USER_BY_ID,
+    FETCH_USER_BY_ID_SUCCESS,
+    FETCH_USER_BY_ID_ERROR,
 } from './../constants/types';
 import { message } from 'antd';
 
@@ -47,10 +49,22 @@ const fetchUserError = notice => {
         type: FETCH_USER_ERROR
     }
 }
-const getUsersOnline = users => {
+const fetchUserById = idUser => {
     return {
-        type: GET_USERS_ONLINE,
-        payload: users
+        type: FETCH_USER_BY_ID,
+        payload: { idUser }
+    }
+}
+const fetchUserByIdSuccess = data => {
+    return {
+        type: FETCH_USER_BY_ID_SUCCESS,
+        payload: data
+    }
+}
+const fetchUserByIdError = error => {
+    message.error(error, 4);
+    return {
+        type: FETCH_USER_BY_ID_ERROR
     }
 }
 
@@ -61,5 +75,7 @@ export default {
     fetchUser,
     fetchUserSuccess,
     fetchUserError,
-    getUsersOnline
+    fetchUserById,
+    fetchUserByIdSuccess,
+    fetchUserByIdError
 };

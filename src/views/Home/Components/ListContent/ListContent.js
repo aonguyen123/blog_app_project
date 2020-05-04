@@ -1,129 +1,37 @@
-import React, { useState, memo } from 'react';
-import { DislikeOutlined, LikeOutlined, CommentOutlined } from '@ant-design/icons';
-import { Avatar, Col, List, Row, Skeleton } from 'antd';
-import moment from 'moment';
+import React, { memo } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
+import { Skeleton, Empty } from 'antd';
 import allActions from './../../../../actions';
-import {
-    ContentPopover,
-    RenderImageListContent,
-    ModalViewImage, 
-    ExtraContent
-} from './../../../../components';
-import Extra from './../Extra';
-import './styles.css';
 
-const ListContent = memo(() => {
-    const [previewVisible, setPreviewVisible] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const posts = useSelector(state => state.postReducer.posts);
+import { CardList } from './../../../../components';
+
+const ListContent = memo(({posts}) => {
     const hasMorePosts = useSelector(state => state.postReducer.hasMoreItems);
     const nextPage = useSelector(state => state.postReducer.nextPage);
     const dispatch = useDispatch();
 
-    const IconText = ({ icon, text }) => (
-        <span>
-            {icon} {text}
-        </span>
-    );
-    const handleCancel = () => setPreviewVisible(false);
     const loadItems = () => {
         const page_size = 10;
-        dispatch(
-            allActions.postActions.fetchPost(nextPage, page_size)
-        );
-    };
-    const onPreview = async file => {
-        setPreviewImage(file.url);
-        setPreviewVisible(true);
-    };
-    const onRemove = file => {
-        console.log(file);
+        dispatch(allActions.postActions.fetchPost(nextPage, page_size));
     };
 
     return (
-        <div className="list-content">
-            <InfiniteScroll
-                pageStart={nextPage}
-                loadMore={loadItems}
-                hasMore={hasMorePosts}
-            >
-                <List
-                    itemLayout="vertical"
-                    size="large"
-                    dataSource={posts}
-                    renderItem={item => (
-                        <List.Item
-                            style={{ marginTop: '13px' }}
-                            key={item._id}
-                            actions={[
-                                <IconText
-                                    icon={<LikeOutlined />}
-                                    text="156"
-                                    key="list-vertical-like"
-                                />,
-                                <IconText
-                                    icon={<DislikeOutlined />}
-                                    text="156"
-                                    key="list-vertical-dislike"
-                                />,
-                                <IconText
-                                    icon={<CommentOutlined />}
-                                    text="2"
-                                    key="list-vertical-message"
-                                />
-                            ]}
-                            extra={[<ExtraContent key='more' menu={Extra} />]}
-                        >
-                            <List.Item.Meta
-                                avatar={<Avatar src={item.idUser.photoURL} />}
-                                title={item.idUser.displayName}
-                                description={moment(item.createdAt).fromNow()}
-                            />
-                            {item.content ? (
-                                <Row gutter={[16, 16]}>
-                                    <Col xl={24} lg={24} md={24} sm={24}>
-                                        {item.content}
-                                    </Col>
-                                </Row>
-                            ) : null}
-                            {item.mentions.length > 0 ? (
-                                <Row gutter={[10, 10]}>
-                                    <Col xl={24} lg={24} md={24} sm={24}>
-                                        {item.mentions.map(value => (
-                                            <ContentPopover
-                                                key={value._id}
-                                                user={value.idUser}
-                                            />
-                                        ))}
-                                    </Col>
-                                </Row>
-                            ) : null}
-                            <Row gutter={[16, 16]}>
-                                <Col xl={24} lg={24} md={24} sm={24}>
-                                    <RenderImageListContent
-                                        images={item.images}
-                                        idUser={item.idUser._id}
-                                        onPreview={onPreview}
-                                        onRemove={onRemove}
-                                    />
-                                </Col>
-                            </Row>
-                        </List.Item>
-                    )}
-                >
-                    {hasMorePosts && (
-                        <Skeleton loading={hasMorePosts} active avatar></Skeleton>
-                    )}
-                </List>
-            </InfiniteScroll>
-            <ModalViewImage
-                handleCancel={handleCancel}
-                previewImage={previewImage}
-                previewVisible={previewVisible}
-            />
-        </div>
+        <InfiniteScroll
+            pageStart={nextPage}
+            loadMore={loadItems}
+            hasMore={hasMorePosts}
+            initialLoad={false}
+            loader={
+                <Skeleton key="loading" avatar paragraph={{ rows: 4 }} active />
+            }
+        >
+            {posts.length === 0 && !hasMorePosts ? (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            ) : (
+                posts.map(value => <CardList key={value._id} post={value} />)
+            )}
+        </InfiniteScroll>
     );
 });
 

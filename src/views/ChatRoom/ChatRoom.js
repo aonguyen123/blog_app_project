@@ -38,13 +38,21 @@ export default function ChatRoom() {
         socket.on('unJoinRoom', data => {
             dispatch(allActions.chatsActions.getUserCurOnl(data));
         });
+        socket.on('leaveRoom', data => {
+            dispatch(allActions.chatsActions.leaveRoom(data)); 
+        });
+        socket.on('leaveRoomSuccess', () => {
+            history.push('/chats');
+        })
 
         return () => {
             socket.off('sendMessageRoom');
             socket.off('joinRoom');
             socket.off('unJoinRoom');
+            socket.off('leaveRoom');
+            socket.off('leaveRoomSuccess');
         };
-    }, [socketRef, dispatch]);
+    }, [socketRef, dispatch, history]);
     
     const onSendMessage = useCallback(
         ({ message }) => {
@@ -54,6 +62,9 @@ export default function ChatRoom() {
         },
         [socketRef, idRoom, userCurrent._id]
     );
+    const handleLeaveRoom = (idRoom, idUser) => {
+        socketRef.current.emit('leaveRoom', ({idRoom, idUser}));
+    }
 
     if (loadingFetchData) return <FetchDataLoading />;
     return (
@@ -66,6 +77,7 @@ export default function ChatRoom() {
                     <ChatList
                         onSendMessage={onSendMessage}
                         userCurrent={userCurrent}
+                        handleLeaveRoom={handleLeaveRoom}
                     />
                 </Col>
             </Row>

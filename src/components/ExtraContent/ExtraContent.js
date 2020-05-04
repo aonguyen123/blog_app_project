@@ -17,6 +17,7 @@ export default function ExtraContent({menu}) {
                         fontSize: 20,
                         verticalAlign: 'top'
                     }}
+                    rotate={90}
                 />
             </Button>
         </Dropdown>

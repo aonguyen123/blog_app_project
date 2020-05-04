@@ -1,11 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'antd';
 import { ToolPost, ListContent } from './Components';
 import Context from '../../context';
-import './styles.css';
+import allActions from '../../actions';
 
 export default function Home() {
     const { userCurrent } = useContext(Context);
+    const posts = useSelector(state => state.postReducer.posts);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(allActions.postActions.fetchPost(1, 10));
+
+        return () => {
+            dispatch(allActions.postActions.unmountPostById());
+        }
+    }, [dispatch]);
 
     return (
         <>
@@ -20,7 +31,7 @@ export default function Home() {
                     </Row>
                     <Row gutter={[20, 20]}>
                         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                            <ListContent />
+                            <ListContent posts={posts} />
                         </Col>
                     </Row>
                 </Col>          

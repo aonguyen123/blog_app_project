@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Tag, Input } from 'antd';
 import './styles.css';
 
-export default function Interests() {
+export default function Interests({idUser, userCurrentId}) {
     const [inputVisible, setInputVisible] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [newTags, setNewTags] = useState([]);
@@ -66,7 +66,7 @@ export default function Interests() {
                     onPressEnter={handleInputConfirm}
                 />
             )}
-            {!inputVisible && (
+            {!inputVisible && userCurrentId === idUser && (
                 <Tag
                     onClick={showInput}
                     style={{

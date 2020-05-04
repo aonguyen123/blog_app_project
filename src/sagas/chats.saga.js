@@ -5,35 +5,6 @@ import allConfigs from "../config";
 import allAuthSaga from "./auth.saga";
 import allActions from "../actions";
 
-function* getStatusChats() {
-    try {
-        const response = yield call(allService.chatsService.getStatusChats);
-        if(response && response.status === SUCCESS) {
-            return response.data;
-        }
-    } catch (e) {
-        const { data, status } = e.response;
-        if (status === UNAUTHORIZED) {
-            const payload = {
-                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
-            };
-            const result = yield call(allAuthSaga.reAuth, { payload });
-            if (result) {
-                const data = yield call(getStatusChats);
-                return data;
-            }
-            return false;
-        } else {
-            yield put(allActions.chatsActions.getStatusChatsError(data.message));
-        }
-    }
-}
-function* getStatusChatsFlowSaga() {
-    const data = yield call(getStatusChats);
-    if(data) {
-        yield put(allActions.chatsActions.getStatusChatsSuccess(data.statusChats));
-    }
-}
 function* getRooms() {
     try {
         const response = yield call(allService.chatsService.getRooms);
@@ -129,7 +100,6 @@ function* checkJoinRoomFlowSaga({payload: {idRoom, idUser, history}}) {
 }
 
 const allChatsSaga = {
-    getStatusChatsFlowSaga,
     getRoomsFlowSaga,
     getChatsFlowSaga,
     checkJoinRoomFlowSaga

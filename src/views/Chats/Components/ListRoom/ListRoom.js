@@ -19,7 +19,7 @@ import FormCreateRoom from './../FormCreateRoom';
 import ContentPopOver from './../ContentPopOver';
 import allActions from '../../../../actions';
 
-export default function ListRoom({ socketRef, _id }) {
+export default function ListRoom({ socketRef, _id, onConfirm }) {
     const [form] = Form.useForm();
     const rooms = useSelector(state => state.chatsReducer.rooms);
     const loadingButton = useSelector(state => state.uiReducer.loadingButton);
@@ -34,6 +34,7 @@ export default function ListRoom({ socketRef, _id }) {
         dispatch(allActions.chatsActions.changeVisibleCreateRoom(true));
     };
     const handleCancel = () => {
+        form.resetFields();
         dispatch(allActions.chatsActions.changeVisibleCreateRoom(false));
     };
     const handleOk = useCallback(() => {
@@ -58,7 +59,10 @@ export default function ListRoom({ socketRef, _id }) {
             dispatch(allActions.uiActions.hideLoadingButton());
         });
     };
-    
+    const handleJoinRoom = (idRoom) => {
+        socketRef.current.emit('onJoin', {idRoom});
+    }
+
     return (
         <>
             <Card
@@ -67,7 +71,7 @@ export default function ListRoom({ socketRef, _id }) {
                 hoverable={true}
                 extra={<ExtraContent menu={Extra(openModal)} />}
             >
-                <ScrollToBottomCom height="202px" width="100%">
+                <ScrollToBottomCom height="468px" width="100%">
                     <List
                         dataSource={rooms}
                         size="small"
@@ -95,7 +99,7 @@ export default function ListRoom({ socketRef, _id }) {
                                             <UsergroupAddOutlined />
                                         </PopOver>
                                     ) : (
-                                        <UsergroupAddOutlined />
+                                        <UsergroupAddOutlined onClick={() => handleJoinRoom(item._id)} />
                                     ),
                                     item.userId._id === _id && (
                                         <PopConfirm
@@ -103,6 +107,7 @@ export default function ListRoom({ socketRef, _id }) {
                                             okText="Yes"
                                             cancelText="No"
                                             placement="topRight"
+                                            onConfirm={() => onConfirm(item._id)}
                                         >
                                             <DeleteOutlined />
                                         </PopConfirm>

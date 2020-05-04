@@ -4,9 +4,6 @@ import {
     GET_CHATS_SUCCESS, 
     GET_CHATS_ERROR,
     GET_STATUS_CHATS,
-    GET_STATUS_CHATS_SUCCESS,
-    GET_STATUS_CHATS_ERROR,
-    GET_STATUS_AFTER,
     GET_ROOMS,
     GET_ROOMS_SUCCESS,
     GET_ROOMS_ERROR,
@@ -17,7 +14,9 @@ import {
     CHECK_JOIN_ROOM_SUCCESS,
     CHECK_JOIN_ROOM_ERROR,
     GET_USER_CURRENT_ONL,
-    GET_MESSAGE_ROOM_AFTER
+    GET_MESSAGE_ROOM_AFTER,
+    LEAVE_ROOM,
+    DELETE_ROOM
 } from '../constants/types';
 
 const getChats = () => {
@@ -43,27 +42,10 @@ const getChatAfter = chat => {
         payload: chat
     }
 }
-const getStatusChats = () => {
+const getStatusChat = text => {
+    message.info(text, 4);
     return {
-        type: GET_STATUS_CHATS
-    };
-};
-const getStatusChatsSuccess = data => {
-    return {
-        type: GET_STATUS_CHATS_SUCCESS,
-        payload: data
-    };
-};
-const getStatusChatsError = notice => {
-    message.error(notice, 4);
-    return {
-        type: GET_STATUS_CHATS_ERROR
-    }
-}
-const getStatusAfter = status => {
-    return {
-        type: GET_STATUS_AFTER,
-        payload: status
+        type: GET_STATUS_CHATS,
     }
 }
 const getRooms = () => {
@@ -125,16 +107,25 @@ const getMessageRoomAfter = message => {
         payload: message
     }
 }
+const leaveRoom = data => {
+    return {
+        type: LEAVE_ROOM,
+        payload: data
+    }
+}
+const deleteRoom = data => {
+    return {
+        type: DELETE_ROOM,
+        payload: data
+    }
+}
 
 export default {
     getChats,
     getChatsSuccess,
     getChatsError,
     getChatAfter,
-    getStatusChats, 
-    getStatusChatsSuccess,
-    getStatusChatsError,
-    getStatusAfter,
+    getStatusChat,
     getRooms,
     getRoomsSuccess,
     getRoomsError,
@@ -144,5 +135,7 @@ export default {
     checkJoinRoomSuccess,
     checkJoinRoomError,
     getUserCurOnl,
-    getMessageRoomAfter
+    getMessageRoomAfter,
+    leaveRoom,
+    deleteRoom
 };

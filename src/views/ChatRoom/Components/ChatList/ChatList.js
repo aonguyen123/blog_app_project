@@ -9,7 +9,7 @@ import './styles.css';
 const { Meta } = Card;
 const { TextArea } = Input;
 
-export default function ChatList({ onSendMessage, userCurrent }) {
+export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }) {
     const [message, setMessage] = useState('');
     const roomInfo = useSelector(state => state.chatsReducer.roomInfo);
     const messageInRoom = useSelector(
@@ -23,7 +23,7 @@ export default function ChatList({ onSendMessage, userCurrent }) {
             title="Messages"
             extra={[
                 <Tooltip placement="topRight" title='Leave room' key="leaveRoom">
-                    <UsergroupDeleteOutlined />
+                    <UsergroupDeleteOutlined onClick={() => handleLeaveRoom(roomInfo._id, userCurrent._id)} />
                 </Tooltip>
             ]}
         >

@@ -4,15 +4,18 @@ import {
     FETCH_USER,
     SEARCH_USER,
     SIGN_OUT_SUCCESS,
-    GET_USERS_ONLINE
+    FETCH_USER_BY_ID,
+    FETCH_USER_BY_ID_SUCCESS
 } from './../constants/types';
 
 const initialState = {
+    idUserFetchById: '',
     userFetch: {},
     userSearch: {},
     searchResult: [],
     userInfo: {},
-    usersOnline: []
+    usersOnline: [],
+    userById: {}
 };
 
 export default function(state = initialState, action) {
@@ -43,24 +46,17 @@ export default function(state = initialState, action) {
                 ...state,
                 userInfo: {}
             }
-        case GET_USERS_ONLINE:
-            const users = filterUsers(action.payload);
+        case FETCH_USER_BY_ID:
             return {
                 ...state,
-                usersOnline: users
+                idUserFetchById: action.payload
+            }
+        case FETCH_USER_BY_ID_SUCCESS:
+            return {
+                ...state,
+                userById: action.payload
             }
         default:
             return state;
     }
-}
-
-function filterUsers(users) {
-    for(let i=0; i<users.length; i++) {
-        for(let j=i+1; j<users.length; j++) {
-            if(users[i]._id === users[j]._id) {
-                users.splice(j, 1);
-            }
-        }
-    }  
-    return users;
 }

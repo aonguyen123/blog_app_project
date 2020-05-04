@@ -4,7 +4,7 @@ import { Popover } from 'antd';
 export default function PopOver({
     children,
     placement,
-    title,
+    title, 
     content,
     trigger
 }) {

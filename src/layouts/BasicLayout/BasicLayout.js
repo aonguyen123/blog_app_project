@@ -1,4 +1,5 @@
 import React, { Suspense, useEffect, useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import io from 'socket.io-client';
@@ -22,6 +23,7 @@ function BasicLayout(props) {
     const userCurrent = useSelector(state => state.userReducer.userInfo);
     const socketRef = useRef();
     const dispatch = useDispatch();
+    const history = useHistory();
 
     useEffect(() => {
         const server = ROOT_URL_SERVER;
@@ -36,7 +38,17 @@ function BasicLayout(props) {
         if (idUser) {
             dispatch(allActions.userActions.fetchUser(idUser));
         }
-    }, [dispatch]);
+        else {
+            dispatch(allActions.authenticatedActions.authenticatedFail());
+        }
+        socketRef.current.on('notice', ({text}) => {
+            dispatch(allActions.chatsActions.getStatusChat(text));
+        });
+
+        return () => {
+            socketRef.current.off('notice');
+        }
+    }, [dispatch, history]);
 
     if (Object.keys(userCurrent).length === 0) {
         return (

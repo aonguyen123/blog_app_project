@@ -1,7 +1,5 @@
 import {
     GET_CHATS_SUCCESS,
-    GET_STATUS_CHATS_SUCCESS,
-    GET_STATUS_AFTER,
     GET_ROOMS_SUCCESS,
     GET_ROOMS_AFTER,
     CHANGE_VISIBLE_CREATE_ROOM,
@@ -9,12 +7,13 @@ import {
     CHECK_JOIN_ROOM_SUCCESS,
     CHECK_JOIN_ROOM,
     GET_USER_CURRENT_ONL,
-    GET_MESSAGE_ROOM_AFTER
+    GET_MESSAGE_ROOM_AFTER,
+    LEAVE_ROOM,
+    DELETE_ROOM
 } from '../constants/types';
 
 const initialState = {
     chats: [],
-    status: [],
     rooms: [],
     roomInfo: {},
     userRoom: [],
@@ -34,16 +33,6 @@ export default function(state = initialState, action) {
                 ...state,
                 chats: [...state.chats, action.payload]
             }
-        case GET_STATUS_CHATS_SUCCESS:
-            return {
-                ...state,
-                status: action.payload
-            };
-        case GET_STATUS_AFTER:
-            return {
-                ...state,
-                status: [...state.status, action.payload]
-            };
         case GET_ROOMS_SUCCESS:
             return {
                 ...state,
@@ -83,6 +72,18 @@ export default function(state = initialState, action) {
                 ...state,
                 messageInRoom: [...state.messageInRoom, action.payload]
             }
+        case LEAVE_ROOM:
+            const userRest = leaveRoom(state.userRoom, action.payload);
+            return {
+                ...state,
+                userRoom: [...userRest]
+            }
+        case DELETE_ROOM:
+            const rooms = deleteRoom(state.rooms, action.payload);
+            return {
+                ...state,
+                rooms: [...rooms]
+            }
         default:
             return state;
     }
@@ -95,4 +96,18 @@ function filterUserOnl(users, userOnl) {
     }
     users.push(userOnl);
     return users;
+}
+function leaveRoom(users, userLeave) {
+    const index = users.findIndex(user => user.idUser._id === userLeave.idUser._id);
+    if(index !== -1) {
+        users.splice(index, 1);
+    }
+    return users;
+}
+function deleteRoom(rooms, roomDelete) {
+    const index = rooms.findIndex(room => room._id === roomDelete._id);
+    if(index !== -1) {
+        rooms.splice(index, 1);
+    }
+    return rooms;
 }

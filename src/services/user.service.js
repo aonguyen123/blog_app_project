@@ -6,8 +6,12 @@ const searchUser = q => {
 const fetchUser = idUser => {
     return allCommons.callAPICommon.callAPI(`/user/fetch-user/${idUser}`);
 }
+const fetchUserById = idUser => {
+    return allCommons.callAPICommon.callAPI(`/user/fetch-user-by-id/${idUser}`);
+}
 
 export default {
     searchUser,
-    fetchUser
+    fetchUser,
+    fetchUserById
 }

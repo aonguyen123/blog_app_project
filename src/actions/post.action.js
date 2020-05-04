@@ -14,6 +14,7 @@ import {
     SET_URL_IMAGE,
     FETCH_POST_ERROR,
     FETCH_POSTS_BY_ID_ERROR,
+    UNMOUNT_POST_BY_ID,
 } from './../constants/types';
 
 const createPost = (posts, mentions, idUser, urlImages) => {
@@ -112,6 +113,11 @@ const fetchPostByIdError = notice => {
         type: FETCH_POSTS_BY_ID_ERROR
     }
 };
+const unmountPostById = () => {
+    return {
+        type: UNMOUNT_POST_BY_ID
+    }
+}
 
 export default {
     createPost,
@@ -127,5 +133,6 @@ export default {
     fetchPostByIdError,
     fetchPostByIdOver,
     setPost,
-    setUrlImages
+    setUrlImages,
+    unmountPostById
 };

@@ -13,10 +13,10 @@ import {
     GET_WEATHER,
     AUTHENTICATED,
     RE_AUTH,
-    GET_STATUS_CHATS,
     GET_ROOMS,
     GET_CHATS,
-    CHECK_JOIN_ROOM
+    CHECK_JOIN_ROOM,
+    FETCH_USER_BY_ID
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
@@ -32,6 +32,7 @@ function* rootSaga() {
 
         takeLatest(FETCH_USER, allUserSaga.fetchUserFlowSaga),      
         takeLatest(SEARCH_USER, allUserSaga.searchUserFlowSaga),
+        takeLatest(FETCH_USER_BY_ID, allUserSaga.fetchUserByIdFlowSaga),
 
         takeLatest(SIGN_IN, allAuthSaga.signInFlowSaga),
         takeLatest(SIGN_OUT, allAuthSaga.signout),
@@ -44,7 +45,6 @@ function* rootSaga() {
         takeLatest(AUTHENTICATED, allAuthSaga.authorize),
         takeLatest(RE_AUTH, allAuthSaga.reAuth),
 
-        takeLatest(GET_STATUS_CHATS, allChatsSaga.getStatusChatsFlowSaga),
         takeLatest(GET_ROOMS, allChatsSaga.getRoomsFlowSaga),
         takeLatest(GET_CHATS, allChatsSaga.getChatsFlowSaga),
         takeLatest(CHECK_JOIN_ROOM, allChatsSaga.checkJoinRoomFlowSaga)

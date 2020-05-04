@@ -80,10 +80,46 @@ function* searchUserFlowSaga({ payload }) {
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
 }
+function* fetchUserById(idUser) {
+    try {
+        const response = yield call(allServices.userService.fetchUserById, idUser);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const payload = yield select(
+                    state => state.userReducer.idUserFetchById
+                );
+                const { idUser } = payload;
+                const data = yield call(fetchUserById, idUser);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.fetchUserByIdError(data.message));
+        }
+    }
+}
+function* fetchUserByIdFlowSaga({payload: {idUser}}) {
+    yield put(allActions.uiActions.showLoadingFetchData());
+    const data = yield call(fetchUserById, idUser);
+    if (data) {
+        yield put(allActions.userActions.fetchUserByIdSuccess(data.user));
+    }
+    yield put(allActions.uiActions.hideLoadingFetchData());
+}
 
 const allUserSaga = {
     fetchUserFlowSaga,
-    searchUserFlowSaga
+    searchUserFlowSaga,
+    fetchUserByIdFlowSaga
 };
 
 export default allUserSaga;

@@ -8,9 +8,9 @@ import {
     FETCH_POSTS_BY_ID,
     FETCH_POSTS_BY_ID_SUCCESS,
     FETCH_POSTS_BY_ID_OVER,
-    SIGN_OUT_SUCCESS,
     SET_POST,
-    SET_URL_IMAGE,    
+    SET_URL_IMAGE,
+    UNMOUNT_POST_BY_ID,    
 } from './../constants/types';
 
 const initialState = {
@@ -75,8 +75,9 @@ export default function(state = initialState, action) {
         case FETCH_POST_SUCCESS:
             return {
                 ...state,
-                posts: [...state.posts, ...action.payload],
-                nextPage: state.nextPage + 1
+                posts: action.payload.length === 0 ? action.payload : [...state.posts, ...action.payload],
+                nextPage: state.nextPage + 1,
+                hasMoreItems: action.payload.length === 0 ? false : true
             }
         case FETCH_POST_OVER:
             return {
@@ -86,25 +87,26 @@ export default function(state = initialState, action) {
         case FETCH_POSTS_BY_ID:
             return {
                 ...state,
-                postByIdFetch: action.payload
+                postByIdFetch: action.payload,
             }
         case FETCH_POSTS_BY_ID_SUCCESS:
             return {
                 ...state,
-                postsById: [...state.postsById, ...action.payload],
-                nextPageById: state.nextPageById + 1
+                postsById: action.payload.length === 0 ? action.payload : [...state.postsById, ...action.payload],
+                nextPageById: state.nextPageById + 1,
+                hasMoreItemsById: action.payload.length === 0 ? false : true
             }
         case FETCH_POSTS_BY_ID_OVER:
             return {
                 ...state,
                 hasMoreItemsById: false
             }
-        case SIGN_OUT_SUCCESS:
+        case UNMOUNT_POST_BY_ID:
             return {
                 ...state,
                 postsById: [],
-                nextPageById: 1,
                 hasMoreItemsById: true,
+                nextPageById: 1,
                 posts: [],
                 nextPage: 1,
                 hasMoreItems: true

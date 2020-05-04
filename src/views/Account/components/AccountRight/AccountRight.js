@@ -1,14 +1,11 @@
-import React, { useState, lazy, Suspense, useMemo } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { LazyLoading } from './../../../../components';
 import { Card } from 'antd';
 
 const ListPosts = lazy(() => import('./../ListPosts/ListPosts'));
 
-export default function AccountRight(props) {
-    const { userInfo, postsById } = props;
-
+export default function AccountRight({ userId, postsById }) {
     const [tabKey, setTabKey] = useState('posts');
-
     const operationTabList = [
         {
             key: 'posts',
@@ -41,9 +38,10 @@ export default function AccountRight(props) {
             )
         }
     ];
-    const renderChildrenByTabKey = (tabKey, userInfo) => {
+
+    const renderChildrenByTabKey = (tabKey, userId, postsById) => {
         if (tabKey === 'posts') {
-            return <ListPosts userInfo={userInfo} />;
+            return <ListPosts userId={userId} postsById={postsById} />;
         }
 
         if (tabKey === 'applications') {
@@ -51,7 +49,6 @@ export default function AccountRight(props) {
         }
         return null;
     };
-    const renderChildren = useMemo(() => renderChildrenByTabKey(tabKey, userInfo), [tabKey, userInfo]);
 
     const onTabChange = key => {
         setTabKey(key);
@@ -65,7 +62,7 @@ export default function AccountRight(props) {
             onTabChange={onTabChange}
         >
             <Suspense fallback={<LazyLoading size="small" />}>
-                {renderChildren}
+                {renderChildrenByTabKey(tabKey, userId, postsById)}
             </Suspense>
         </Card>
     );
