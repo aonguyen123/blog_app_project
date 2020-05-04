@@ -11,7 +11,6 @@ import Skill from '../Skill/Skill';
 
 export default function AccountInfo({ userInfo, userCurrentId }) {
     
-    console.log(userInfo)
     return (
         <Card
             style={{

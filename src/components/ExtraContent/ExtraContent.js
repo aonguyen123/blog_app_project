@@ -5,7 +5,7 @@ import { EllipsisOutlined } from '@ant-design/icons';
 export default function ExtraContent({menu}) {
 
     return (
-        <Dropdown key="more" overlay={menu}>
+        <Dropdown key="more" overlay={menu} trigger='click'>
             <Button
                 style={{
                     border: 'none',
