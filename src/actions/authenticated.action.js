@@ -75,10 +75,10 @@ const loginErrors = error => {
         type: LOGIN_ERRORS
     };
 };
-const authenticated = (accessToken, history) => {
+const authenticated = (accessToken) => {
     return {
         type: AUTHENTICATED,
-        payload: { accessToken, history }
+        payload: { accessToken }
     }
 }
 const authenticatedFail = () => {

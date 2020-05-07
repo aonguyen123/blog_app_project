@@ -11,9 +11,10 @@ function* authorize({ payload }) {
     const { accessToken } = payload;
     try {
         const resp = yield call(allServices.authService.authenticated, accessToken);
-        const { status } = resp;
+        const { status, data } = resp;
         if(status === SUCCESS)
         {
+            yield put(allActions.userActions.fetchUserSuccess(data.payload));
             yield put(allActions.authenticatedActions.authenticatedSuccess());
         }
     } catch (error) {
@@ -74,14 +75,15 @@ function* signInFlowSaga({ payload }) {
     yield put(allActions.uiActions.showLoadingButton());
     let data = yield call(signin, email, password);
     if (data) {
-        const { accessToken, refreshToken, _id, message } = data;
+        const { accessToken, refreshToken, message, user } = data;
 
         yield call(allConfigs.tokenConfigs.setToken, {
             accessToken,
             refreshToken
         });
-        yield call(allConfigs.tokenConfigs.setIdUser, _id);
+
         yield call(allConfigs.setAuthTokenConfigs.setAuthToken, accessToken);
+        yield put(allActions.userActions.fetchUserSuccess(user));
         yield put(allActions.authenticatedActions.loginSuccess(message));
         history.push('/home');
     }

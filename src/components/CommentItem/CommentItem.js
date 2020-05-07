@@ -7,12 +7,14 @@ import {
     LikeTwoTone,
     DislikeTwoTone
 } from '@ant-design/icons';
-import { FullsizePicture } from 'react-responsive-picture';
+import Img from 'react-image'
 import moment from 'moment';
-import SliderImage from './../SliderImage';
 import PopOver from './../PopOver';
 import ContentPopOver from './../ContentPopover';
 import './styles.css';
+
+import { PhotoProvider, PhotoConsumer, } from 'react-photo-view';
+import 'react-photo-view/dist/index.css';
 
 export default function CommentItem({ post }) {
     const [likes, setLikes] = useState(0);
@@ -55,21 +57,19 @@ export default function CommentItem({ post }) {
     ];
 
     const renderImage = images => {
-        return images.map((value, key) => (
-            <div key={key}>
-                <div style={{ height: 200 }}>
-                    <FullsizePicture
-                        sources={[
-                            {
-                                srcSet: value.url
-                            }
-                        ]}
-                        cover="height"
-                        center="true"
-                    />
-                </div>
-            </div>
-        ));
+        
+        return (
+            
+                <PhotoProvider>
+                    <div className='images-content'>
+                    {images.map((item, index) => (
+                        <PhotoConsumer key={index} src={item.url}>
+                            <Img src={item.url} alt="" className='images-item' loader={<h1>loader</h1>} />
+                        </PhotoConsumer>
+                    ))}
+                    </div>
+                </PhotoProvider>
+        )
     };
     const renderMentions = mentions => {
         return mentions.map(value => (
@@ -100,7 +100,7 @@ export default function CommentItem({ post }) {
                     <p>{post.content}</p>
                     {post?.mentions.length > 0 && renderMentions(post.mentions)}
                     {post?.images.length > 0 && (
-                        <SliderImage>{renderImage(post.images)}</SliderImage>
+                        renderImage(post.images)
                     )}
                 </>
             }

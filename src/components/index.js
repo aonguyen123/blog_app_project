@@ -12,5 +12,4 @@ export { default as UploadImage } from './UploadImage';
 export { default as ScrollToBottomCom } from './ScrollToBottomCom';
 export { default as PopConfirm } from './PopConfirm';
 export { default as PopOver } from './PopOver';
-export { default as SliderImage } from './SliderImage';
 export { default as CardList } from './CardList';

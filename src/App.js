@@ -12,7 +12,7 @@ import './App.css';
 
 const browserHistory = createBrowserHistory();
 
-export default function App() {    
+export default function App() {
     useEffect(() => {
         if (!allConfigs.tokenConfigs.checkToken()) {
             store.dispatch(allActions.authenticatedActions.authenticatedFail());
@@ -24,7 +24,7 @@ export default function App() {
             );
         }
     });
-
+    
     return (
         <Provider store={store}>
             <LocaleWrapper>

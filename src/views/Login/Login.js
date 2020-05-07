@@ -6,8 +6,6 @@ import {
     LoginOutlined,
     UserOutlined,
     LockOutlined,
-    GoogleOutlined,
-    FacebookOutlined,
 } from '@ant-design/icons';
 import {
     Divider,
@@ -19,7 +17,6 @@ import {
 } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import allActions from './../../actions';
-import allServices from './../../services';
 import './styles.css';
 
 function Login(props) {
@@ -32,18 +29,22 @@ function Login(props) {
             allActions.authenticatedActions.signin(values.email, values.password, history)
         );
     };  
-    const googleSignIn = async () => {
-        try {
-            await allServices.firebaseService.signInWithGoogle().then(result => {
-                let token = result.credential.accessToken;
-                console.log(token);
-                let user = result.user;
-                console.log(user);
-            });
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const googleSignIn = async () => {
+    //     try {
+    //         await allServices.firebaseService.signInWithGoogle().then(result => {
+    //             const { providerId } = result.credential;
+
+    //             // const token = result.credential.accessToken;
+                
+    //             const user = result.user.providerData.filter(profile => profile.providerId === providerId)[0];
+    //             allConfigs.setAuthTokenConfigs.setAuthToken(providerId);
+    //             dispatch(allActions.authenticatedActions.authenticatedSuccess());
+    //             dispatch(allActions.userActions.fetchUserSuccess(user));
+    //         });
+    //     } catch (error) {
+    //         dispatch(allActions.authenticatedActions.loginErrors(error.message));
+    //     }
+    // }
 
     return (
         <GridContent>
@@ -128,7 +129,7 @@ function Login(props) {
                             </Button>
                         </Form.Item>
                         <Form.Item>
-                            <FormattedMessage id="login.loginMethod" />
+                            {/* <FormattedMessage id="login.loginMethod" />
                             <Button
                                 onClick={googleSignIn}
                                 className="btn-google"
@@ -142,7 +143,7 @@ function Login(props) {
                                 shape="circle"
                                 icon={<FacebookOutlined />}
                                 size="default"
-                            />
+                            /> */}
                             <Button className="btn-register" type="link">
                                 <Link to="/register">
                                     <FormattedMessage id="login.register" />

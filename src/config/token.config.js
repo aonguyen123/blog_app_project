@@ -40,19 +40,10 @@ const checkExpiredToken = token => {
     return null;
 };
 
-const getIdUser = () => {
-    return localStorage.getItem('_id');
-};
-const setIdUser = id => {
-    return localStorage.setItem('_id', id);
-}
-
 export default {
     setToken,
     getToken,
     removeToken,
     checkToken,
     checkExpiredToken,
-    getIdUser,
-    setIdUser
 };

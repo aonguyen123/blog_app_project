@@ -1,5 +1,4 @@
 import React, { Suspense, useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import io from 'socket.io-client';
@@ -8,9 +7,7 @@ import {
     GlobalHeader,
     GlobalFootter,
     SiderMenuLeft,
-    FetchDataLoading
 } from './../../components';
-import allConfigs from '../../config';
 import allActions from '../../actions';
 import Context from '../../context';
 import { ROOT_URL_SERVER } from './../../constants/base_url';
@@ -23,7 +20,6 @@ function BasicLayout(props) {
     const userCurrent = useSelector(state => state.userReducer.userInfo);
     const socketRef = useRef();
     const dispatch = useDispatch();
-    const history = useHistory();
 
     useEffect(() => {
         const server = ROOT_URL_SERVER;
@@ -34,13 +30,6 @@ function BasicLayout(props) {
         }
     }, []);
     useEffect(() => {
-        const idUser = allConfigs.tokenConfigs.getIdUser();
-        if (idUser) {
-            dispatch(allActions.userActions.fetchUser(idUser));
-        }
-        else {
-            dispatch(allActions.authenticatedActions.authenticatedFail());
-        }
         socketRef.current.on('notice', ({text}) => {
             dispatch(allActions.chatsActions.getStatusChat(text));
         });
@@ -48,13 +37,8 @@ function BasicLayout(props) {
         return () => {
             socketRef.current.off('notice');
         }
-    }, [dispatch, history]);
+    }, [dispatch]);
 
-    if (Object.keys(userCurrent).length === 0) {
-        return (
-            <FetchDataLoading className='loading-fetchData-basicLayout' />
-        );
-    }
     return (
         <Layout>
             <Header>

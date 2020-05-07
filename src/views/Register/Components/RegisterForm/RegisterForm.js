@@ -198,7 +198,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
             </Form.Item>
 
             <Form.Item>
-                You have a account, login here <Link to="/login">login</Link>
+                You have a account, login <Link to="/login">here</Link>
             </Form.Item>
 
             <Form.Item>
