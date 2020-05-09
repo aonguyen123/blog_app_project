@@ -33,7 +33,7 @@ export function customRequest(onSuccess, onError, file, onProgress, uploadTask, 
                         url: urlFirebase
                     };
                     onSuccess(rs, file);
-                    uploadSuccess();
+                    uploadSuccess(rs);
                     hideAction();
                     message.success('Upload photo success', 4);
                     return true;

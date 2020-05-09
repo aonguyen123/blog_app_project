@@ -5,10 +5,8 @@ import { EditOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import FormPost from './../FormPost';
 import allActions from './../../../../actions';
-import allConfigs from './../../../../config';
 
-export default function ToolPost(props) {
-    const { userCurrent } = props;
+export default function ToolPost({userCurrent}) {
     const [mentionsChange, setMentionsChange] = useState([]);
 
     const [form] = Form.useForm();
@@ -50,7 +48,7 @@ export default function ToolPost(props) {
         return result;
     };
     const handleClickPost = async () => {
-        const idUser = allConfigs.tokenConfigs.getIdUser();
+        const idUser = userCurrent._id;
         const values = await form.validateFields();
         const mentionsArr = checkMentions(mentions, mentionsChange);
         let flag = true;

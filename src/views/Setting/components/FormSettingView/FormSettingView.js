@@ -5,7 +5,7 @@ const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function FormSettingView(props) {
+export default function FormSettingView({userInfo}) {
     const handleFinish = values => {
         console.log(values);
     };

@@ -10,7 +10,8 @@ import { UsersList, ChatList } from './Components';
 
 export default function ChatRoom() {
     const { idRoom } = useParams();
-    const { userCurrent, socketRef } = useContext(Context);
+    const { socketRef } = useContext(Context);
+    const userCurrent = useSelector(state => state.userReducer.userInfo);
     const loadingFetchData = useSelector(state => state.uiReducer.loadingFetchData);
     const history = useHistory();
     const dispatch = useDispatch();

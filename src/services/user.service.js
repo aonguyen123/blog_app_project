@@ -9,9 +9,13 @@ const fetchUser = idUser => {
 const fetchUserById = idUser => {
     return allCommons.callAPICommon.callAPI(`/user/fetch-user-by-id/${idUser}`);
 }
+const updatePhotoURL = (idUser, photoURL) => {
+    return allCommons.callAPICommon.callAPI('/user/updatePhotoURL', 'POST', {idUser, photoURL});
+}
 
 export default {
     searchUser,
     fetchUser,
-    fetchUserById
+    fetchUserById,
+    updatePhotoURL
 }

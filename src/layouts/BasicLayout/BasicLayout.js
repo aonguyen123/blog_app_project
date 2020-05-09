@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import io from 'socket.io-client';
 import {
@@ -17,7 +17,6 @@ const { Header, Content, Footer, Sider } = Layout;
 function BasicLayout(props) {
     const { children } = props;
     const [collapsedWidth, setCollapseWidth] = useState(false);
-    const userCurrent = useSelector(state => state.userReducer.userInfo);
     const socketRef = useRef();
     const dispatch = useDispatch();
 
@@ -42,9 +41,7 @@ function BasicLayout(props) {
     return (
         <Layout>
             <Header>
-                <Context.Provider value={userCurrent}>
-                    <GlobalHeader />
-                </Context.Provider>
+                <GlobalHeader />
             </Header>
             <Layout>
                 <Sider
@@ -64,7 +61,7 @@ function BasicLayout(props) {
                 <Content>
                     <div className="content-layout-basic">
                         <Suspense fallback={<LazyLoading />}>
-                            <Context.Provider value={{userCurrent, socketRef}}>
+                            <Context.Provider value={{socketRef}}>
                                 {children}
                             </Context.Provider>
                         </Suspense>

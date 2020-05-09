@@ -1,12 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'antd';
 import { ToolPost, ListContent } from './Components';
-import Context from '../../context';
 import allActions from '../../actions';
 
 export default function Home() {
-    const { userCurrent } = useContext(Context);
+    const userCurrent = useSelector(state => state.userReducer.userInfo);
     const posts = useSelector(state => state.postReducer.posts);
     const dispatch = useDispatch();
 
@@ -18,15 +17,15 @@ export default function Home() {
         }
     }, [dispatch]);
 
+    const ToolPostMemo = useMemo(() => <ToolPost userCurrent={userCurrent} />, [userCurrent]);
+
     return (
         <>
             <Row gutter={[16, 16]}>
                 <Col xl={15} lg={15} md={15} sm={24} xs={24}>
                     <Row gutter={[20, 20]}>
                         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                            <ToolPost
-                                userCurrent={userCurrent}
-                            />
+                            {ToolPostMemo}
                         </Col>
                     </Row>
                     <Row gutter={[20, 20]}>

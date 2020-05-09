@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { LogoutOutlined } from '@ant-design/icons';
@@ -8,12 +8,10 @@ import HeaderDropdown from '../../HeaderDropdown';
 import { headerMenu } from './../../../constants/header-menu';
 import allConfigs from './../../../config';
 import allActions from './../../../actions';
-import Context from './../../../context';
 import './styles.css';
 
-const AvatarDropdown = () => {
+const AvatarDropdown = ({userCurrent}) => {
     const history = useHistory();
-    const userCurrent = useContext(Context);
     const dispatch = useDispatch();
 
     const selectedMenu = allConfigs.menuConfigs.getSelectedMenu();

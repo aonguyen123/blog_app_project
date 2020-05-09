@@ -1,21 +1,6 @@
-.slick-dots {
-    margin-bottom: 10px;
-}
-
 .anticon-like {
     margin-right: 3px;
 }
 .anticon-dislike {
     margin-right: 3px;
-}
-
-.images-content {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.images-item {
-    margin-right: 10px;
-    height: 100px;
-    background-size: cover;
 }

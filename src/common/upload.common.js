@@ -2,8 +2,8 @@ import { message } from 'antd';
 
 function filterFileUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    return isJpgOrPng && isLt2M;
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    return isJpgOrPng && isLt10M;
 }
 
 function beforeUpload(file) {
@@ -12,9 +12,9 @@ function beforeUpload(file) {
         message.error('You can only upload JPG/PNG file!', 4);
         return false;
     }
-    const isLt2M = file.size / 1024 / 1024 < 5;
-    if (!isLt2M) {
-        message.error('Image must smaller than 5MB!', 4);
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+        message.error('Image must smaller than 10MB!', 4);
         return false;
     }
     return true;

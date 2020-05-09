@@ -12,7 +12,7 @@ const menuMap = {
     notification: 'Message Notification'
 };
 
-export default function Setting(props) {
+export default function Setting() {
     const [selectKey, setSelectKey] = useState('base');
     const [mode, setMode] = useState('horizontal');
     const userInfo = useSelector(state => state.userReducer.userInfo);

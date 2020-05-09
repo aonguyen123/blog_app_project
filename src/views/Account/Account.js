@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { AccountInfo, AccountRight } from './components';
-import Context from './../../context';
 import allActions from '../../actions';
 
-export default function Account(props) {
+export default function Account() {
     const postsById = useSelector(state => state.postReducer.postsById);
-    const { userCurrent } = useContext(Context);
+    const userCurrent = useSelector(state => state.userReducer.userInfo);
     const dispatch = useDispatch();
 
     useEffect(() => {

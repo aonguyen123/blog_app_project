@@ -1,0 +1,10 @@
+.images-content {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.images-item {
+    margin-right: 10px;
+    height: 100px;
+    background-size: cover;
+}

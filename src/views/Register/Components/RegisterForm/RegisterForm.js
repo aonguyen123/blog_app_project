@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Input, Tooltip, Button, Upload, message } from 'antd';
 import {
@@ -11,10 +11,18 @@ import firebaseConfig from '../../../../firebase';
 import { UploadImage } from './../../../../components';
 import './styles.css';
 
-let uploadTask;
 export default function RegisterForm({ loadingButton, onFinish }) {
     const [disable, setDisable] = useState(false);
     const [form] = Form.useForm();
+    let uploadTask = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if(uploadTask.current !== null) {
+                uploadTask.current.cancel();
+            }
+        }
+    }, []);
 
     const checkNickname = (rule, value) => {
         if (value) {
@@ -28,7 +36,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
         return Promise.resolve();
     };
     const uploadButton = (
-        <Button style={{ width: '100%' }} icon={<UploadOutlined />} disabled={disable}>
+        <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
             Click to upload
         </Button>
     );
@@ -36,16 +44,16 @@ export default function RegisterForm({ loadingButton, onFinish }) {
         setDisable(false);
     }
     const customRequest = option => {
-        setDisable(disable => !disable);
+        setDisable(true);
         const { onSuccess, onError, file, onProgress } = option;
-        uploadTask = firebaseConfig.firebase.storage
+        uploadTask.current = firebaseConfig.firebase.storage
         .ref(`/images/${file.name}`)
         .put(file);
-        UploadImage.customRequest(onSuccess, onError, file, onProgress, uploadTask, uploadSuccess);
+        UploadImage.customRequest(onSuccess, onError, file, onProgress, uploadTask.current, uploadSuccess);
     };
     const onRemove = file => {
         setDisable(false);
-        UploadImage.onRemove(file, uploadTask);
+        UploadImage.onRemove(file, uploadTask.current);
     };
     const normFile = ({ file, fileList }) => {
         const files = [];
@@ -161,12 +169,8 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                         message: 'Nickname does not whitespace'
                     },
                     {
-                        max: 15,
-                        message: 'Nickname cannot exceed 15 characters'
-                    },
-                    {
-                        min: 5,
-                        message: 'Nickname at least 5 character'
+                        max: 13,
+                        message: 'Nickname cannot exceed 13 characters'
                     },
                     {
                         validator: checkNickname
@@ -192,6 +196,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                     {...UploadImage.propsUpload()}
                     customRequest={customRequest}
                     onRemove={onRemove}
+                    disabled={disable}
                 >
                     {uploadButton}
                 </Upload>

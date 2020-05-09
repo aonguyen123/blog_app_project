@@ -4,11 +4,11 @@ import NoticeIcon from './../NoticeIcon';
 import SelectLang from './../SelectLang';
 import './styles.css';
 
-export default function RightMenu() {
+export default function RightMenu({userCurrent}) {
     return (
         <div className='right-menu'>
             <NoticeIcon />
-            <AvatarDropdown />
+            <AvatarDropdown userCurrent={userCurrent} />
             <SelectLang />
         </div>
     )

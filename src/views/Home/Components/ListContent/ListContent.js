@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import { Skeleton, Empty } from 'antd';
@@ -6,7 +6,7 @@ import allActions from './../../../../actions';
 
 import { CardList } from './../../../../components';
 
-const ListContent = memo(({posts}) => {
+export default function ListContent({posts}) {
     const hasMorePosts = useSelector(state => state.postReducer.hasMoreItems);
     const nextPage = useSelector(state => state.postReducer.nextPage);
     const dispatch = useDispatch();
@@ -33,6 +33,4 @@ const ListContent = memo(({posts}) => {
             )}
         </InfiniteScroll>
     );
-});
-
-export default ListContent;
+};

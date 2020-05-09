@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import LeftLogo from './LeftLogo';
@@ -9,6 +10,7 @@ import './styles.css';
 
 export default function GlobalHeader() {
     const [visible, setVisible] = useState(false);
+    const userCurrent = useSelector(state => state.userReducer.userInfo);
 
     const showDrawer = () => {
         setVisible(true);
@@ -25,7 +27,7 @@ export default function GlobalHeader() {
             <LeftLogo />
             <div className="menuCon">
                 <div className="rightMenu">
-                    <RightMenu />
+                    <RightMenu userCurrent={userCurrent} />
                 </div>
                 <Button
                     className="barsMenu"

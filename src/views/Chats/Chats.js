@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useCallback } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, message } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { ListRoom, ChatRoomDefault } from './Components';
@@ -9,8 +9,8 @@ import allActions from '../../actions';
 import './styles.css';
 
 const Chats = () => {
-    const { userCurrent, socketRef } = useContext(Context);
-
+    const { socketRef } = useContext(Context);
+    const userCurrent = useSelector(state => state.userReducer.userInfo);
     const dispatch = useDispatch();
     const history = useHistory();
     const { url } = useRouteMatch();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadImage } from './../../../../components';
@@ -7,16 +7,24 @@ import firebaseConfig from '../../../../firebase';
 import './styles.css';
 const { Item } = Form;
 
-let uploadTask;
 export default function FormCreateRoom({form}) {
     const [disable, setDisable] = useState(false);
+    const uploadTask = useRef(null);
+    
+    useEffect(() => {
+        return () => {
+            if(uploadTask.current !== null) {
+                uploadTask.current.cancel();
+            }
+        }
+    }, []);
 
     const formItemLayout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 13 }
     };
     const uploadButton = (
-        <Button style={{ width: '100%' }} icon={<UploadOutlined />} disabled={disable}>
+        <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
             Click to upload
         </Button>
     );
@@ -35,16 +43,16 @@ export default function FormCreateRoom({form}) {
         setDisable(false);
     }
     const customRequest = option => {
-        setDisable(disable => !disable);
+        setDisable(true);
         const { onSuccess, onError, file, onProgress } = option;
-        uploadTask = firebaseConfig.firebase.storage
+        uploadTask.current = firebaseConfig.firebase.storage
         .ref(`/images/${file.name}`)
         .put(file);
-        UploadImage.customRequest(onSuccess, onError, file, onProgress, uploadTask, uploadSuccess);
+        UploadImage.customRequest(onSuccess, onError, file, onProgress, uploadTask.current, uploadSuccess);
     };
     const onRemove = file => {
         setDisable(false);
-        UploadImage.onRemove(file, uploadTask);
+        UploadImage.onRemove(file, uploadTask.current);
     };
 
     return (
@@ -90,6 +98,7 @@ export default function FormCreateRoom({form}) {
                     {...UploadImage.propsUpload()}
                     customRequest={customRequest}
                     onRemove={onRemove}
+                    disabled={disable}
                 >
                     {uploadButton}
                 </Upload>

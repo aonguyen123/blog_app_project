@@ -115,11 +115,41 @@ function* fetchUserByIdFlowSaga({payload: {idUser}}) {
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
 }
+function* updatePhotoURL(idUser, photoURL) {
+    try {
+        const response = yield call(allServices.userService.updatePhotoURL, idUser, photoURL);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(updatePhotoURL, idUser, photoURL);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.updatePhotoURLError(data.message));
+        }
+    }
+}
+function* updatePhotoURLFlowSaga({payload: {photoURL, idUser}}) {
+    const data = yield call(updatePhotoURL, idUser, photoURL);
+    if (data) {
+        yield put(allActions.userActions.updatePhotoURLSuccess(data.photoURL));
+    }
+}
 
 const allUserSaga = {
     fetchUserFlowSaga,
     searchUserFlowSaga,
-    fetchUserByIdFlowSaga
+    fetchUserByIdFlowSaga,
+    updatePhotoURLFlowSaga
 };
 
 export default allUserSaga;

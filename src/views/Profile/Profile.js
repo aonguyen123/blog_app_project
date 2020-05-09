@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useContext } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col } from 'antd';
@@ -6,17 +6,16 @@ import { GridContent } from '@ant-design/pro-layout';
 import { AccountInfo, AccountRight } from './../Account/components';
 import { FetchDataLoading } from './../../components';
 import allActions from '../../actions';
-import Context from './../../context';
 
 export default function Profile(props) {
     const postsById = useSelector(state => state.postReducer.postsById);
     const userById = useSelector(state => state.userReducer.userById);
+    const userCurrent = useSelector(state => state.userReducer.userInfo);
     const loadingFetchData = useSelector(
         state => state.uiReducer.loadingFetchData
     );
     const dispatch = useDispatch();
     const { idUser } = useParams();
-    const { userCurrent } = useContext(Context);
 
     useEffect(() => {
         dispatch(allActions.userActions.fetchUserById(idUser));

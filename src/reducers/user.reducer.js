@@ -5,7 +5,8 @@ import {
     SEARCH_USER,
     SIGN_OUT_SUCCESS,
     FETCH_USER_BY_ID,
-    FETCH_USER_BY_ID_SUCCESS
+    FETCH_USER_BY_ID_SUCCESS,
+    UPDATE_PHOTOURL_USER_SUCCESS
 } from './../constants/types';
 
 const initialState = {
@@ -56,7 +57,18 @@ export default function(state = initialState, action) {
                 ...state,
                 userById: action.payload
             }
+        case UPDATE_PHOTOURL_USER_SUCCESS:
+            const userInfo = updatePhotoURL(state.userInfo, action.payload);
+            return {
+                ...state,
+                userInfo: {...userInfo}
+            }
         default:
             return state;
     }
+}
+
+function updatePhotoURL(userInfo, photoURL) {
+    userInfo.photoURL = photoURL;
+    return userInfo;
 }

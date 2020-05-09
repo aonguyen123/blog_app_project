@@ -38,6 +38,7 @@ function* reAuth({payload}) {
             });
             yield call(allConfigs.setAuthTokenConfigs.setAuthToken, data.accessToken);
             yield put(allActions.authenticatedActions.reAuthSuccess());
+            yield put(allActions.userActions.fetchUserSuccess(data.payload));
             return true;
         }
     } catch (error) {
