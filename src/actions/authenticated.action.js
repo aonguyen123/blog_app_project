@@ -102,7 +102,8 @@ const reAuthSuccess = () => {
         type: RE_AUTH_SUCCESS,
     }
 }
-const reAuthFail = () => {
+const reAuthFail = error => {
+    message.error(error, 4);
     return {
         type: RE_AUTH_FAIL
     }

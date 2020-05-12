@@ -14,6 +14,7 @@ function* authorize({ payload }) {
         const { status, data } = resp;
         if(status === SUCCESS)
         {
+            yield call(allConfigs.setAuthTokenConfigs.setAuthToken, accessToken);
             yield put(allActions.userActions.fetchUserSuccess(data.payload));
             yield put(allActions.authenticatedActions.authenticatedSuccess());
         }
@@ -42,7 +43,8 @@ function* reAuth({payload}) {
             return true;
         }
     } catch (error) {
-        yield put(allActions.authenticatedActions.reAuthFail());
+        const { data } = error.response;
+        yield put(allActions.authenticatedActions.reAuthFail(data.message));
         return false;
     }
 }

@@ -1,5 +1,4 @@
 import {
-    GET_WEATHER,
     GET_PROVINCES_SUCCESS,
     GET_DISTRICTS_SUCCESS,
     GET_PROVINCES,
@@ -8,7 +7,6 @@ import {
 } from './../constants/types';
 
 const initialState = {
-    weatherFetch: {},
     weather: {},
     currentPlace: '',
     provinces: [],
@@ -17,11 +15,6 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch (action.type) {
-        case GET_WEATHER:
-            return {
-                ...state,
-                weatherFetch: action.payload
-            };
         case GET_WEATHER_SUCCESS:
             return {
                 ...state,

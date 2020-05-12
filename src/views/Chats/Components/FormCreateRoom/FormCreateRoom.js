@@ -1,27 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, ProfileOutlined, LockOutlined } from '@ant-design/icons';
 import { UploadImage } from './../../../../components';
 import allCommons from '../../../../common';
 import firebaseConfig from '../../../../firebase';
 import './styles.css';
 const { Item } = Form;
 
-export default function FormCreateRoom({form}) {
+export default function FormCreateRoom({form, visible}) {
     const [disable, setDisable] = useState(false);
     const uploadTask = useRef(null);
-    
-    useEffect(() => {
-        return () => {
-            if(uploadTask.current !== null) {
-                uploadTask.current.cancel();
-            }
-        }
-    }, []);
 
-    const formItemLayout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 13 }
+    useEffect(() => {
+        if (!visible && uploadTask.current !== null) {
+            uploadTask.current.cancel();
+            setDisable(false);
+        }
+    }, [visible]);
+
+    const layout = {
+        labelCol: {span: 8},
+        wrapperCol: {span: 12}
     };
     const uploadButton = (
         <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
@@ -35,6 +34,9 @@ export default function FormCreateRoom({form}) {
         );
         if(newFileLists.length !== 0)
         {
+            if(newFileLists[0].status === 'error') {
+                return file = [];
+            }
             files.push(newFileLists[newFileLists.length - 1]);
         }
         return files;
@@ -58,8 +60,7 @@ export default function FormCreateRoom({form}) {
     return (
         <Form
             form={form}
-            {...formItemLayout}
-            layout="horizontal"
+            {...layout}
             name="createRoom"
         >
             <Item
@@ -80,7 +81,7 @@ export default function FormCreateRoom({form}) {
                     }
                 ]}
             >
-                <Input />
+                <Input prefix={<ProfileOutlined />} placeholder='Room name' />
             </Item>
             <Item
                 label="Room avatar"
@@ -107,7 +108,7 @@ export default function FormCreateRoom({form}) {
                 label="Password"
                 name="password"
             >
-                <Input.Password />
+                <Input.Password prefix={<LockOutlined />} placeholder='Password' />
             </Item>
         </Form>
     );

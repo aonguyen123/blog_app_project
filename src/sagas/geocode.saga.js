@@ -1,4 +1,4 @@
-import { call, put, race, take, select } from 'redux-saga/effects';
+import { call, put, race, take } from 'redux-saga/effects';
 import allActions from './../actions';
 import { SUCCESS, UNAUTHORIZED } from './../constants/status_code';
 import allServices from './../services';
@@ -22,7 +22,7 @@ function* getProvinces() {
         }
     } catch (e) {
         yield put(
-            allActions.errorActions.serverError('Server error or network error')
+            allActions.geocodeActions.getProvincesError('Fetch provinces error, try again')
         );
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
@@ -47,8 +47,7 @@ function* getDistricts({ payload: provinceId }) {
         }
     } catch (e) {
         yield put(
-            allActions.errorActions.serverError('Server error or network error')
-        );
+            allActions.geocodeActions.getDistrictsError('Fetch districts error, try again'));
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
 }
@@ -74,8 +73,6 @@ function* getCurrentPlace(lat, lon) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if(result) {
-                const payload = yield select(state => state.geocodeReducer.weatherFetch);
-                const { lat, lon } = payload;
                 const data = yield call(getCurrentPlace, lat, lon);
                 return data;
             }

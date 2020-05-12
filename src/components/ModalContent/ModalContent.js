@@ -7,7 +7,8 @@ export default function ModalContent({
     handleOk,
     confirmLoading,
     content,
-    title
+    title,
+    width
 }) {
     return (
         <Modal
@@ -16,6 +17,7 @@ export default function ModalContent({
             onOk={handleOk}
             confirmLoading={confirmLoading}
             onCancel={handleCancel}
+            width={width}
         >
             {content}
         </Modal>

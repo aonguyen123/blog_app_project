@@ -12,6 +12,12 @@ import {
     UPDATE_PHOTOURL_USER,
     UPDATE_PHOTOURL_USER_SUCCESS,
     UPDATE_PHOTOURL_USER_ERROR,
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_ERROR,
+    UPDATE_PASSWORD_SUCCESS,
+    UPDATE_PASSWORD_ERROR,
+    UPDATE_PASSWORD,
 } from './../constants/types';
 
 const searchUser = q => {
@@ -88,6 +94,43 @@ const updatePhotoURLError = error => {
         type: UPDATE_PHOTOURL_USER_ERROR
     }
 }
+const updateProfile = (values, idUser) => {
+    return {
+        type: UPDATE_PROFILE,
+        payload: {values, idUser}
+    }
+}
+const updateProfileSuccess = (data, notice) => {
+    message.success(notice, 4);
+    return {
+        type: UPDATE_PROFILE_SUCCESS,
+        payload: data
+    }
+}
+const updateProfileError = error => {
+    message.error(error, 4);
+    return {
+        type: UPDATE_PROFILE_ERROR
+    }
+}
+const updatePassword = (newPass, oldPass, idUser) => {
+    return {
+        type: UPDATE_PASSWORD,
+        payload: { newPass, oldPass, idUser }
+    }
+}
+const updatePasswordSuccess = notice => {
+    message.success(notice, 4);
+    return {
+        type: UPDATE_PASSWORD_SUCCESS
+    }
+}
+const updatePasswordError = error => {
+    message.error(error, 4);
+    return {
+        type: UPDATE_PASSWORD_ERROR
+    }
+}
 
 export default {
     searchUser,
@@ -101,5 +144,11 @@ export default {
     fetchUserByIdError,
     updatePhotoURL,
     updatePhotoURLSuccess, 
-    updatePhotoURLError
+    updatePhotoURLError,
+    updateProfile,
+    updateProfileSuccess,
+    updateProfileError,
+    updatePassword, 
+    updatePasswordSuccess,
+    updatePasswordError
 };

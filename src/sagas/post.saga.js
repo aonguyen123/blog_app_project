@@ -1,4 +1,4 @@
-import { call, put, race, take, select } from 'redux-saga/effects';
+import { call, put, race, take } from 'redux-saga/effects';
 import allActions from './../actions';
 import {
     BAD_REQUSET,
@@ -33,10 +33,6 @@ function* createPost(posts, mentions, idUser, urlImages) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const payload = yield select(
-                    state => state.postReducer.postCreate
-                );
-                const { posts, mentions, idUser, urlImages } = payload;
                 const data = yield call(
                     createPost,
                     posts,
@@ -59,7 +55,6 @@ function* createPostFlowSaga({ payload }) {
     if (data) {
         yield put(allActions.postActions.createPostSuccess(data.message));
     }
-
     yield put(allActions.uiActions.hideLoadingButton());
 }
 
@@ -82,10 +77,6 @@ function* fetchPost(page, page_size) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const payload = yield select(
-                    state => state.postReducer.postFetch
-                );
-                const { page, page_size } = payload;
                 const data = yield call(fetchPost, page, page_size);
                 return data;
             }
@@ -128,10 +119,6 @@ function* fetchPostById(idUser, page, page_size) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const payload = yield select(
-                    state => state.postReducer.postByIdFetch
-                );
-                const { page, page_size, idUser } = payload;
                 const data = yield call(fetchPostById, idUser, page, page_size);
                 return data;
             }

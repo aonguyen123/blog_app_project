@@ -17,7 +17,9 @@ import {
     GET_CHATS,
     CHECK_JOIN_ROOM,
     FETCH_USER_BY_ID,
-    UPDATE_PHOTOURL_USER
+    UPDATE_PHOTOURL_USER,
+    UPDATE_PROFILE,
+    UPDATE_PASSWORD
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
@@ -35,6 +37,8 @@ function* rootSaga() {
         takeLatest(SEARCH_USER, allUserSaga.searchUserFlowSaga),
         takeLatest(FETCH_USER_BY_ID, allUserSaga.fetchUserByIdFlowSaga),
         takeLatest(UPDATE_PHOTOURL_USER, allUserSaga.updatePhotoURLFlowSaga),
+        takeLatest(UPDATE_PROFILE, allUserSaga.updateProfileFlowSaga),
+        takeLatest(UPDATE_PASSWORD, allUserSaga.updatePasswordFlowSaga),
 
         takeLatest(SIGN_IN, allAuthSaga.signInFlowSaga),
         takeLatest(SIGN_OUT, allAuthSaga.signout),

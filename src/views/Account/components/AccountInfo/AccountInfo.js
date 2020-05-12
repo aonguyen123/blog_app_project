@@ -10,7 +10,6 @@ import Interests from '../Interests/Interests';
 import Skill from '../Skill/Skill';
 
 export default function AccountInfo({ userInfo, userCurrentId }) {
-    
     return (
         <Card
             style={{
@@ -30,13 +29,13 @@ export default function AccountInfo({ userInfo, userCurrentId }) {
                 {userInfo.phonenumber && (
                     <p>
                         <PhoneOutlined className="icon-title" />
-                        {userInfo.phonenumber}
+                        {`+84${userInfo.phonenumber}`}
                     </p>
                 )}
                 {userInfo.district && userInfo.provinceOrCity && (
                     <p>
                         <EnvironmentOutlined className="icon-title" />
-                        {`${userInfo.district} - ${userInfo.provinceOrCity}`}
+                        {`${userInfo.district.label} - ${userInfo.provinceOrCity.label}`}
                     </p>
                 )}
             </div>

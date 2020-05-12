@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spin, Select, Row, Col } from 'antd';
 import allActions from './../../../../actions';
@@ -9,17 +9,21 @@ const nullSelectItem = {
     key: ''
 };
 
-export default function GeographicView({ value = {}, onChange }) {
+export default function GeographicView({ value = {}, onChange, provinceUser, districtUser }) {
+    const [district, setDistrict] = useState(districtUser || nullSelectItem);
     const dispatch = useDispatch();
     const provinces = useSelector(state => state.geocodeReducer.provinces);
     const districts = useSelector(state => state.geocodeReducer.districts);
     const loadingFetchData = useSelector(
         state => state.uiReducer.loadingFetchData
     );
-
+    
     useEffect(() => {
         dispatch(allActions.geocodeActions.getProvinces());
-    }, [dispatch]);
+        if(Object.keys(provinceUser).length > 0) {
+            dispatch(allActions.geocodeActions.getDistricts(provinceUser.key));
+        }
+    }, [dispatch, provinceUser]);
 
     const triggerChange = changedValue => {
         if (onChange) {
@@ -28,20 +32,6 @@ export default function GeographicView({ value = {}, onChange }) {
                 ...changedValue
             });
         }
-    };
-
-    const conversionObject = () => {
-        if (!value) {
-            return {
-                province: nullSelectItem,
-                district: nullSelectItem
-            };
-        }
-        const { province, district } = value;
-        return {
-            province: province || nullSelectItem,
-            district: district || nullSelectItem
-        };
     };
     const getOption = list => {
         return list.map(item => (
@@ -63,19 +53,20 @@ export default function GeographicView({ value = {}, onChange }) {
         return [];
     };
     const handleChangeDistrictItem = newDistrict => {
+        setDistrict(newDistrict);
         triggerChange({
             district: newDistrict,
             province: value.province
         })
     };
     const handleChangeProvince = newProvince => {
+        setDistrict(nullSelectItem);
         triggerChange({
             province: newProvince,
             district: nullSelectItem
         });
         dispatch(allActions.geocodeActions.getDistricts(newProvince.key));
     };
-    const {province, district} = conversionObject();
 
     return (
         <Row>
@@ -85,7 +76,7 @@ export default function GeographicView({ value = {}, onChange }) {
                         showSearch
                         className="item"
                         onChange={handleChangeProvince}
-                        value={province}
+                        defaultValue={provinceUser}
                         style={{float: 'left'}}
                         labelInValue
                         filterOption={(input, option) =>

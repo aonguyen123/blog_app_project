@@ -18,7 +18,6 @@ export default function App() {
             store.dispatch(allActions.authenticatedActions.authenticatedFail());
         } else {
             const { accessToken } = allConfigs.tokenConfigs.getToken();
-            allConfigs.setAuthTokenConfigs.setAuthToken(accessToken);
             store.dispatch(
                 allActions.authenticatedActions.authenticated(accessToken)
             );

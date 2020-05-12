@@ -5,28 +5,26 @@ const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function FormSettingView({userInfo}) {
+export default function FormSettingView({userInfo, updateProfile, loadingButton}) {
     const handleFinish = values => {
-        console.log(values);
+        updateProfile(values);
     };
     const prefixSelector = (
-        <Select style={{ width: 70 }} value='84'>
+        <Select style={{ width: 70 }} defaultValue='84'>
             <Option value="84">+84</Option>
         </Select>
     );
     const checkProvince = (rule, value) => {
-        if (value) {
+        if (Object.keys(value).length > 0) {
             const { province, district } = value;
-            if (province || district) {
-                if (!province.key) {
-                    return Promise.reject(
-                        'Please input your province or city!'
-                    );
-                }
-                if (!district.key) {
-                    return Promise.reject('Please input your district!');
-                }
+            if (!province.key) {
+                return Promise.reject(
+                    'Please input your province or city!'
+                );
             }
+            if (!district.key) {
+                return Promise.reject('Please input your district!');
+            }    
         }
         return Promise.resolve();
     };
@@ -39,8 +37,14 @@ export default function FormSettingView({userInfo}) {
                         onFinish={handleFinish}
                         layout="vertical"
                         initialValues={{
-                            country: 'Việt Nam',
-                            prefix: '84'
+                            email: userInfo.email,
+                            nickname: userInfo.displayName,
+                            profile: userInfo.description,
+                            phone: userInfo.phonenumber,
+                            address: {
+                                province: userInfo.provinceOrCity,
+                                district: userInfo.district
+                            }
                         }}
                     >
                         <Item
@@ -77,6 +81,10 @@ export default function FormSettingView({userInfo}) {
                                 {
                                     required: true,
                                     message: 'Please input your phone number!'
+                                },
+                                {
+                                    len: 9,
+                                    message: 'Phone number invalid'
                                 }
                             ]}
                         >
@@ -87,23 +95,8 @@ export default function FormSettingView({userInfo}) {
                             />
                         </Item>
                         <Item
-                            label="Country"
-                            name="country"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your country!'
-                                }
-                            ]}
-                        >
-                            <Select style={{ width: '100%' }}>
-                                <Option value="Việt Nam">Việt Nam</Option>
-                                <Option value="tets">test</Option>
-                            </Select>
-                        </Item>
-                        <Item
                             label="Province or city"
-                            name="province"
+                            name="address"
                             rules={[
                                 {
                                     required: true,
@@ -115,10 +108,10 @@ export default function FormSettingView({userInfo}) {
                                 }
                             ]}
                         >
-                            <GeographicView />
+                            <GeographicView provinceUser={userInfo.provinceOrCity} districtUser={userInfo.district} />
                         </Item>
                         <Item>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" loading={loadingButton}>
                                 Update Information
                             </Button>
                         </Item>

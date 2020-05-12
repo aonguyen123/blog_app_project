@@ -8,7 +8,6 @@ import {
     GET_ROOMS_SUCCESS,
     GET_ROOMS_ERROR,
     GET_ROOMS_AFTER,
-    CHANGE_VISIBLE_CREATE_ROOM,
     GET_CHAT_AFTER,
     CHECK_JOIN_ROOM,
     CHECK_JOIN_ROOM_SUCCESS,
@@ -71,12 +70,6 @@ const getRoomAfter = room => {
         payload: room
     }
 }
-const changeVisibleCreateRoom = data => {
-    return {
-        type: CHANGE_VISIBLE_CREATE_ROOM,
-        payload: data
-    }
-}
 const checkJoinRoom = (idRoom, idUser, history) => {
     return {
         type: CHECK_JOIN_ROOM,
@@ -130,7 +123,6 @@ export default {
     getRoomsSuccess,
     getRoomsError,
     getRoomAfter,
-    changeVisibleCreateRoom,
     checkJoinRoom, 
     checkJoinRoomSuccess,
     checkJoinRoomError,

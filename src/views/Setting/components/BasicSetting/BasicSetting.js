@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'antd';
 import AvatarSettingView from '../AvatarSettingView';
 import { LazyLoading } from './../../../../components';
@@ -8,10 +8,14 @@ import allActions from '../../../../actions';
 const FormSettingView = lazy(() => import('./../FormSettingView'));
 
 export default function BasicSetting({ userInfo }) {
+    const loadingButton = useSelector(state => state.uiReducer.loadingButton);
     const dispatch = useDispatch();
-    console.log(userInfo)
+
     const updatePhotoURL = file => {
         dispatch(allActions.userActions.updatePhotoURL(file.url, userInfo._id));
+    };
+    const updateProfile = data => {
+        dispatch(allActions.userActions.updateProfile(data, userInfo._id));
     };
 
     return (
@@ -24,7 +28,11 @@ export default function BasicSetting({ userInfo }) {
             </Col>
             <Col xl={18} lg={18} md={18} sm={24} xs={24}>
                 <Suspense fallback={<LazyLoading size="small" />}>
-                    <FormSettingView userInfo={userInfo} />
+                    <FormSettingView
+                        userInfo={userInfo}
+                        updateProfile={updateProfile}
+                        loadingButton={loadingButton}
+                    />
                 </Suspense>
             </Col>
         </Row>

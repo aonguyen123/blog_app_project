@@ -1,22 +1,18 @@
 import {
     SEARCH_USER_SUCCESS,
     FETCH_USER_SUCCESS,
-    FETCH_USER,
     SEARCH_USER,
     SIGN_OUT_SUCCESS,
-    FETCH_USER_BY_ID,
     FETCH_USER_BY_ID_SUCCESS,
-    UPDATE_PHOTOURL_USER_SUCCESS
+    UPDATE_PHOTOURL_USER_SUCCESS,
+    UPDATE_PROFILE_SUCCESS
 } from './../constants/types';
 
 const initialState = {
-    idUserFetchById: '',
-    userFetch: {},
-    userSearch: {},
     searchResult: [],
     userInfo: {},
-    usersOnline: [],
-    userById: {}
+    userById: {},
+    visibleModal: false
 };
 
 export default function(state = initialState, action) {
@@ -29,13 +25,7 @@ export default function(state = initialState, action) {
         case SEARCH_USER:
             return {
                 ...state,
-                userSearch: action.payload,
                 searchResult: []
-            };
-        case FETCH_USER:
-            return {
-                ...state,
-                userFetch: action.payload
             };
         case FETCH_USER_SUCCESS:
             return {
@@ -46,11 +36,6 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 userInfo: {}
-            }
-        case FETCH_USER_BY_ID:
-            return {
-                ...state,
-                idUserFetchById: action.payload
             }
         case FETCH_USER_BY_ID_SUCCESS:
             return {
@@ -63,6 +48,12 @@ export default function(state = initialState, action) {
                 ...state,
                 userInfo: {...userInfo}
             }
+        case UPDATE_PROFILE_SUCCESS:
+            const userInfoUpdate = updateProfile(state.userInfo, action.payload);
+            return {
+                ...state,
+                userInfo: {...userInfoUpdate}
+            }
         default:
             return state;
     }
@@ -70,5 +61,14 @@ export default function(state = initialState, action) {
 
 function updatePhotoURL(userInfo, photoURL) {
     userInfo.photoURL = photoURL;
+    return userInfo;
+}
+function updateProfile(userInfo, userUpdated) {
+    userInfo.email = userUpdated.email;
+    userInfo.displayName = userUpdated.nickname;
+    userInfo.description = userUpdated.profile;
+    userInfo.phonenumber = userUpdated.phone;
+    userInfo.provinceOrCity = userUpdated.address.province;
+    userInfo.district = userUpdated.address.district;
     return userInfo;
 }

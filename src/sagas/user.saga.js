@@ -1,4 +1,4 @@
-import { call, put, delay, select } from 'redux-saga/effects';
+import { call, put, delay } from 'redux-saga/effects';
 import allActions from './../actions';
 import { SUCCESS, UNAUTHORIZED } from './../constants/status_code';
 import allServices from './../services';
@@ -19,10 +19,6 @@ function* fetchUser(idUser) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const payload = yield select(
-                    state => state.userReducer.userFetch
-                );
-                const { idUser } = payload;
                 const data = yield call(fetchUser, idUser);
                 return data;
             }
@@ -56,10 +52,6 @@ function* searchUser(q) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const payload = yield select(
-                    state => state.userReducer.userSearch
-                );
-                const { q } = payload;
                 const data = yield call(searchUser, q);
                 return data;
             }
@@ -80,6 +72,7 @@ function* searchUserFlowSaga({ payload }) {
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
 }
+
 function* fetchUserById(idUser) {
     try {
         const response = yield call(allServices.userService.fetchUserById, idUser);
@@ -94,10 +87,6 @@ function* fetchUserById(idUser) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const payload = yield select(
-                    state => state.userReducer.idUserFetchById
-                );
-                const { idUser } = payload;
                 const data = yield call(fetchUserById, idUser);
                 return data;
             }
@@ -144,12 +133,78 @@ function* updatePhotoURLFlowSaga({payload: {photoURL, idUser}}) {
         yield put(allActions.userActions.updatePhotoURLSuccess(data.photoURL));
     }
 }
+function* updateProfile(values, idUser) {
+    try {
+        const response = yield call(allServices.userService.updateProfile, values, idUser);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(updateProfile, values, idUser);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.updateProfileError(data.message));
+        }
+    }
+}
+function* updateProfileFlowSaga({payload: {values, idUser}}) {
+    yield put(allActions.uiActions.showLoadingButton());
+    const data = yield call(updateProfile, values, idUser);
+    if (data) {
+        yield put(allActions.userActions.updateProfileSuccess(values, data.message));
+    }
+    yield put(allActions.uiActions.hideLoadingButton());
+}
+
+function* updatePassword(newPass, oldPass, idUser) {
+    try {
+        const response = yield call(allServices.userService.updatePassword, newPass, oldPass, idUser);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(updatePassword, newPass, oldPass, idUser);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.updatePasswordError(data.message));
+        }
+    }
+}
+function* updatePasswordFlowSaga({payload: {newPass, oldPass, idUser}}) {
+    yield put(allActions.uiActions.showLoadingButton());
+    const data = yield call(updatePassword, newPass, oldPass, idUser);
+    if (data) {
+        yield put(allActions.userActions.updatePasswordSuccess(data.message));
+        yield put(allActions.uiActions.changeVisible(false));
+    }
+    yield put(allActions.uiActions.hideLoadingButton());
+}
 
 const allUserSaga = {
     fetchUserFlowSaga,
     searchUserFlowSaga,
     fetchUserByIdFlowSaga,
-    updatePhotoURLFlowSaga
+    updatePhotoURLFlowSaga,
+    updateProfileFlowSaga,
+    updatePasswordFlowSaga
 };
 
 export default allUserSaga;

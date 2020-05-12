@@ -1,55 +1,43 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { List, Form } from 'antd';
 import FormChangePass from '../FormChangePass';
 import ListSetting from './../ListSetting';
 import { ModalContent } from './../../../../components';
 
-export default function SercurityList(props) {
-    const [value, setValue] = useState({
-        visible: false,
-        confirmLoading: false
-    });
+export default function SercurityList({
+    updatePass,
+    loadingButton,
+    visible,
+    showModal,
+    closeModal,
+}) {
     const [form] = Form.useForm();
+    const preVisibleRef = useRef();
 
-    const showModal = () => {
-        setValue({
-            ...value,
-            visible: true
-        });
-    };
+
+    useEffect(() => {
+        preVisibleRef.current = visible;
+    }, [visible]);
+    const preVisible = preVisibleRef.current;
+    useEffect(() => {
+        if(!visible && preVisible) {
+            form.resetFields();
+        }
+    }, [visible, form, preVisible]);
+
     const handleCancel = () => {
-        setValue({
-            ...value,
-            visible: false
-        });
+        form.resetFields();
+        closeModal();
     };
 
-    // const prevVisibleRef = useRef();
-
-    // useEffect(() => {
-    //     prevVisibleRef.current = visible;
-    // }, [visible]);
-    // const prevVisible = prevVisibleRef.current;
-    // useEffect(() => {
-    //     if (!visible && prevVisible) {
-    //         form.resetFields();
-    //     }
-    // }, [visible, form, prevVisible]);
-
-    
     const handleOk = useCallback(() => {
         form.submit();
     }, [form]);
     const onFormFinish = (name, { values, forms }) => {
         if (name === 'changePasswordForm') {
-            //const { current_password, new_password, password_confirm } = values;
-            setValue({
-                ...value,
-                visible: false,
-                confirmLoading: false
-            });
+            updatePass(values);
         }
-    }
+    };
 
     return (
         <Form.Provider onFormFinish={onFormFinish}>
@@ -66,11 +54,12 @@ export default function SercurityList(props) {
                 )}
             />
             <ModalContent
-                title='Change the password'
-                visible={value.visible}
+                title="Change the password"
+                width={500}
+                visible={visible}
                 handleCancel={handleCancel}
                 handleOk={handleOk}
-                confirmLoading={value.confirmLoading}
+                confirmLoading={loadingButton}
                 content={<FormChangePass form={form} />}
             />
         </Form.Provider>

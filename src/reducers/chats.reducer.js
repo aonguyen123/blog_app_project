@@ -2,10 +2,8 @@ import {
     GET_CHATS_SUCCESS,
     GET_ROOMS_SUCCESS,
     GET_ROOMS_AFTER,
-    CHANGE_VISIBLE_CREATE_ROOM,
     GET_CHAT_AFTER,
     CHECK_JOIN_ROOM_SUCCESS,
-    CHECK_JOIN_ROOM,
     GET_USER_CURRENT_ONL,
     GET_MESSAGE_ROOM_AFTER,
     LEAVE_ROOM,
@@ -18,8 +16,6 @@ const initialState = {
     roomInfo: {},
     userRoom: [],
     messageInRoom: [],
-    checkJoin: {},
-    visible: false,
 };
 export default function(state = initialState, action) {
     switch (action.type) {
@@ -42,18 +38,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 rooms: [...state.rooms, action.payload],
-                visible: false
             };
-        case CHANGE_VISIBLE_CREATE_ROOM:
-            return {
-                ...state,
-                visible: action.payload
-            };
-        case CHECK_JOIN_ROOM:
-            return {
-                ...state,
-                checkJoin: action.payload
-            }
         case CHECK_JOIN_ROOM_SUCCESS:
             return {
                 ...state,

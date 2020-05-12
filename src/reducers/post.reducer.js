@@ -1,11 +1,8 @@
 import {
-    CREATE_POST,
     CREATE_POST_SUCCESS,
     SET_MENTIONS,
-    FETCH_POST,
     FETCH_POST_SUCCESS,
     FETCH_POST_OVER,
-    FETCH_POSTS_BY_ID,
     FETCH_POSTS_BY_ID_SUCCESS,
     FETCH_POSTS_BY_ID_OVER,
     SET_POST,
@@ -14,9 +11,6 @@ import {
 } from './../constants/types';
 
 const initialState = {
-    postFetch: {},  
-    postByIdFetch: {},
-    postCreate: {},
     mentions: [],
     posts: [],
     hasMoreItems: true,
@@ -32,11 +26,6 @@ const initialState = {
 export default function(state = initialState, action) {
     switch(action.type)
     {
-        case CREATE_POST:
-            return {
-                ...state,
-                postCreate: action.payload
-            }
         case CREATE_POST_SUCCESS:
             return {
                 ...state,
@@ -67,11 +56,6 @@ export default function(state = initialState, action) {
                 ...state,
                 mentions: [...state.mentions, ...action.payload]
             }
-        case FETCH_POST:
-            return {
-                ...state,
-                postFetch: action.payload
-            }
         case FETCH_POST_SUCCESS:
             return {
                 ...state,
@@ -83,11 +67,6 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 hasMoreItems: false
-            }
-        case FETCH_POSTS_BY_ID:
-            return {
-                ...state,
-                postByIdFetch: action.payload,
             }
         case FETCH_POSTS_BY_ID_SUCCESS:
             return {

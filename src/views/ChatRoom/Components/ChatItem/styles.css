@@ -23,7 +23,7 @@
     float: left;
     margin-left: 10px;
     border-radius: 15px;
-    background-color: #85a5ff;
+    background-color: #d9d9d9;
     padding: 5px;
 }
 .msg_time {
@@ -60,19 +60,4 @@
     height: 40px;
     width: 40px;
     float: left;
-}
-
-.msg_cotainer_admin {
-    position: relative;
-    display: inline-block;
-    width: 70%;
-    vertical-align: top;
-    margin: 5px;
-}
-.msg_cotainer_admin p {
-    float: left;
-    margin-left: 10px;
-    border-radius: 15px;
-    background-color: #95de64;
-    padding: 5px;
 }

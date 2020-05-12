@@ -1,4 +1,4 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import allService from "../services";
 import { SUCCESS, UNAUTHORIZED, BAD_REQUSET } from "../constants/status_code";
 import allConfigs from "../config";
@@ -77,7 +77,6 @@ function* checkJoinRoom(idRoom, idUser, history) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const { idRoom, idUser, history } = yield select(state => state.chatsReducer.checkJoin);       
                 const data = yield call(checkJoinRoom, idRoom, idUser, history);
                 return data;
             }
