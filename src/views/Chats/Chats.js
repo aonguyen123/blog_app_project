@@ -52,6 +52,7 @@ const Chats = () => {
         socket.on('onJoin', data => {
             history.push(`${url}/${data.idRoom._id}`);
             dispatch(allActions.uiActions.hideLoadingButton());
+            dispatch(allActions.uiActions.changeVisible(false));
         });
         socket.on('welcome', ({ text }) => {
             message.info(text, 4);
