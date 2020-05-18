@@ -13,3 +13,4 @@ export { default as ScrollToBottomCom } from './ScrollToBottomCom';
 export { default as PopConfirm } from './PopConfirm';
 export { default as PopOver } from './PopOver';
 export { default as PostList } from './PostList';
+export { default as Animation } from './Animation';

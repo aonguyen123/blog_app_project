@@ -6,7 +6,7 @@ import { PostList } from './../../../../components';
 import allActions from './../../../../actions';
 import './styles.css';
 
-const ListPosts = ({ userId, postsById, likePostHome, dislikePostHome }) => {
+const ListPosts = ({ userIdById, userIdCurrent, postsById, likePostHome, dislikePostHome }) => {
     const hasMorePostsById = useSelector(
         state => state.postReducer.hasMoreItemsById
     );
@@ -17,7 +17,7 @@ const ListPosts = ({ userId, postsById, likePostHome, dislikePostHome }) => {
         const page_size = 10;
         dispatch(
             allActions.postActions.fetchPostById(
-                userId,
+                userIdById,
                 nextPageById,
                 page_size
             )
@@ -42,7 +42,7 @@ const ListPosts = ({ userId, postsById, likePostHome, dislikePostHome }) => {
                             post={value}
                             likePostHome={likePostHome}
                             dislikePostHome={dislikePostHome}
-                            idUser={userId}
+                            idUser={userIdCurrent}
                         />
                     ))
                 )}

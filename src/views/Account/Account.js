@@ -41,7 +41,8 @@ export default function Account() {
                 </Col>
                 <Col xl={16} lg={16} md={16} sm={24} xs={24}>
                     <AccountRight
-                        userId={userCurrent._id}
+                        userIdCurrent={userCurrent._id}
+                        userIdById={userCurrent._id}
                         postsById={postsById}
                         likePostHome={likePostHome}
                         dislikePostHome={dislikePostHome}

@@ -48,7 +48,8 @@ export default function Profile(props) {
                 </Col>
                 <Col xl={16} lg={16} md={16} sm={24} xs={24}>
                     <AccountRight
-                        userId={idUser}
+                        userIdById={idUser}
+                        userIdCurrent={userCurrent._id}
                         postsById={postsById}
                         likePostHome={likePostHome}
                         dislikePostHome={dislikePostHome}

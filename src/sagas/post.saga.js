@@ -1,4 +1,4 @@
-import { call, put, race, take } from 'redux-saga/effects';
+import { call, put, race, take, delay } from 'redux-saga/effects';
 import allActions from './../actions';
 import {
     BAD_REQUSET,
@@ -161,8 +161,11 @@ function* likePost(idUser, idPost) {
 }
 function* likePostFlowSaga({payload: {idUser, idPost}}) {
     const data = yield call(likePost, idUser, idPost);
-    if (data) {
-        yield put(allActions.postActions.likePostSuccess(data.post));
+    yield put(allActions.postActions.likePostSuccess(data.post));
+    if (data && data.message !== 'UNLIKE') {
+        yield put(allActions.uiActions.showAnimate(true, 'LIKE'));
+        yield delay(1600);
+        yield put(allActions.uiActions.hideAnimate(false, 'LIKE'));   
     }
 }
 function* dislikePost(idUser, idPost) {
@@ -190,8 +193,11 @@ function* dislikePost(idUser, idPost) {
 }
 function* dislikePostFlowSaga({payload: {idUser, idPost}}) {
     const data = yield call(dislikePost, idUser, idPost);
-    if (data) {
-        yield put(allActions.postActions.dislikePostSuccess(data.post));
+    yield put(allActions.postActions.dislikePostSuccess(data.post));
+    if (data && data.message !== 'UNDISLIKE') {
+        yield put(allActions.uiActions.showAnimate(true, 'DISLIKE'));
+        yield delay(1600);
+        yield put(allActions.uiActions.hideAnimate(false, 'DISLIKE'));
     }
 }
 

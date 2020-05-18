@@ -1,6 +1,6 @@
 {
   "name": "react-antd",
-  "version": "0.1.0",
+  "version": "1.5.0",
   "author": "AoNguyen",
   "email": "aonguyen113@gmail.com",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "glamor": "^2.20.40",
     "history": "^4.10.1",
     "jsonwebtoken": "^8.5.1",
+    "lottie-web": "^5.6.10",
     "moment": "^2.24.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",

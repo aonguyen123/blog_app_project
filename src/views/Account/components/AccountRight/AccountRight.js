@@ -5,7 +5,8 @@ import { Card } from 'antd';
 const ListPosts = lazy(() => import('./../ListPosts/ListPosts'));
 
 export default function AccountRight({
-    userId,
+    userIdById,
+    userIdCurrent,
     postsById,
     likePostHome,
     dislikePostHome
@@ -44,11 +45,12 @@ export default function AccountRight({
         }
     ];
 
-    const renderChildrenByTabKey = (tabKey, userId, postsById) => {
+    const renderChildrenByTabKey = (tabKey) => {
         if (tabKey === 'posts') {
             return (
                 <ListPosts
-                    userId={userId}
+                    userIdById={userIdById}
+                    userIdCurrent={userIdCurrent}
                     postsById={postsById}
                     likePostHome={likePostHome}
                     dislikePostHome={dislikePostHome}
@@ -74,7 +76,7 @@ export default function AccountRight({
             onTabChange={onTabChange}
         >
             <Suspense fallback={<LazyLoading size="small" />}>
-                {renderChildrenByTabKey(tabKey, userId, postsById)}
+                {renderChildrenByTabKey(tabKey)}
             </Suspense>
         </Card>
     );

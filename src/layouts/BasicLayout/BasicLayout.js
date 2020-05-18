@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import io from 'socket.io-client';
 import {
@@ -7,6 +7,7 @@ import {
     GlobalHeader,
     GlobalFootter,
     SiderMenuLeft,
+    Animation
 } from './../../components';
 import allActions from '../../actions';
 import Context from '../../context';
@@ -17,6 +18,8 @@ const { Header, Content, Footer, Sider } = Layout;
 function BasicLayout(props) {
     const { children } = props;
     const [collapsedWidth, setCollapseWidth] = useState(false);
+    const isShowAnimate = useSelector(state => state.uiReducer.isShowAnimate);
+    const typeAnimate = useSelector(state => state.uiReducer.typeAnimate);
     const socketRef = useRef();
     const dispatch = useDispatch();
 
@@ -72,6 +75,7 @@ function BasicLayout(props) {
                 <GlobalFootter />
             </Footer>
             <BackTop />
+            {isShowAnimate && <Animation typeAnimate={typeAnimate} />}
         </Layout>
     );
 }
