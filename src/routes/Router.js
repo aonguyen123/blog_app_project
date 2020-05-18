@@ -21,6 +21,7 @@ const Weather = lazy(() => import('./../views/Weather'));
 const Chats = lazy(() => import('./../views/Chats'));
 const ChatRoom = lazy(() => import('./../views/ChatRoom'));
 const Profile = lazy(() => import('./../views/Profile'));
+const Comments = lazy(() => import('./../views/Comments'));
 const AuthenticatedPage = lazy(() => import('./../views/Authenticated'));
 const NotFoundPage = lazy(() => import('./../views/NotFound'));
 
@@ -95,6 +96,13 @@ export default function Router() {
                     exact
                     layout={BasicLayout}
                     path="/profile/:idUser"
+                />
+                <PrivateRouter
+                    component={Comments}
+                    isAuth={isAuth}
+                    exact
+                    layout={BasicLayout}
+                    path="/comments/:idPost"
                 />
                 <PublishRouter
                     component={LoginPage}

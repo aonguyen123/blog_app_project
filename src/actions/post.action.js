@@ -15,6 +15,12 @@ import {
     FETCH_POST_ERROR,
     FETCH_POSTS_BY_ID_ERROR,
     UNMOUNT_POST_BY_ID,
+    LIKE_POST,
+    LIKE_POST_SUCCESS,
+    LIKE_POST_ERROR,
+    DISLIKE_POST,
+    DISLIKE_POST_SUCCESS,
+    DISLIKE_POST_ERROR,
 } from './../constants/types';
 
 const createPost = (posts, mentions, idUser, urlImages) => {
@@ -118,6 +124,42 @@ const unmountPostById = () => {
         type: UNMOUNT_POST_BY_ID
     }
 }
+const likePost = (idUser, idPost) => {
+    return {
+        type: LIKE_POST,
+        payload: {idUser, idPost}
+    }
+}
+const likePostSuccess = data => {
+    return {
+        type: LIKE_POST_SUCCESS,
+        payload: data
+    }
+}
+const likePostError = error => {
+    message.error(error, 4);
+    return {
+        type: LIKE_POST_ERROR
+    }
+}
+const dislikePost = (idUser, idPost) => {
+    return {
+        type: DISLIKE_POST,
+        payload: {idUser, idPost}
+    }
+}
+const dislikePostSuccess = data => {
+    return {
+        type: DISLIKE_POST_SUCCESS,
+        payload: data
+    }
+}
+const dislikePostError = error => {
+    message.error(error, 4);
+    return {
+        type: DISLIKE_POST_ERROR
+    }
+}
 
 export default {
     createPost,
@@ -134,5 +176,11 @@ export default {
     fetchPostByIdOver,
     setPost,
     setUrlImages,
-    unmountPostById
+    unmountPostById,
+    likePost, 
+    likePostSuccess,
+    likePostError,
+    dislikePost,
+    dislikePostSuccess,
+    dislikePostError
 };

@@ -44,7 +44,7 @@ export default function(state = initialState, action) {
                 ...state,
                 roomInfo: action.payload.room,
                 userRoom: action.payload.userRoom,
-                messageInRoom: action.payload.messageRoom
+                messageInRoom: action.payload.messageRoom,
             }
         case GET_USER_CURRENT_ONL:
             const users = filterUserOnl(state.userRoom, action.payload);

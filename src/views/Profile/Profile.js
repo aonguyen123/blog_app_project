@@ -27,8 +27,17 @@ export default function Profile(props) {
     }, [idUser, dispatch]);
 
     const memoAccountInfo = useMemo(() => {
-        return <AccountInfo userInfo={userById} userCurrentId={userCurrent._id} />;
+        return (
+            <AccountInfo userInfo={userById} userCurrentId={userCurrent._id} />
+        );
     }, [userById, userCurrent._id]);
+
+    const likePostHome = idPost => {
+        dispatch(allActions.postActions.likePost(userCurrent._id, idPost));
+    };
+    const dislikePostHome = idPost => {
+        dispatch(allActions.postActions.dislikePost(userCurrent._id, idPost));
+    };
 
     if (loadingFetchData) return <FetchDataLoading />;
     return (
@@ -38,7 +47,12 @@ export default function Profile(props) {
                     {memoAccountInfo}
                 </Col>
                 <Col xl={16} lg={16} md={16} sm={24} xs={24}>
-                    <AccountRight userId={userById._id} postsById={postsById} />
+                    <AccountRight
+                        userId={idUser}
+                        postsById={postsById}
+                        likePostHome={likePostHome}
+                        dislikePostHome={dislikePostHome}
+                    />
                 </Col>
             </Row>
         </GridContent>

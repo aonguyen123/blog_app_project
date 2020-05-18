@@ -7,6 +7,7 @@
     height: 104px;
     margin-bottom: 20px;
     border-radius: 100%;
+    object-fit: cover;
 }
 .name {
     margin-bottom: 4px;

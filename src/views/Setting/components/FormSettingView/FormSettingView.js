@@ -28,6 +28,17 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
         }
         return Promise.resolve();
     };
+    const checkNickname = (rule, value) => {
+        if (value) {
+            value = value.trim();
+            value = value.replace(/\s+/g, '');
+            if (value.length < 5) {
+                return Promise.reject('Nickname of at least 5 characters');
+            }
+            return Promise.resolve();
+        }
+        return Promise.resolve();
+    };
 
     return (
         <div>
@@ -50,10 +61,15 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                         <Item
                             label="Email"
                             name="email"
+                            hasFeedback
                             rules={[
                                 {
+                                    type: 'email',
+                                    message: 'The input is not valid E-mail!'
+                                },
+                                {
                                     required: true,
-                                    message: 'Please input your email'
+                                    message: 'Please input your E-mail!'
                                 }
                             ]}
                         >
@@ -62,10 +78,22 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                         <Item
                             label="Nickname"
                             name="nickname"
+                            hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your nickname'
+                                    message: 'Please input your nickname!'
+                                },
+                                {
+                                    whitespace: true,
+                                    message: 'Nickname does not whitespace'
+                                },
+                                {
+                                    max: 13,
+                                    message: 'Nickname cannot exceed 13 characters'
+                                },
+                                {
+                                    validator: checkNickname
                                 }
                             ]}
                         >
@@ -77,6 +105,7 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                         <Item
                             label="Phone Number"
                             name="phone"
+                            hasFeedback
                             rules={[
                                 {
                                     required: true,
@@ -97,6 +126,7 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                         <Item
                             label="Province or city"
                             name="address"
+                            hasFeedback
                             rules={[
                                 {
                                     required: true,

@@ -19,13 +19,19 @@ import {
     FETCH_USER_BY_ID,
     UPDATE_PHOTOURL_USER,
     UPDATE_PROFILE,
-    UPDATE_PASSWORD
+    UPDATE_PASSWORD,
+    FETCH_MESSAGES_IN_ROOM,
+    ADD_COMMENT,
+    FETCH_COMMENTS_BY_IDPOST,
+    LIKE_POST,
+    DISLIKE_POST
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
 import allUserSaga from './user.saga';
 import allGeocodeSaga from './geocode.saga';
 import allChatsSaga from './chats.saga';
+import allCommentSaga from './comment.saga';
 
 function* rootSaga() {
     yield all([
@@ -47,13 +53,19 @@ function* rootSaga() {
         takeLatest(CREATE_POST, allPostSaga.createPostFlowSaga),
         takeLatest(FETCH_POST, allPostSaga.fetchPostFlowSaga),
         takeLatest(FETCH_POSTS_BY_ID, allPostSaga.fetchPostByIdFlowSaga),
+        takeLatest(LIKE_POST, allPostSaga.likePostFlowSaga),
+        takeLatest(DISLIKE_POST, allPostSaga.dislikePostFlowSaga),
+
+        takeLatest(ADD_COMMENT, allCommentSaga.addCommentFlowSaga),
+        takeLatest(FETCH_COMMENTS_BY_IDPOST, allCommentSaga.fetchCommentByIdPostFlowSaga),
 
         takeLatest(AUTHENTICATED, allAuthSaga.authorize),
         takeLatest(RE_AUTH, allAuthSaga.reAuth),
 
         takeLatest(GET_ROOMS, allChatsSaga.getRoomsFlowSaga),
         takeLatest(GET_CHATS, allChatsSaga.getChatsFlowSaga),
-        takeLatest(CHECK_JOIN_ROOM, allChatsSaga.checkJoinRoomFlowSaga)
+        takeLatest(CHECK_JOIN_ROOM, allChatsSaga.checkJoinRoomFlowSaga),
+        takeLatest(FETCH_MESSAGES_IN_ROOM, allChatsSaga.fetchMessageInRoomFlowSaga)
     ]);
 }
 

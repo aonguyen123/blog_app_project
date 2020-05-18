@@ -5,7 +5,10 @@
 }
 .images-item {
     margin-right: 10px;
-    height: 100px;
-    background-size: cover;
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
     cursor: pointer;
+    padding: 2px;
+    background-color: #d9d9d9;
 }

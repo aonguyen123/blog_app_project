@@ -136,10 +136,71 @@ function* fetchPostByIdFlowSaga({ payload }) {
     }
 }
 
+function* likePost(idUser, idPost) {
+    try {
+        const response = yield call(allServices.postService.likePost, idUser, idPost);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(likePost, idUser, idPost);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.postActions.likePostError(data.message));
+        }
+    }
+}
+function* likePostFlowSaga({payload: {idUser, idPost}}) {
+    const data = yield call(likePost, idUser, idPost);
+    if (data) {
+        yield put(allActions.postActions.likePostSuccess(data.post));
+    }
+}
+function* dislikePost(idUser, idPost) {
+    try {
+        const response = yield call(allServices.postService.dislikePost, idUser, idPost);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(dislikePost, idUser, idPost);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.postActions.dislikePostError(data.message));
+        }
+    }
+}
+function* dislikePostFlowSaga({payload: {idUser, idPost}}) {
+    const data = yield call(dislikePost, idUser, idPost);
+    if (data) {
+        yield put(allActions.postActions.dislikePostSuccess(data.post));
+    }
+}
+
 const allPostSaga = {
     createPostFlowSaga,
     fetchPostFlowSaga,
-    fetchPostByIdFlowSaga
+    fetchPostByIdFlowSaga,
+    likePostFlowSaga,
+    dislikePostFlowSaga
 };
 
 export default allPostSaga;

@@ -98,10 +98,41 @@ function* checkJoinRoomFlowSaga({payload: {idRoom, idUser, history}}) {
     yield put(allActions.uiActions.hideLoadingFetchData());
 }
 
+function* fetchMessageInRoom(page, page_size, idRoom) {
+    try {
+        const response = yield call(allService.chatsService.fetchMessageInRoom, page, page_size, idRoom);
+        if(response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(fetchMessageInRoom, page, page_size, idRoom);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.chatsActions.fetchMessageInRoomError(data.message));
+        }
+    }
+}
+function* fetchMessageInRoomFlowSaga({payload: {page, page_size, idRoom}}) {
+    const data = yield call(fetchMessageInRoom, page, page_size, idRoom);
+    if(data) {
+        yield put(allActions.chatsActions.fetchMessageInRoomSuccess(data));
+    }
+}
+
 const allChatsSaga = {
     getRoomsFlowSaga,
     getChatsFlowSaga,
-    checkJoinRoomFlowSaga
+    checkJoinRoomFlowSaga,
+    fetchMessageInRoomFlowSaga
 }
 
 export default allChatsSaga;

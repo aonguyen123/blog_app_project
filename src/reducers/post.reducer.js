@@ -7,7 +7,9 @@ import {
     FETCH_POSTS_BY_ID_OVER,
     SET_POST,
     SET_URL_IMAGE,
-    UNMOUNT_POST_BY_ID,    
+    UNMOUNT_POST_BY_ID,
+    LIKE_POST_SUCCESS,
+    DISLIKE_POST_SUCCESS,
 } from './../constants/types';
 
 const initialState = {
@@ -90,7 +92,35 @@ export default function(state = initialState, action) {
                 nextPage: 1,
                 hasMoreItems: true
             }
+        case LIKE_POST_SUCCESS:
+            const { posts, postsById } = handlePost(state.posts,state.postsById, action.payload);
+            return {
+                ...state,
+                posts: [...posts],
+                postsById: [...postsById]
+            }
+        case DISLIKE_POST_SUCCESS:
+            const {posts: postsDis, postsById: postByIdDis} = handlePost(state.posts, state.postsById, action.payload);
+            return {
+                ...state,
+                posts: [...postsDis],
+                postsById: [...postByIdDis]
+            }
         default:
             return state;
     }
+}
+
+function handlePost(posts, postsById, post) {
+    const index = posts.findIndex(p => p._id === post._id);
+    if(index !== -1) {
+        posts.splice(index, 1);
+        posts.splice(index, 0, post);
+    }
+    const indexPostByIdUser = postsById.findIndex(p => p._id === post._id);
+    if(indexPostByIdUser !== -1) {
+        postsById.splice(indexPostByIdUser, 1);
+        postsById.splice(indexPostByIdUser, 0, post);
+    }
+    return {posts, postsById};
 }

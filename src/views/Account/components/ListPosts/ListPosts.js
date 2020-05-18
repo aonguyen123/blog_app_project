@@ -2,11 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Empty, Skeleton } from 'antd';
-import { CardList } from './../../../../components';
+import { PostList } from './../../../../components';
 import allActions from './../../../../actions';
 import './styles.css';
 
-const ListPosts = ({ userId, postsById }) => {
+const ListPosts = ({ userId, postsById, likePostHome, dislikePostHome }) => {
     const hasMorePostsById = useSelector(
         state => state.postReducer.hasMoreItemsById
     );
@@ -37,9 +37,12 @@ const ListPosts = ({ userId, postsById }) => {
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                 ) : (
                     postsById.map(value => (
-                        <CardList
+                        <PostList
                             key={value._id}
                             post={value}
+                            likePostHome={likePostHome}
+                            dislikePostHome={dislikePostHome}
+                            idUser={userId}
                         />
                     ))
                 )}

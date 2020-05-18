@@ -22,9 +22,17 @@ const fetchPostById = (idUser, page, page_size) => {
         null
     );
 };
+const likePost = (idUser, idPost) => {
+    return allCommons.callAPICommon.callAPI('/posts/likePost', 'POST', {idUser, idPost});
+}
+const dislikePost = (idUser, idPost) => {
+    return allCommons.callAPICommon.callAPI('/posts/dislikePost', 'POST', {idUser, idPost});
+}
 
 export default {
     createPost,
     fetchPost,
-    fetchPostById
+    fetchPostById,
+    likePost,
+    dislikePost
 };

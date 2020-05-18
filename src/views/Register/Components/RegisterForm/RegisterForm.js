@@ -83,9 +83,6 @@ export default function RegisterForm({ loadingButton, onFinish }) {
             form={form}
             onFinish={handleFinish}
             scrollToFirstError
-            initialValues={{
-                gender: 'Nam'
-            }}
         >
             <Form.Item
                 name="email"

@@ -29,6 +29,7 @@
 .user_img{
     height: 40px;
     width: 40px;
+    object-fit: cover;
     border:1.5px solid #f5f6fa;
 }
 .rounded-circle {

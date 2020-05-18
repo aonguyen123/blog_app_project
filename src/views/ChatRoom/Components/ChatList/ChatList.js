@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Input, Tooltip } from 'antd';
-// import InfiniteScroll from 'react-infinite-scroller';
 import { SendOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import ChatItem from './../ChatItem';
 import { ScrollToBottomCom } from './../../../../components';
@@ -16,11 +15,6 @@ export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }
     const messageInRoom = useSelector(
         state => state.chatsReducer.messageInRoom
     );
-    
-    // const loadItems = () => {
-    //     console.log('ssss')
-    // }
-
     return (
         <Card
             hoverable
@@ -49,14 +43,6 @@ export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }
             />
             <div className="chat_list_card_body_chat chat_list_msg_card_body">
                 <ScrollToBottomCom height="350px" width="100%">
-                {/* <InfiniteScroll
-                    pageStart={1}
-                    loadMore={loadItems}
-                    hasMore={true}
-                    isReverse={true}
-                    initialLoad={false}
-                    loader={<h1 key='s'>loading</h1>}
-                > */}
                     {messageInRoom.map((value, key) => (
                         <ChatItem
                             key={key}
@@ -64,7 +50,6 @@ export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }
                             message={value}
                         />
                     ))}
-                {/* </InfiniteScroll> */}
                 </ScrollToBottomCom>
             </div>
 

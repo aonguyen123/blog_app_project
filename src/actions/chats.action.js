@@ -15,7 +15,10 @@ import {
     GET_USER_CURRENT_ONL,
     GET_MESSAGE_ROOM_AFTER,
     LEAVE_ROOM,
-    DELETE_ROOM
+    DELETE_ROOM,
+    FETCH_MESSAGES_IN_ROOM,
+    FETCH_MESSAGES_IN_ROOM_SUCCESS,
+    FETCH_MESSAGES_IN_ROOM_ERROR
 } from '../constants/types';
 
 const getChats = () => {
@@ -112,6 +115,24 @@ const deleteRoom = data => {
         payload: data
     }
 }
+const fetchMessageInRoom = (page, page_size, idRoom) => {
+    return {
+        type: FETCH_MESSAGES_IN_ROOM,
+        payload: { page, page_size, idRoom }
+    }
+}
+const fetchMessageInRoomSuccess = (data) => {
+    return {
+        type: FETCH_MESSAGES_IN_ROOM_SUCCESS,
+        payload: data
+    }
+}
+const fetchMessageInRoomError = error => {
+    message.error(error, 4);
+    return {
+        type: FETCH_MESSAGES_IN_ROOM_ERROR
+    }
+}
 
 export default {
     getChats,
@@ -129,5 +150,8 @@ export default {
     getUserCurOnl,
     getMessageRoomAfter,
     leaveRoom,
-    deleteRoom
+    deleteRoom,
+    fetchMessageInRoom,
+    fetchMessageInRoomSuccess,
+    fetchMessageInRoomError
 };

@@ -14,10 +14,18 @@ export default function Home() {
 
         return () => {
             dispatch(allActions.postActions.unmountPostById());
-        }
+        };
     }, [dispatch]);
 
-    const ToolPostMemo = useMemo(() => <ToolPost userCurrent={userCurrent} />, [userCurrent]);
+    const ToolPostMemo = useMemo(() => <ToolPost userCurrent={userCurrent} />, [
+        userCurrent
+    ]);
+    const likePostHome = idPost => {
+        dispatch(allActions.postActions.likePost(userCurrent._id, idPost));
+    }
+    const dislikePostHome = idPost => {
+        dispatch(allActions.postActions.dislikePost(userCurrent._id, idPost));
+    }
 
     return (
         <>
@@ -30,12 +38,16 @@ export default function Home() {
                     </Row>
                     <Row gutter={[20, 20]}>
                         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                            <ListContent posts={posts} />
+                            <ListContent
+                                posts={posts}
+                                idUser={userCurrent._id}
+                                likePostHome={likePostHome}
+                                dislikePostHome={dislikePostHome}
+                            />
                         </Col>
                     </Row>
-                </Col>          
-                <Col xl={9} lg={9} md={9} sm={24} xs={24}>      
                 </Col>
+                <Col xl={9} lg={9} md={9} sm={24} xs={24}></Col>
             </Row>
         </>
     );

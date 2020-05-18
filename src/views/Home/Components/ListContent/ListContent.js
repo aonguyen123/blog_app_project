@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Skeleton, Empty } from 'antd';
 import allActions from './../../../../actions';
 
-import { CardList } from './../../../../components';
+import { PostList } from './../../../../components';
 
-export default function ListContent({posts}) {
+export default function ListContent({ posts, idUser, likePostHome, dislikePostHome }) {
     const hasMorePosts = useSelector(state => state.postReducer.hasMoreItems);
     const nextPage = useSelector(state => state.postReducer.nextPage);
     const dispatch = useDispatch();
@@ -29,8 +29,16 @@ export default function ListContent({posts}) {
             {posts.length === 0 && !hasMorePosts ? (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             ) : (
-                posts.map(value => <CardList key={value._id} post={value} />)
+                posts.map(value => (
+                    <PostList
+                        key={value._id}
+                        post={value}
+                        idUser={idUser}
+                        likePostHome={likePostHome}
+                        dislikePostHome={dislikePostHome}
+                    />
+                ))
             )}
         </InfiniteScroll>
     );
-};
+}

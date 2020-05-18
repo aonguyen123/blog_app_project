@@ -5,6 +5,7 @@ import uiReducer from './ui.reducer';
 import userReducer from './user.reducer';
 import postReducer from './post.reducer';
 import chatsReducer from './chats.reducer';
+import commentReducer from './comment.reducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     uiReducer,
     userReducer,
     postReducer,
-    chatsReducer
+    chatsReducer,
+    commentReducer
 });

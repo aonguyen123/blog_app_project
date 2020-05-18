@@ -17,4 +17,7 @@ export const version = [
     {
         version: '1.3.0'
     },
+    {
+        version: '1.5.0'
+    },
 ]

@@ -34,7 +34,7 @@ export default function SliderImage({children}) {
             {
                 breakpoint: 989,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 2,
                     slidesToScroll: 1,
                     infinite: false,
                     dots: true

@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import './styles.css';
 import Interests from '../Interests/Interests';
-import Skill from '../Skill/Skill';
 
 export default function AccountInfo({ userInfo, userCurrentId }) {
     return (
@@ -41,13 +40,6 @@ export default function AccountInfo({ userInfo, userCurrentId }) {
             </div>
             <Divider dashed />
             <Interests idUser={userInfo._id} userCurrentId={userCurrentId} />
-            <Divider
-                style={{
-                    marginTop: 16
-                }}
-                dashed
-            />
-            <Skill />
         </Card>
     );
 }

@@ -19,8 +19,19 @@ export default function Account() {
     }, [userCurrent._id, dispatch]);
 
     const memoAccountInfo = useMemo(() => {
-        return <AccountInfo userInfo={userCurrent} userCurrentId={userCurrent._id} />;
+        return (
+            <AccountInfo
+                userInfo={userCurrent}
+                userCurrentId={userCurrent._id}
+            />
+        );
     }, [userCurrent]);
+    const likePostHome = idPost => {
+        dispatch(allActions.postActions.likePost(userCurrent._id, idPost));
+    };
+    const dislikePostHome = idPost => {
+        dispatch(allActions.postActions.dislikePost(userCurrent._id, idPost));
+    };
 
     return (
         <GridContent>
@@ -29,7 +40,12 @@ export default function Account() {
                     {memoAccountInfo}
                 </Col>
                 <Col xl={16} lg={16} md={16} sm={24} xs={24}>
-                    <AccountRight userId={userCurrent._id} postsById={postsById} />
+                    <AccountRight
+                        userId={userCurrent._id}
+                        postsById={postsById}
+                        likePostHome={likePostHome}
+                        dislikePostHome={dislikePostHome}
+                    />
                 </Col>
             </Row>
         </GridContent>

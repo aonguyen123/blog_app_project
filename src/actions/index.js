@@ -4,6 +4,7 @@ import uiActions from './ui.action';
 import userActions from './user.action';
 import postActions from './post.action';
 import chatsActions from './chats.action';
+import commentActions from './comment.action';
 
 const allActions = {
     authenticatedActions,
@@ -11,6 +12,7 @@ const allActions = {
     uiActions,
     userActions,
     postActions,
-    chatsActions
+    chatsActions,
+    commentActions
 }
 export default allActions;
