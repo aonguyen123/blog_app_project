@@ -1,16 +1,21 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Empty, Skeleton } from 'antd';
-import { PostList } from './../../../../components';
-import allActions from './../../../../actions';
+import { PostList, FetchDataLoading } from 'components';
+import allActions from 'actions';
 import './styles.css';
 
-const ListPosts = ({ userIdById, userIdCurrent, postsById, likePostHome, dislikePostHome }) => {
-    const hasMorePostsById = useSelector(
-        state => state.postReducer.hasMoreItemsById
-    );
-    const nextPageById = useSelector(state => state.postReducer.nextPageById);
+const ListPosts = ({
+    userIdById,
+    userIdCurrent,
+    postsById,
+    likePostHome,
+    dislikePostHome,
+    hasMorePostsById,
+    nextPageById,
+    loadingFetchData
+}) => {
     const dispatch = useDispatch();
 
     const loadItems = () => {
@@ -24,30 +29,31 @@ const ListPosts = ({ userIdById, userIdCurrent, postsById, likePostHome, dislike
         );
     };
 
+    if(loadingFetchData > 0) return <FetchDataLoading />
     return (
-        <>
-            <InfiniteScroll
-                pageStart={nextPageById}
-                loadMore={loadItems}
-                hasMore={hasMorePostsById}
-                initialLoad={false}
-                loader={<Skeleton key='loading' avatar paragraph={{ rows: 4 }} active />}
-            >
-                {postsById.length === 0 && !hasMorePostsById ? (
-                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                ) : (
-                    postsById.map(value => (
-                        <PostList
-                            key={value._id}
-                            post={value}
-                            likePostHome={likePostHome}
-                            dislikePostHome={dislikePostHome}
-                            idUser={userIdCurrent}
-                        />
-                    ))
-                )}
-            </InfiniteScroll>
-        </>
+        <InfiniteScroll
+            pageStart={nextPageById}
+            loadMore={loadItems}
+            hasMore={hasMorePostsById}
+            initialLoad={false}
+            loader={
+                <Skeleton key="loading" avatar paragraph={{ rows: 4 }} active />
+            }
+        >
+            {postsById.length === 0 && !hasMorePostsById ? (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            ) : (
+                postsById.map(value => (
+                    <PostList
+                        key={value._id}
+                        post={value}
+                        likePostHome={likePostHome}
+                        dislikePostHome={dislikePostHome}
+                        idUser={userIdCurrent}
+                    />
+                ))
+            )}
+        </InfiniteScroll>
     );
 };
 

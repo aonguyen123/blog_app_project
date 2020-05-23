@@ -63,14 +63,14 @@ function* searchUser(q) {
 }
 
 function* searchUserFlowSaga({ payload }) {
-    yield put(allActions.uiActions.showLoadingFetchData());
+    yield put(allActions.uiActions.showLoadingData());
     const { q } = payload;
     yield delay(500);
     const data = yield call(searchUser, q);
     if(data) {
         yield put(allActions.userActions.searchUserSuccess(data));
     }
-    yield put(allActions.uiActions.hideLoadingFetchData());
+    yield put(allActions.uiActions.hideLoadingData());
 }
 
 function* fetchUserById(idUser) {
@@ -197,6 +197,64 @@ function* updatePasswordFlowSaga({payload: {newPass, oldPass, idUser}}) {
     }
     yield put(allActions.uiActions.hideLoadingButton());
 }
+function* updateInterest(interest, idUser) {
+    try {
+        const response = yield call(allServices.userService.updateInterest, interest, idUser);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(updateInterest, interest, idUser);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.updateInterestError(data.message));
+        }
+    }
+}
+function* updateInterestFlowSaga({payload: {interest, idUser}}) {
+    const data = yield call(updateInterest, interest, idUser);
+    if (data) {
+        yield put(allActions.userActions.updateInterestSuccess(data.interest));
+    }
+}
+function* removeInterest(interest, idUser) {
+    try {
+        const response = yield call(allServices.userService.removeInterest, interest, idUser);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(removeInterest, interest, idUser);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.removeInterestError(data.message));
+        }
+    }
+}
+function* removeInterestFlowSaga({payload: {interest, idUser}}) {
+    const data = yield call(removeInterest, interest, idUser);
+    if(data) {
+        yield put(allActions.userActions.removeInterestSuccess(data.interest));
+    }
+}
 
 const allUserSaga = {
     fetchUserFlowSaga,
@@ -204,7 +262,9 @@ const allUserSaga = {
     fetchUserByIdFlowSaga,
     updatePhotoURLFlowSaga,
     updateProfileFlowSaga,
-    updatePasswordFlowSaga
+    updatePasswordFlowSaga,
+    updateInterestFlowSaga,
+    removeInterestFlowSaga
 };
 
 export default allUserSaga;

@@ -9,8 +9,7 @@ import {
     FormattedMessage,
     formatMessage
 } from 'umi-plugin-react/locale';
-import { Link } from 'react-router-dom';
-import allConfigs from './../../../config';
+import { NavLink } from 'react-router-dom';
 import allActions from './../../../actions';
 import { headerMenu } from './../../../constants/header-menu';
 
@@ -21,7 +20,6 @@ function MenuReponsive() {
     const history = useHistory();
 
     const lang = getLocale();
-    const selectedMenu = allConfigs.menuConfigs.getSelectedMenu();
     const changeLang = ({ key }) => setLocale(key);
     const locales = ['vi-VN', 'en-US'];
     const languageLabels = {
@@ -35,15 +33,12 @@ function MenuReponsive() {
     const renderHeaderMenu = () =>
         headerMenu.map(menu => (
             <Menu.Item key={menu.id}>
-                <Link to={menu.link}>
+                <NavLink to={menu.link} activeStyle={{color: '#1890FF'}}>
                     {menu.icon}
                     <FormattedMessage id={menu.id} />
-                </Link>
+                </NavLink>
             </Menu.Item>
         ));
-    const onSelect = (item) => {
-        allConfigs.menuConfigs.setSelectedMenu(item.key);
-    }
     const onLogout = () => {
         dispatch(allActions.authenticatedActions.signout(history));
     }
@@ -53,8 +48,6 @@ function MenuReponsive() {
             <Menu
                 mode="inline"
                 style={{ borderRight: 'none' }}
-                onSelect={onSelect}
-                selectedKeys={selectedMenu}
             >
                 {renderHeaderMenu()}
             </Menu>

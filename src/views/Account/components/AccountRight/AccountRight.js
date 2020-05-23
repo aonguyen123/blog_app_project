@@ -9,7 +9,10 @@ export default function AccountRight({
     userIdCurrent,
     postsById,
     likePostHome,
-    dislikePostHome
+    dislikePostHome,
+    hasMorePostsById,
+    nextPageById,
+    loadingFetchData
 }) {
     const [tabKey, setTabKey] = useState('posts');
     const operationTabList = [
@@ -54,6 +57,9 @@ export default function AccountRight({
                     postsById={postsById}
                     likePostHome={likePostHome}
                     dislikePostHome={dislikePostHome}
+                    hasMorePostsById={hasMorePostsById}
+                    nextPageById={nextPageById}
+                    loadingFetchData={loadingFetchData}
                 />
             );
         }

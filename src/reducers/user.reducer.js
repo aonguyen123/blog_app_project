@@ -5,7 +5,9 @@ import {
     SIGN_OUT_SUCCESS,
     FETCH_USER_BY_ID_SUCCESS,
     UPDATE_PHOTOURL_USER_SUCCESS,
-    UPDATE_PROFILE_SUCCESS
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_INTEREST_SUCCESS,
+    REMOVE_INTEREST_SUCCESS
 } from './../constants/types';
 
 const initialState = {
@@ -54,6 +56,18 @@ export default function(state = initialState, action) {
                 ...state,
                 userInfo: {...userInfoUpdate}
             }
+        case UPDATE_INTEREST_SUCCESS:
+            const updated = createInterest(state.userInfo, action.payload);
+            return {
+                ...state,
+                userInfo: {...updated}
+            }
+        case REMOVE_INTEREST_SUCCESS:
+            const removed = removeInterest(state.userInfo, action.payload);
+            return {
+                ...state,
+                userInfo: removed
+            }
         default:
             return state;
     }
@@ -70,5 +84,16 @@ function updateProfile(userInfo, userUpdated) {
     userInfo.phonenumber = userUpdated.phone;
     userInfo.provinceOrCity = userUpdated.address.province;
     userInfo.district = userUpdated.address.district;
+    return userInfo;
+}
+function createInterest(userInfo, interest) {
+    userInfo.interests.push(interest);
+    return userInfo;
+}
+function removeInterest(userInfo, interest) {
+    const index = userInfo.interests.findIndex(i => i.label === interest.label);
+    if(index !== -1) {
+        userInfo.interests.splice(index, 1);
+    }    
     return userInfo;
 }

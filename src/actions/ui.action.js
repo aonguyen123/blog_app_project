@@ -6,6 +6,8 @@ import {
     CHANGE_VISIBLE,
     SHOW_ANIMATE,
     HIDE_ANIMATE,
+    SHOW_LOADING_DATA,
+    HIDE_LOADING_DATA,
 } from './../constants/types';
 
 const showLoadingButton = () => {
@@ -25,7 +27,7 @@ const showLoadingFetchData = () => {
 };
 const hideLoadingFetchData = () => {
     return {
-        type: HIDE_LOADING_FETCH_DATA
+        type: HIDE_LOADING_FETCH_DATA,
     };
 };
 const changeVisible = visible => {
@@ -46,6 +48,16 @@ const hideAnimate = (isHide, type) => {
         payload: {isHide, type}
     }
 }
+const showLoadingData = () => {
+    return {
+        type: SHOW_LOADING_DATA
+    }
+}
+const hideLoadingData = () => {
+    return {
+        type: HIDE_LOADING_DATA
+    }
+}
 
 export default {
     showLoadingButton,
@@ -54,5 +66,7 @@ export default {
     hideLoadingFetchData,
     changeVisible,
     showAnimate,
-    hideAnimate
+    hideAnimate,
+    showLoadingData,
+    hideLoadingData
 };

@@ -8,7 +8,12 @@ import {
 import './styles.css';
 import Interests from '../Interests/Interests';
 
-export default function AccountInfo({ userInfo, userCurrentId }) {
+export default function AccountInfo({
+    userInfo,
+    userCurrentId,
+    createInterest,
+    removeInterest
+}) {
     return (
         <Card
             style={{
@@ -39,7 +44,13 @@ export default function AccountInfo({ userInfo, userCurrentId }) {
                 )}
             </div>
             <Divider dashed />
-            <Interests idUser={userInfo._id} userCurrentId={userCurrentId} />
+            <Interests
+                idUser={userInfo._id}
+                userCurrentId={userCurrentId}
+                createInterest={createInterest}
+                removeInterest={removeInterest}
+                interests={userInfo.interests}
+            />
         </Card>
     );
 }

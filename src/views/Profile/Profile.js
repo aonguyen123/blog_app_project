@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { AccountInfo, AccountRight } from './../Account/components';
-import { FetchDataLoading } from './../../components';
-import allActions from '../../actions';
+import { FetchDataLoading, Results } from 'components';
+import allActions from 'actions';
 
 export default function Profile(props) {
     const postsById = useSelector(state => state.postReducer.postsById);
@@ -13,24 +13,20 @@ export default function Profile(props) {
     const userCurrent = useSelector(state => state.userReducer.userInfo);
     const loadingFetchData = useSelector(
         state => state.uiReducer.loadingFetchData
-    );
+    );    
+    const error = useSelector(state => state.errorReducer.isError);
+    const contentError = useSelector(state => state.errorReducer.contentError);
     const dispatch = useDispatch();
     const { idUser } = useParams();
 
     useEffect(() => {
         dispatch(allActions.userActions.fetchUserById(idUser));
         dispatch(allActions.postActions.fetchPostById(idUser, 1, 10));
-
         return () => {
             dispatch(allActions.postActions.unmountPostById());
+            dispatch(allActions.errorActions.cleanError());
         };
     }, [idUser, dispatch]);
-
-    const memoAccountInfo = useMemo(() => {
-        return (
-            <AccountInfo userInfo={userById} userCurrentId={userCurrent._id} />
-        );
-    }, [userById, userCurrent._id]);
 
     const likePostHome = idPost => {
         dispatch(allActions.postActions.likePost(userCurrent._id, idPost));
@@ -39,7 +35,17 @@ export default function Profile(props) {
         dispatch(allActions.postActions.dislikePost(userCurrent._id, idPost));
     };
 
-    if (loadingFetchData) return <FetchDataLoading />;
+    const memoAccountInfo = useMemo(() => {
+        return (
+            <AccountInfo
+                userInfo={userById}
+                userCurrentId={userCurrent._id}
+            />
+        );
+    }, [userById, userCurrent._id]);
+    
+    if (loadingFetchData > 0) return <FetchDataLoading />;
+    if(error) return <Results error={contentError} />
     return (
         <GridContent>
             <Row gutter={16}>

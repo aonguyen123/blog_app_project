@@ -5,10 +5,10 @@ import {
     SUCCESS,    
     UNAUTHORIZED
 } from './../constants/status_code';
-import { SIGN_OUT } from './../constants/types';
-import allServices from './../services';
+import { SIGN_OUT } from 'constants/types';
+import allServices from 'services';
 import allAuthSaga from './auth.saga';
-import allConfigs from '../config';
+import allConfigs from 'config';
 
 function* createPost(posts, mentions, idUser, urlImages) {
     try {
@@ -54,6 +54,7 @@ function* createPostFlowSaga({ payload }) {
     const data = yield call(createPost, posts, mentions, idUser, urlImages);
     if (data) {
         yield put(allActions.postActions.createPostSuccess(data.message));
+        yield put(allActions.postActions.fetchPost(1, 10));
     }
     yield put(allActions.uiActions.hideLoadingButton());
 }
@@ -87,12 +88,15 @@ function* fetchPost(page, page_size) {
     }
 }
 function* fetchPostFlowSaga({ payload }) {
+    yield put(allActions.uiActions.showLoadingFetchData());
     const { page, page_size } = payload;
-
     const data = yield call(fetchPost, page, page_size);
-    if (data) {
+    if (data && data.message === 'LOADED ALL') {
+        yield put(allActions.postActions.fetchPostOver(data.posts));
+    } else {
         yield put(allActions.postActions.fetchPostSuccess(data.posts));
     }
+    yield put(allActions.uiActions.hideLoadingFetchData());
 }
 
 function* fetchPostById(idUser, page, page_size) {
@@ -111,9 +115,7 @@ function* fetchPostById(idUser, page, page_size) {
         }
     } catch (e) {
         const { status, data } = e.response;
-        if (status === BAD_REQUSET) {
-            yield put(allActions.postActions.fetchPostByIdOver(data.message));
-        } else if (status === UNAUTHORIZED) {
+        if (status === UNAUTHORIZED) {
             const payload = {
                 refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
             };
@@ -129,11 +131,15 @@ function* fetchPostById(idUser, page, page_size) {
     }
 }
 function* fetchPostByIdFlowSaga({ payload }) {
+    yield put(allActions.uiActions.showLoadingFetchData());
     const { idUser, page, page_size } = payload;
     const data = yield call(fetchPostById, idUser, page, page_size);
-    if (data) {
+    if (data && data.message === 'LOADED ALL') {
+        yield put(allActions.postActions.fetchPostByIdOver(data.postsById));
+    } else if (data) {
         yield put(allActions.postActions.fetchPostByIdSuccess(data.postsById));
     }
+    yield put(allActions.uiActions.hideLoadingFetchData());
 }
 
 function* likePost(idUser, idPost) {
@@ -164,7 +170,7 @@ function* likePostFlowSaga({payload: {idUser, idPost}}) {
     yield put(allActions.postActions.likePostSuccess(data.post));
     if (data && data.message !== 'UNLIKE') {
         yield put(allActions.uiActions.showAnimate(true, 'LIKE'));
-        yield delay(1600);
+        yield delay(1400);
         yield put(allActions.uiActions.hideAnimate(false, 'LIKE'));   
     }
 }

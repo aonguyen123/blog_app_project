@@ -1,0 +1,1 @@
+(window["webpackJsonpreact-antd"]=window["webpackJsonpreact-antd"]||[]).push([[31],{1295:function(n,e,t){"use strict";t.r(e);var a=t(0),r=t.n(a),u=t(1287);var c=function(n){return r.a.createElement(r.a.Fragment,null,r.a.createElement(u.a,null),r.a.createElement("h1",null,"about"))};t.d(e,"default",(function(){return c}))}}]);

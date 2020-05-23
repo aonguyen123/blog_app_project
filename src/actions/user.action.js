@@ -18,6 +18,12 @@ import {
     UPDATE_PASSWORD_SUCCESS,
     UPDATE_PASSWORD_ERROR,
     UPDATE_PASSWORD,
+    UPDATE_INTEREST,
+    UPDATE_INTEREST_SUCCESS,
+    UPDATE_INTEREST_ERROR,
+    REMOVE_INTEREST_SUCCESS,
+    REMOVE_INTEREST_ERROR,
+    REMOVE_INTEREST,
 } from './../constants/types';
 
 const searchUser = q => {
@@ -71,9 +77,9 @@ const fetchUserByIdSuccess = data => {
     }
 }
 const fetchUserByIdError = error => {
-    message.error(error, 4);
     return {
-        type: FETCH_USER_BY_ID_ERROR
+        type: FETCH_USER_BY_ID_ERROR,
+        payload: error
     }
 }
 const updatePhotoURL = (photoURL, idUser) => {
@@ -131,6 +137,42 @@ const updatePasswordError = error => {
         type: UPDATE_PASSWORD_ERROR
     }
 }
+const updateInterest = (interest, idUser) => {
+    return {
+        type: UPDATE_INTEREST,
+        payload: {interest, idUser}
+    }
+}
+const updateInterestSuccess = interest => {
+    return {
+        type: UPDATE_INTEREST_SUCCESS,
+        payload: interest
+    }
+}
+const updateInterestError = error => {
+    message.error(error, 4);
+    return {
+        type: UPDATE_INTEREST_ERROR        
+    }
+}
+const removeInterest = (interest, idUser) => {
+    return {
+        type: REMOVE_INTEREST,
+        payload: {interest, idUser}
+    }
+}
+const removeInterestSuccess = interest => {
+    return {
+        type: REMOVE_INTEREST_SUCCESS,
+        payload: interest
+    }
+}
+const removeInterestError = error => {
+    message.error(error, 4);
+    return {
+        type: REMOVE_INTEREST_ERROR
+    }
+}
 
 export default {
     searchUser,
@@ -150,5 +192,11 @@ export default {
     updateProfileError,
     updatePassword, 
     updatePasswordSuccess,
-    updatePasswordError
+    updatePasswordError,
+    updateInterest,
+    updateInterestSuccess,
+    updateInterestError,
+    removeInterest,
+    removeInterestSuccess,
+    removeInterestError
 };

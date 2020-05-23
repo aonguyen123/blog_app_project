@@ -24,7 +24,9 @@ import {
     ADD_COMMENT,
     FETCH_COMMENTS_BY_IDPOST,
     LIKE_POST,
-    DISLIKE_POST
+    DISLIKE_POST,
+    UPDATE_INTEREST,
+    REMOVE_INTEREST
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
@@ -45,6 +47,8 @@ function* rootSaga() {
         takeLatest(UPDATE_PHOTOURL_USER, allUserSaga.updatePhotoURLFlowSaga),
         takeLatest(UPDATE_PROFILE, allUserSaga.updateProfileFlowSaga),
         takeLatest(UPDATE_PASSWORD, allUserSaga.updatePasswordFlowSaga),
+        takeLatest(UPDATE_INTEREST, allUserSaga.updateInterestFlowSaga),
+        takeLatest(REMOVE_INTEREST, allUserSaga.removeInterestFlowSaga),
 
         takeLatest(SIGN_IN, allAuthSaga.signInFlowSaga),
         takeLatest(SIGN_OUT, allAuthSaga.signout),

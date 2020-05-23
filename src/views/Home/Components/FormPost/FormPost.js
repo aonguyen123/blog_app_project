@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { Form, Mentions, Upload, Modal } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import { PlusOutlined } from '@ant-design/icons';
-import allCommons from './../../../../common';
-import allActions from './../../../../actions';
+import allCommons from 'common';
+import allActions from 'actions';
 import firebaseConfig from './../../../../firebase';
 import './styles.css';
 
@@ -18,14 +18,17 @@ const normFile = ({ file, fileList }) => {
     return newFileLists;
 };
 
-export default function FormPost(props) {
-    const { changeMentions } = props;
-
+export default function FormPost({searchResult, loadingData, onChange}) {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
-    const loading = useSelector(state => state.uiReducer.loadingFetchData);
-    const searchResult = useSelector(state => state.userReducer.searchResult);
+    const uploadTask = useRef(null);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(uploadTask.current !== null) {
+            uploadTask.current.cancel();
+        }
+    }, []);
 
     const handleCancel = () => setPreviewVisible(false);
     const handlePreview = async file => {
@@ -54,8 +57,7 @@ export default function FormPost(props) {
     };
     const propsUpload = {
         beforeUpload: file => {
-            if(!allCommons.uploadCommon.beforeUpload(file))
-            {
+            if(!allCommons.uploadCommon.beforeUpload(file)) {
                 return false;
             }
         },
@@ -72,26 +74,12 @@ export default function FormPost(props) {
         arr.push(newMention);
         dispatch(allActions.postActions.setMentions(arr));
     };
-    const onChange = value => {
-        const mentionsChange = getMentions(value);
-        dispatch(allActions.postActions.setPost(value));
-        changeMentions(mentionsChange);
-    };
-    const handleChangeUpload = info => {
-        const urls = [];
-        info.fileList.forEach(el => {
-            if (el.response) {
-                urls.push(el.response.url);
-            }
-        });
-        dispatch(allActions.postActions.setUrlImages(urls));
-    };
     const customRequest = option => {
         const { onSuccess, onError, file, onProgress } = option;
-        const uploadTask = firebaseConfig.firebase.storage
+        uploadTask.current = firebaseConfig.firebase.storage
             .ref(`/images/${file.name}`)
             .put(file);
-        uploadTask.on(
+        uploadTask.current.on(
             'state_changed',
             snapshot => {
                 let percent =
@@ -117,6 +105,11 @@ export default function FormPost(props) {
             }
         );
     };
+    const onChangeMention = value => {
+        const mentionChange = getMentions(value);
+        onChange(mentionChange);
+    }
+
     return (
         <>
             <Item name="posts">
@@ -125,20 +118,21 @@ export default function FormPost(props) {
                     placeholder={formatMessage({
                         id: 'home.placeholder.formPost'
                     })}
-                    loading={loading}
+                    loading={loadingData}
                     onSearch={onSearch}
                     rows={3}
                     onSelect={onSelect}
-                    onChange={onChange}
+                    onChange={onChangeMention}
+                    
                 >
-                    {searchResult.map((value, key) => (
+                    {searchResult.map(value => (
                         <Option
                             key={value._id}
                             value={value.searchUser}
                             className="antd-dynamic-option"
                         >
-                            <img src={value.photoURL} alt={value.searchUser} />
-                            <span key={value._id}>{value.searchUser}</span>
+                            <img src={value.photoURL} alt='myPhoto' />
+                            <span key={value._id}>{value.displayName}</span>
                         </Option>
                     ))}
                 </Mentions>
@@ -150,7 +144,6 @@ export default function FormPost(props) {
             >
                 <Upload
                     {...propsUpload}
-                    onChange={handleChangeUpload}
                     customRequest={customRequest}
                 >
                     {uploadButton}

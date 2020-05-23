@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
 
-export default function CommentItem({ item }) {
+export default function CommentItem({ item, idUser }) {
 
     return (
         <Comment
             author={
-                <Link to={`/profile/${item.idUser._id}`}>
+                <Link to={idUser === item.idUser._id ? '/account' : `/profile/${item.idUser._id}`}>
                     {item.idUser.displayName}
                 </Link>
             }

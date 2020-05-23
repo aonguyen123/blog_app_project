@@ -18,6 +18,12 @@ const updateProfile = (data, idUser) => {
 const updatePassword = (newPass, oldPass, idUser) => {
     return allCommons.callAPICommon.callAPI('/user/updatePass', 'POST', {newPass, oldPass, idUser});
 }
+const updateInterest = (interest, idUser) => {
+    return allCommons.callAPICommon.callAPI('/user/updateInterest', 'POST', {interest, idUser});
+}
+const removeInterest = (interest, idUser) => {
+    return allCommons.callAPICommon.callAPI('/user/removeInterest', 'POST', {interest, idUser});
+}
 
 export default {
     searchUser,
@@ -25,5 +31,7 @@ export default {
     fetchUserById,
     updatePhotoURL,
     updateProfile,
-    updatePassword
+    updatePassword,
+    updateInterest,
+    removeInterest
 }

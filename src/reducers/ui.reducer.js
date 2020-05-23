@@ -6,11 +6,14 @@ import {
     CHANGE_VISIBLE,
     SHOW_ANIMATE,
     HIDE_ANIMATE,
+    SHOW_LOADING_DATA,
+    HIDE_LOADING_DATA,
 } from './../constants/types';
 
 const initialState = {
     loadingButton: false,
-    loadingFetchData: false,
+    loadingFetchData: 0,
+    loadingData: false,
     visible: false,
     isShowAnimate: false,
     typeAnimate: ''
@@ -31,12 +34,12 @@ export default function(state = initialState, action) {
         case SHOW_LOADING_FETCH_DATA:
             return {
                 ...state,
-                loadingFetchData: true
+                loadingFetchData: state.loadingFetchData + 1
             };
         case HIDE_LOADING_FETCH_DATA:
             return {
                 ...state,
-                loadingFetchData: false
+                loadingFetchData: state.loadingFetchData - 1,
             };
         case CHANGE_VISIBLE:
             return {
@@ -54,6 +57,16 @@ export default function(state = initialState, action) {
                 ...state,
                 isShowAnimate: action.payload.isHide,
                 typeAnimate: action.payload.type
+            }
+        case SHOW_LOADING_DATA:
+            return {
+                ...state,
+                loadingData: true
+            }
+        case HIDE_LOADING_DATA:
+            return {
+                ...state,
+                loadingData: false
             }
         default:
             return state;

@@ -3,10 +3,15 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Tag, Input } from 'antd';
 import './styles.css';
 
-export default function Interests({idUser, userCurrentId}) {
+export default function Interests({
+    idUser,
+    userCurrentId,
+    createInterest,
+    interests,
+    removeInterest
+}) {
     const [inputVisible, setInputVisible] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const [newTags, setNewTags] = useState([]);
     let auto = undefined;
 
     useEffect(() => {
@@ -21,25 +26,19 @@ export default function Interests({idUser, userCurrentId}) {
         setInputValue(e.target.value);
     };
     const handleClose = removedTag => {
-        const tags = newTags.filter(tag => tag.key !== removedTag.key);
-        setNewTags(tags);
+        removeInterest(removedTag.label);
     };
     const handleInputConfirm = () => {
         const inputValue1 = inputValue;
-        let newTags1 = newTags;
         if (
             inputValue1 &&
-            newTags1.filter(tag => tag.label === inputValue1).length === 0
+            interests.filter(
+                tag => tag.label === inputValue1.trim().toLowerCase()
+            ).length === 0 &&
+            inputValue1.length < 15
         ) {
-            newTags1 = [
-                ...newTags1,
-                {
-                    key: `new-${newTags1.length}`,
-                    label: inputValue1
-                }
-            ];
+            createInterest(inputValue.trim().toLowerCase());
         }
-        setNewTags([...newTags1]);
         setInputVisible(false);
         setInputValue('');
     };
@@ -47,8 +46,13 @@ export default function Interests({idUser, userCurrentId}) {
     return (
         <div className="tags">
             <div className="tagsTitle">Interests</div>
-            {newTags.map(item => (
-                <Tag key={item.key} closable color='gold' onClose={() => handleClose(item)}>
+            {interests && interests.map((item, key) => (
+                <Tag
+                    key={key}
+                    closable={userCurrentId === idUser ? true : false}
+                    color="purple"
+                    onClose={() => handleClose(item)}
+                >
                     {item.label}
                 </Tag>
             ))}

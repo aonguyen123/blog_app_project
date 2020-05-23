@@ -8,10 +8,10 @@ import {
     GlobalFootter,
     SiderMenuLeft,
     Animation
-} from './../../components';
-import allActions from '../../actions';
-import Context from '../../context';
-import { ROOT_URL_SERVER } from './../../constants/base_url';
+} from 'components';
+import allActions from 'actions';
+import Context from 'context';
+import { ROOT_URL_SERVER } from 'constants/base_url';
 import './styles.css';
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -60,7 +60,6 @@ function BasicLayout(props) {
                         <SiderMenuLeft collapsedWidth={collapsedWidth} />   
                     </Affix>
                 </Sider>
-                
                 <Content>
                     <div className="content-layout-basic">
                         <Suspense fallback={<LazyLoading />}>

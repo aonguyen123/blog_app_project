@@ -71,7 +71,7 @@ export default function GeographicView({ value = {}, onChange, provinceUser, dis
     return (
         <Row>
             <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                <Spin spinning={loadingFetchData} wrapperClassName="row" size="small">
+                <Spin spinning={loadingFetchData > 0} wrapperClassName="row" size="small">
                     <Select
                         showSearch
                         className="item"

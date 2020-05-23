@@ -5,8 +5,6 @@ import {
     FETCH_POST_OVER,
     FETCH_POSTS_BY_ID_SUCCESS,
     FETCH_POSTS_BY_ID_OVER,
-    SET_POST,
-    SET_URL_IMAGE,
     UNMOUNT_POST_BY_ID,
     LIKE_POST_SUCCESS,
     DISLIKE_POST_SUCCESS
@@ -15,42 +13,21 @@ import {
 const initialState = {
     mentions: [],
     posts: [],
-    hasMoreItems: true,
+    hasMoreItems: false,
     nextPage: 1,
     postsById: [],
     nextPageById: 1,
-    hasMoreItemsById: true,
-    post: '',
-    urlImages: [],
-    isCreatePostSuccess: false,
+    hasMoreItemsById: false,
 };
 
 export default function(state = initialState, action) {
     switch (action.type) {
         case CREATE_POST_SUCCESS:
             return {
-                ...state,
-                hasMoreItems: true,
+                ...state,                
+                hasMoreItems: false,
                 posts: [],
                 nextPage: 1,
-                nextPageById: 1,
-                postsById: [],
-                hasMoreItemsById: true,
-                post: '',
-                urlImages: [],
-                isCreatePostSuccess: true
-            };
-        case SET_POST:
-            return {
-                ...state,
-                post: action.payload,
-                isCreatePostSuccess: false
-            };
-        case SET_URL_IMAGE:
-            return {
-                ...state,
-                urlImages: action.payload,
-                isCreatePostSuccess: false
             };
         case SET_MENTIONS:
             return {
@@ -60,42 +37,38 @@ export default function(state = initialState, action) {
         case FETCH_POST_SUCCESS:
             return {
                 ...state,
-                posts:
-                    action.payload.length === 0
-                        ? action.payload
-                        : [...state.posts, ...action.payload],
+                posts: [...state.posts, ...action.payload],
                 nextPage: state.nextPage + 1,
-                hasMoreItems: action.payload.length === 0 ? false : true
+                hasMoreItems: true
             };
         case FETCH_POST_OVER:
             return {
                 ...state,
+                posts: [...state.posts, ...action.payload],
                 hasMoreItems: false
             };
         case FETCH_POSTS_BY_ID_SUCCESS:
             return {
                 ...state,
-                postsById:
-                    action.payload.length === 0
-                        ? action.payload
-                        : [...state.postsById, ...action.payload],
+                postsById: [...state.postsById, ...action.payload],
                 nextPageById: state.nextPageById + 1,
-                hasMoreItemsById: action.payload.length === 0 ? false : true
+                hasMoreItemsById: true
             };
         case FETCH_POSTS_BY_ID_OVER:
             return {
                 ...state,
+                postsById: [...state.postsById, ...action.payload],
                 hasMoreItemsById: false
             };
         case UNMOUNT_POST_BY_ID:
             return {
                 ...state,
                 postsById: [],
-                hasMoreItemsById: true,
+                hasMoreItemsById: false,
                 nextPageById: 1,
                 posts: [],
                 nextPage: 1,
-                hasMoreItems: true
+                hasMoreItems: false
             };
         case LIKE_POST_SUCCESS:
             const { posts, postsById } = handlePost(

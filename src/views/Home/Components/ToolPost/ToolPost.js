@@ -1,30 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { PageHeader, Form, Card, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import FormPost from './../FormPost';
-import allActions from './../../../../actions';
+import allActions from 'actions';
 
-export default function ToolPost({userCurrent}) {
+export default function ToolPost({
+    userCurrent,
+    loadingButton,
+    mentions,
+    searchResult,
+    loadingData
+}) {
     const [mentionsChange, setMentionsChange] = useState([]);
-
     const [form] = Form.useForm();
+    const resetFormRef = useRef(null);
     const dispatch = useDispatch();
 
-    const mentions = useSelector(state => state.postReducer.mentions);
-    const loadingButton = useSelector(state => state.uiReducer.loadingButton);
-    const post = useSelector(state => state.postReducer.post);
-    const urlImages = useSelector(state => state.postReducer.urlImages);
-    const isCreatePostSuccess = useSelector(
-        state => state.postReducer.isCreatePostSuccess
-    );
-
     useEffect(() => {
-        if (isCreatePostSuccess) {
+        resetFormRef.current = loadingButton;
+    }, [loadingButton]);
+    const preResetForm = resetFormRef.current;
+    useEffect(() => {
+        if (!loadingButton && preResetForm) {
             form.resetFields();
         }
-    }, [isCreatePostSuccess, form]);
+    }, [loadingButton, preResetForm, form]);
 
     const checkMentions = (mentions, mentionChange) => {
         let result = [];
@@ -50,13 +52,18 @@ export default function ToolPost({userCurrent}) {
     const handleClickPost = async () => {
         const idUser = userCurrent._id;
         const values = await form.validateFields();
+
+        if (!values?.posts && !values?.upload_image) return;
+
         const mentionsArr = checkMentions(mentions, mentionsChange);
-        let flag = true;
-        if (values.upload_image !== undefined) {
+        let flag = true, urlImages = [];
+        if(Array.isArray(values.upload_image) && values.upload_image.length > 0) {
             for (let i = 0; i < values.upload_image.length; i++) {
                 if (values.upload_image[i].status === 'uploading') {
                     flag = false;
                     break;
+                } else {
+                    urlImages.push(values.upload_image[i].response.url);
                 }
             }
         }
@@ -73,9 +80,10 @@ export default function ToolPost({userCurrent}) {
             message.warning('Uploading photo, plase wait !!!', 4);
         }
     };
-    const changeMentions = mentionChange => {
+    const onChange = mentionChange => {
         setMentionsChange(mentionChange);
     };
+
     return (
         <Form form={form} onFinish={handleClickPost}>
             <Card
@@ -88,9 +96,6 @@ export default function ToolPost({userCurrent}) {
                         type="link"
                         htmlType="submit"
                         loading={loadingButton}
-                        disabled={
-                            urlImages.length === 0 && !post ? true : false
-                        }
                     >
                         <FormattedMessage id="home.btnPost" />
                     </Button>
@@ -101,7 +106,11 @@ export default function ToolPost({userCurrent}) {
                     avatar={{ src: userCurrent.photoURL }}
                     style={{ margin: '0px', padding: '0px' }}
                 >
-                    <FormPost changeMentions={changeMentions} />
+                    <FormPost
+                        searchResult={searchResult}
+                        loadingData={loadingData}
+                        onChange={onChange}
+                    />
                 </PageHeader>
             </Card>
         </Form>

@@ -67,7 +67,7 @@ export default function ChatRoom() {
         socketRef.current.emit('leaveRoom', ({idRoom, idUser}));
     }
 
-    if (loadingFetchData) return <FetchDataLoading />;
+    if (loadingFetchData > 0) return <FetchDataLoading />;
     return (
         <GridContent>
             <Row gutter={[16, 16]}>

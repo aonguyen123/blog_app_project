@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'antd';
 import CommentItem from '../CommentItem';
 
-export default function CommentList({comments}) {
+export default function CommentList({comments, idUser}) {
 
     return (
         <List
@@ -11,7 +11,7 @@ export default function CommentList({comments}) {
             itemLayout="horizontal"
             dataSource={comments}
             renderItem={item => (
-                <CommentItem item={item} />
+                <CommentItem item={item} idUser={idUser} />
             )}
         />
     );

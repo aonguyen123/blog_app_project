@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Upload, Button, Row, Col } from 'antd';
-import allCommons from './../../../../common';
-import { UploadImage } from './../../../../components';
-import firebaseConfig from '../../../../firebase';
+import allCommons from 'common';
+import { UploadImage } from 'components';
+import firebaseConfig from './../../../../firebase';
 import './styles.css';
 
 export default function AvatarSettingView({ photo, updatePhotoURL }) {

@@ -10,8 +10,6 @@ import {
     FETCH_POSTS_BY_ID,
     FETCH_POSTS_BY_ID_SUCCESS,
     FETCH_POSTS_BY_ID_OVER,
-    SET_POST,
-    SET_URL_IMAGE,
     FETCH_POST_ERROR,
     FETCH_POSTS_BY_ID_ERROR,
     UNMOUNT_POST_BY_ID,
@@ -37,7 +35,7 @@ const createPost = (posts, mentions, idUser, urlImages) => {
 const createPostSuccess = (notice) => {
     message.success(notice);
     return {
-        type: CREATE_POST_SUCCESS,
+        type: CREATE_POST_SUCCESS
     };
 };
 const createPostError = error => {
@@ -46,18 +44,6 @@ const createPostError = error => {
         type: CREATE_POST_ERROR
     };
 };
-const setPost = post => {
-    return {
-        type: SET_POST,
-        payload: post
-    }
-}
-const setUrlImages = urlImages => {
-    return {
-        type: SET_URL_IMAGE,
-        payload: urlImages
-    }
-}
 const setMentions = mentions => {
     return {
         type: SET_MENTIONS,
@@ -85,10 +71,10 @@ const fetchPostError = notice => {
         type: FETCH_POST_ERROR
     }
 }
-const fetchPostOver = notice => {
-    message.info(notice);
+const fetchPostOver = data => {
     return {
-        type: FETCH_POST_OVER
+        type: FETCH_POST_OVER,
+        payload: data
     };
 };
 const fetchPostById = (idUser, page, page_size) => {
@@ -107,16 +93,16 @@ const fetchPostByIdSuccess = (data) => {
         payload: data
     }
 }
-const fetchPostByIdOver = notice => {
-    message.info(notice);
+const fetchPostByIdOver = data => {
     return {
-        type: FETCH_POSTS_BY_ID_OVER
+        type: FETCH_POSTS_BY_ID_OVER,
+        payload: data
     };
 };
-const fetchPostByIdError = notice => {
-    message.error(notice, 4);
+const fetchPostByIdError = error => {
     return {
-        type: FETCH_POSTS_BY_ID_ERROR
+        type: FETCH_POSTS_BY_ID_ERROR,
+        payload: error
     }
 };
 const unmountPostById = () => {
@@ -174,8 +160,6 @@ export default {
     fetchPostByIdSuccess,
     fetchPostByIdError,
     fetchPostByIdOver,
-    setPost,
-    setUrlImages,
     unmountPostById,
     likePost, 
     likePostSuccess,

@@ -1,14 +1,19 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Skeleton, Empty } from 'antd';
-import allActions from './../../../../actions';
+import allActions from 'actions';
+import { PostList, FetchDataLoading } from 'components';
 
-import { PostList } from './../../../../components';
-
-export default function ListContent({ posts, idUser, likePostHome, dislikePostHome }) {
-    const hasMorePosts = useSelector(state => state.postReducer.hasMoreItems);
-    const nextPage = useSelector(state => state.postReducer.nextPage);
+export default function ListContent({
+    posts,
+    idUser,
+    likePostHome,
+    dislikePostHome,
+    hasMorePosts,
+    nextPage,
+    loadingFetchData
+}) {
     const dispatch = useDispatch();
 
     const loadItems = () => {
@@ -16,6 +21,7 @@ export default function ListContent({ posts, idUser, likePostHome, dislikePostHo
         dispatch(allActions.postActions.fetchPost(nextPage, page_size));
     };
 
+    if(loadingFetchData > 0) return <FetchDataLoading />
     return (
         <InfiniteScroll
             pageStart={nextPage}

@@ -4,7 +4,10 @@ import { Form, Input, Tooltip, Button, Upload, message } from 'antd';
 import {
     QuestionCircleOutlined,
     FormOutlined as RegisterIcon,
-    UploadOutlined
+    UploadOutlined,
+    MailOutlined,
+    LockOutlined,
+    SmileOutlined
 } from '@ant-design/icons';
 import allCommons from '../../../../common';
 import firebaseConfig from '../../../../firebase';
@@ -18,10 +21,10 @@ export default function RegisterForm({ loadingButton, onFinish }) {
 
     useEffect(() => {
         return () => {
-            if(uploadTask.current !== null) {
+            if (uploadTask.current !== null) {
                 uploadTask.current.cancel();
             }
-        }
+        };
     }, []);
 
     const checkNickname = (rule, value) => {
@@ -42,14 +45,21 @@ export default function RegisterForm({ loadingButton, onFinish }) {
     );
     const uploadSuccess = () => {
         setDisable(false);
-    }
+    };
     const customRequest = option => {
         setDisable(true);
         const { onSuccess, onError, file, onProgress } = option;
         uploadTask.current = firebaseConfig.firebase.storage
-        .ref(`/images/${file.name}`)
-        .put(file);
-        UploadImage.customRequest(onSuccess, onError, file, onProgress, uploadTask.current, uploadSuccess);
+            .ref(`/images/${file.name}`)
+            .put(file);
+        UploadImage.customRequest(
+            onSuccess,
+            onError,
+            file,
+            onProgress,
+            uploadTask.current,
+            uploadSuccess
+        );
     };
     const onRemove = file => {
         setDisable(false);
@@ -60,8 +70,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
         let newFileLists = [...fileList].filter(file =>
             allCommons.uploadCommon.filterFileUpload(file)
         );
-        if(newFileLists.length !== 0)
-        {
+        if (newFileLists.length !== 0) {
             files.push(newFileLists[newFileLists.length - 1]);
         }
         return files;
@@ -99,7 +108,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                     }
                 ]}
             >
-                <Input />
+                <Input prefix={<MailOutlined />} />
             </Form.Item>
 
             <Form.Item
@@ -116,9 +125,20 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                     }
                 ]}
                 hasFeedback
+                style={{
+                    display: 'inline-block',
+                    width: 'calc(50% - 12px)'
+                }}
             >
-                <Input.Password />
+                <Input.Password prefix={<LockOutlined />} />
             </Form.Item>
+            <span
+                style={{
+                    display: 'inline-block',
+                    width: '24px',
+                }}
+            >
+            </span>
 
             <Form.Item
                 name="confirm"
@@ -141,8 +161,12 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                         }
                     })
                 ]}
+                style={{
+                    display: 'inline-block',
+                    width: 'calc(50% - 12px)'
+                }}
             >
-                <Input.Password />
+                <Input.Password prefix={<LockOutlined />} />
             </Form.Item>
 
             <Form.Item
@@ -174,7 +198,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                     }
                 ]}
             >
-                <Input />
+                <Input prefix={<SmileOutlined />} />
             </Form.Item>
 
             <Form.Item
@@ -208,6 +232,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                     type="primary"
                     htmlType="submit"
                     icon={<RegisterIcon />}
+                    block
                     loading={loadingButton}
                 >
                     Register

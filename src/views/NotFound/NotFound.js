@@ -1,13 +1,8 @@
 import React from 'react';
-import { Button, Result } from 'antd';
+import Exception from 'ant-design-pro/lib/Exception';
 
 export default function NotFound() {
     return (
-        <Result
-            status="404"
-            title="404"
-            subTitle="Sorry, the page you visited does not exist."
-            extra={<Button href='/' type="primary">Back Home</Button>}
-        />
+        <Exception type="404" desc={<p>Sorry, the page you visited does not exist.</p>} />
     );
 }

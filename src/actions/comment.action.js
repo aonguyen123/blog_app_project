@@ -32,9 +32,9 @@ const fetchCommentByIdPostSuccess = data => {
     }
 }
 const fetchCommentByIdPostError = error => {
-    message.error(error, 4);
     return {
-        type: FETCH_COMMENTS_BY_IDPOST_ERROR
+        type: FETCH_COMMENTS_BY_IDPOST_ERROR,
+        payload: error
     }
 }
 

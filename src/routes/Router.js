@@ -22,7 +22,6 @@ const Chats = lazy(() => import('./../views/Chats'));
 const ChatRoom = lazy(() => import('./../views/ChatRoom'));
 const Profile = lazy(() => import('./../views/Profile'));
 const Comments = lazy(() => import('./../views/Comments'));
-const AuthenticatedPage = lazy(() => import('./../views/Authenticated'));
 const NotFoundPage = lazy(() => import('./../views/NotFound'));
 
 export default function Router() {
@@ -119,14 +118,6 @@ export default function Router() {
                     layout={MinimalLayout}
                     path="/register"
                     restricted={true}
-                />
-                <PublishRouter
-                    component={AuthenticatedPage}
-                    isAuth={isAuth}
-                    exact
-                    layout={MinimalLayout}
-                    path="/not-authenticated"
-                    restricted={false}
                 />
                 <PublishRouter
                     component={NotFoundPage}
