@@ -5,6 +5,7 @@ import postService from './post.service';
 import firebaseService from './firebase.service';
 import chatsService from './chats.service';
 import commentService from './comment.service';
+import eventService from './event.service';
 
 const allService = {
     authService,
@@ -13,7 +14,8 @@ const allService = {
     postService,
     firebaseService,
     chatsService,
-    commentService
+    commentService,
+    eventService
 };
 
 export default allService;

@@ -19,6 +19,8 @@ import {
     DISLIKE_POST,
     DISLIKE_POST_SUCCESS,
     DISLIKE_POST_ERROR,
+    LOAD_MORE_POST,
+    LOAD_MORE_POST_BY_ID,
 } from './../constants/types';
 
 const createPost = (posts, mentions, idUser, urlImages) => {
@@ -50,15 +52,26 @@ const setMentions = mentions => {
         payload: mentions
     };
 };
-const fetchPost = (page, page_size) => {
+const fetchPost = (page, page_size, idUser) => {
     return {
         type: FETCH_POST,
         payload: {
             page,
-            page_size
+            page_size,
+            idUser
         }
     };
 };
+const loadMorePost = (page, page_size, idUser) => {
+    return {
+        type: LOAD_MORE_POST,
+        payload: {
+            page,
+            page_size,
+            idUser
+        }
+    }
+}
 const fetchPostSuccess = (data) => {
     return {
         type: FETCH_POST_SUCCESS,
@@ -80,6 +93,16 @@ const fetchPostOver = data => {
 const fetchPostById = (idUser, page, page_size) => {
     return {
         type: FETCH_POSTS_BY_ID,
+        payload: {
+            idUser,
+            page,
+            page_size
+        }
+    }
+}
+const loadMorePostById = (idUser, page, page_size) => {
+    return {
+        type: LOAD_MORE_POST_BY_ID,
         payload: {
             idUser,
             page,
@@ -153,10 +176,12 @@ export default {
     createPostError,
     setMentions,
     fetchPost,
+    loadMorePost,
     fetchPostSuccess,
     fetchPostError,
     fetchPostOver,
     fetchPostById,
+    loadMorePostById,
     fetchPostByIdSuccess,
     fetchPostByIdError,
     fetchPostByIdOver,

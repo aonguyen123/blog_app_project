@@ -18,7 +18,7 @@ export default function ListContent({
 
     const loadItems = () => {
         const page_size = 10;
-        dispatch(allActions.postActions.fetchPost(nextPage, page_size));
+        dispatch(allActions.postActions.loadMorePost(nextPage, page_size, idUser));
     };
 
     if(loadingFetchData > 0) return <FetchDataLoading />

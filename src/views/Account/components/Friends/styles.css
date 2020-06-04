@@ -1,0 +1,8 @@
+.friend-title {
+    margin-bottom: 12px;    
+    font-weight: 500;    
+}
+
+.friends .antd-pro-avatar-list-avatarList ul {
+    padding: 0;
+}

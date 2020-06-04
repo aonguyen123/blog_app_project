@@ -37,9 +37,9 @@ function* fetchUserFlowSaga({ payload }) {
     }
 }
 
-function* searchUser(q) {
+function* searchMentions(q) {
     try {
-        const resp = yield call(allServices.userService.searchUser, q);
+        const resp = yield call(allServices.userService.searchMentions, q);
         const { status, data } = resp;
         if (status === SUCCESS) {
             return data.data;
@@ -52,30 +52,30 @@ function* searchUser(q) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const data = yield call(searchUser, q);
+                const data = yield call(searchMentions, q);
                 return data;
             }
             return false;
         } else {
-            yield put(allActions.userActions.searchUserError(data.message));
+            yield put(allActions.userActions.searchMentionsError(data.message));
         }
     }
 }
 
-function* searchUserFlowSaga({ payload }) {
+function* searchMentionsFlowSaga({ payload }) {
     yield put(allActions.uiActions.showLoadingData());
     const { q } = payload;
     yield delay(500);
-    const data = yield call(searchUser, q);
+    const data = yield call(searchMentions, q);
     if(data) {
-        yield put(allActions.userActions.searchUserSuccess(data));
+        yield put(allActions.userActions.searchMentionsSuccess(data));
     }
     yield put(allActions.uiActions.hideLoadingData());
 }
 
-function* fetchUserById(idUser) {
+function* fetchUserById(idUser, idCur) {
     try {
-        const response = yield call(allServices.userService.fetchUserById, idUser);
+        const response = yield call(allServices.userService.fetchUserById, idUser, idCur);
         if (response && response.status === SUCCESS) {
             return response.data;
         }
@@ -87,7 +87,7 @@ function* fetchUserById(idUser) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const data = yield call(fetchUserById, idUser);
+                const data = yield call(fetchUserById, idUser, idCur);
                 return data;
             }
             return false;
@@ -96,13 +96,11 @@ function* fetchUserById(idUser) {
         }
     }
 }
-function* fetchUserByIdFlowSaga({payload: {idUser}}) {
-    yield put(allActions.uiActions.showLoadingFetchData());
-    const data = yield call(fetchUserById, idUser);
+function* fetchUserByIdFlowSaga({payload: {idUser, idUserCurrent}}) {
+    const data = yield call(fetchUserById, idUser, idUserCurrent);
     if (data) {
-        yield put(allActions.userActions.fetchUserByIdSuccess(data.user));
+        yield put(allActions.userActions.fetchUserByIdSuccess(data));
     }
-    yield put(allActions.uiActions.hideLoadingFetchData());
 }
 function* updatePhotoURL(idUser, photoURL) {
     try {
@@ -256,15 +254,50 @@ function* removeInterestFlowSaga({payload: {interest, idUser}}) {
     }
 }
 
+function* searchUser(q, idUser) {
+    try {
+        const resp = yield call(allServices.userService.searchUser, q, idUser);
+        const { status, data } = resp;
+        if (status === SUCCESS) {
+            return data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(searchUser, q, idUser);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.searchUserError(data.message));
+        }
+    }
+}
+function* searchUserFlowSaga({payload: {q, idUser}}) {
+    yield put(allActions.uiActions.showLoadingData());
+    const data = yield call(searchUser, q, idUser);
+    if(data) {
+        yield put(allActions.userActions.searchUserSuccess(data.users));
+    }
+    yield put(allActions.uiActions.hideLoadingData());
+}
+
+
 const allUserSaga = {
     fetchUserFlowSaga,
-    searchUserFlowSaga,
+    searchMentionsFlowSaga,
     fetchUserByIdFlowSaga,
     updatePhotoURLFlowSaga,
     updateProfileFlowSaga,
     updatePasswordFlowSaga,
     updateInterestFlowSaga,
-    removeInterestFlowSaga
+    removeInterestFlowSaga,
+    searchUserFlowSaga
 };
 
 export default allUserSaga;

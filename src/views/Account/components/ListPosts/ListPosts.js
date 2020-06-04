@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Empty, Skeleton } from 'antd';
-import { PostList, FetchDataLoading } from 'components';
+import { FetchDataLoading, PostItem } from 'components';
 import allActions from 'actions';
 import './styles.css';
 
@@ -21,7 +21,7 @@ const ListPosts = ({
     const loadItems = () => {
         const page_size = 10;
         dispatch(
-            allActions.postActions.fetchPostById(
+            allActions.postActions.loadMorePostById(
                 userIdById,
                 nextPageById,
                 page_size
@@ -44,7 +44,7 @@ const ListPosts = ({
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             ) : (
                 postsById.map(value => (
-                    <PostList
+                    <PostItem
                         key={value._id}
                         post={value}
                         likePostHome={likePostHome}

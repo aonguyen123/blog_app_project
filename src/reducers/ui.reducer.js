@@ -8,15 +8,21 @@ import {
     HIDE_ANIMATE,
     SHOW_LOADING_DATA,
     HIDE_LOADING_DATA,
+    HIDE_LOADING_FETCH_EVENTS,
+    SHOW_LOADING_FETCH_EVENTS,
+    CHANGE_BREAK,
+    CLEAN_USER_BY_ID,
 } from './../constants/types';
 
 const initialState = {
     loadingButton: false,
     loadingFetchData: 0,
     loadingData: false,
+    loadingFetchEvent: false,
     visible: false,
     isShowAnimate: false,
-    typeAnimate: ''
+    typeAnimate: '',
+    isBreak: false,
 };
 
 export default function(state = initialState, action) {
@@ -67,6 +73,26 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 loadingData: false
+            }
+        case SHOW_LOADING_FETCH_EVENTS:
+            return {
+                ...state,
+                loadingFetchEvent: true
+            }
+        case HIDE_LOADING_FETCH_EVENTS:
+            return {
+                ...state,
+                loadingFetchEvent: false
+            }
+        case CHANGE_BREAK:
+            return {
+                ...state,
+                isBreak: action.payload
+            }
+        case CLEAN_USER_BY_ID:
+            return {
+                ...state,
+                visible: false
             }
         default:
             return state;

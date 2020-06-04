@@ -30,21 +30,6 @@ export default function AccountRight({
                     </span>
                 </span>
             )
-        },
-        {
-            key: 'applications',
-            tab: (
-                <span>
-                    应用{' '}
-                    <span
-                        style={{
-                            fontSize: 14
-                        }}
-                    >
-                        (8)
-                    </span>
-                </span>
-            )
         }
     ];
 
@@ -62,10 +47,6 @@ export default function AccountRight({
                     loadingFetchData={loadingFetchData}
                 />
             );
-        }
-
-        if (tabKey === 'applications') {
-            return <h1>applications</h1>;
         }
         return null;
     };

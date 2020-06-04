@@ -7,6 +7,7 @@ import postReducer from './post.reducer';
 import chatsReducer from './chats.reducer';
 import commentReducer from './comment.reducer';
 import errorReducer from './error.reducer';
+import eventReducer from './event.reducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
     postReducer,
     chatsReducer,
     commentReducer,
-    errorReducer
+    errorReducer,
+    eventReducer
 });

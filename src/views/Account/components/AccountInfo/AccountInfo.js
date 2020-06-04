@@ -6,7 +6,8 @@ import {
     MailOutlined
 } from '@ant-design/icons';
 import './styles.css';
-import Interests from '../Interests/Interests';
+import Interests from '../Interests';
+import Friends from './../Friends';
 
 export default function AccountInfo({
     userInfo,
@@ -19,6 +20,7 @@ export default function AccountInfo({
             style={{
                 marginBottom: 24
             }}
+            loading={Object.keys(userInfo).length === 0}
         >
             <div className="avatarHolder">
                 <img alt="avatar" src={userInfo.photoURL} />
@@ -51,6 +53,8 @@ export default function AccountInfo({
                 removeInterest={removeInterest}
                 interests={userInfo.interests}
             />
+            <Divider dashed />
+            <Friends friends={userInfo.friends} />
         </Card>
     );
 }

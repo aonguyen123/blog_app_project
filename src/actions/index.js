@@ -6,6 +6,7 @@ import postActions from './post.action';
 import chatsActions from './chats.action';
 import commentActions from './comment.action';
 import errorActions from './error.action';
+import eventsActions from './events.action';
 
 const allActions = {
     authenticatedActions,
@@ -15,6 +16,7 @@ const allActions = {
     postActions,
     chatsActions,
     commentActions,
-    errorActions
+    errorActions,
+    eventsActions
 }
 export default allActions;

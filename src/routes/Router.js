@@ -22,6 +22,8 @@ const Chats = lazy(() => import('./../views/Chats'));
 const ChatRoom = lazy(() => import('./../views/ChatRoom'));
 const Profile = lazy(() => import('./../views/Profile'));
 const Comments = lazy(() => import('./../views/Comments'));
+const Friends = lazy(() => import('./../views/Friends'));
+const History = lazy(() => import('./../views/History'));
 const NotFoundPage = lazy(() => import('./../views/NotFound'));
 
 export default function Router() {
@@ -102,6 +104,20 @@ export default function Router() {
                     exact
                     layout={BasicLayout}
                     path="/comments/:idPost"
+                />
+                <PrivateRouter
+                    component={Friends}
+                    isAuth={isAuth}
+                    exact
+                    layout={BasicLayout}
+                    path="/friends"
+                />
+                <PrivateRouter
+                    component={History}
+                    isAuth={isAuth}
+                    exact
+                    layout={BasicLayout}
+                    path="/historys"
                 />
                 <PublishRouter
                     component={LoginPage}

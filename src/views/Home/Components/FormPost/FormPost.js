@@ -50,9 +50,9 @@ export default function FormPost({searchResult, loadingData, onChange}) {
     );
     const onSearch = search => {
         if (search) {
-            dispatch(allActions.userActions.searchUser(search));
+            dispatch(allActions.userActions.searchMentions(search));
         } else {
-            dispatch(allActions.userActions.searchUserSuccess([]));
+            dispatch(allActions.userActions.searchMentionsSuccess([]));
         }
     };
     const propsUpload = {
@@ -123,7 +123,6 @@ export default function FormPost({searchResult, loadingData, onChange}) {
                     rows={3}
                     onSelect={onSelect}
                     onChange={onChangeMention}
-                    
                 >
                     {searchResult.map(value => (
                         <Option

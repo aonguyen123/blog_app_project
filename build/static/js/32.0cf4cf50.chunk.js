@@ -1,1 +1,0 @@
-(window["webpackJsonpreact-antd"]=window["webpackJsonpreact-antd"]||[]).push([[32],{1292:function(e,t,n){"use strict";n.r(t);var a=n(0),r=n.n(a),c=n(1256),o=n.n(c);function u(){return r.a.createElement(o.a,{type:"404",desc:r.a.createElement("p",null,"Sorry, the page you visited does not exist.")})}n.d(t,"default",(function(){return u}))}}]);

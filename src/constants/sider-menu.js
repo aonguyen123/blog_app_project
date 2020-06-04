@@ -1,20 +1,14 @@
 import React from 'react';
-import {
-    UserOutlined,
+import {    
     HistoryOutlined,
     MessageOutlined,
     CloudOutlined
 } from '@ant-design/icons';
 export const siderMenu = [
     {
-        id: 'menu.friend',
-        icon: <UserOutlined />,
-        link: '/friend'
-    },
-    {
         id: 'menu.history',
         icon: <HistoryOutlined />,
-        link: '/history'
+        link: '/historys'
     },
     {
         id: 'menu.message',

@@ -1,13 +1,13 @@
 import React from 'react';
 import AvatarDropdown from './../AvatarDropdown';
-import NoticeIcon from './../NoticeIcon';
+import NoticeIconView from './../NoticeIcon';
 import SelectLang from './../SelectLang';
 import './styles.css';
 
-export default function RightMenu({userCurrent}) {
+export default function RightMenu({userCurrent, events, loadingEvent}) {
     return (
         <div className='right-menu'>
-            <NoticeIcon />
+            <NoticeIconView events={events} loadingEvent={loadingEvent} />
             <AvatarDropdown userCurrent={userCurrent} />
             <SelectLang />
         </div>

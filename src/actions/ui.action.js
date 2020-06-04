@@ -8,6 +8,9 @@ import {
     HIDE_ANIMATE,
     SHOW_LOADING_DATA,
     HIDE_LOADING_DATA,
+    SHOW_LOADING_FETCH_EVENTS,
+    HIDE_LOADING_FETCH_EVENTS,
+    CHANGE_BREAK,
 } from './../constants/types';
 
 const showLoadingButton = () => {
@@ -58,6 +61,22 @@ const hideLoadingData = () => {
         type: HIDE_LOADING_DATA
     }
 }
+const showLoadingFetchEvent = () => {
+    return {
+        type: SHOW_LOADING_FETCH_EVENTS
+    }
+}
+const hideLoadingFetchEvent = () => {
+    return {
+        type: HIDE_LOADING_FETCH_EVENTS
+    }
+}
+const changeBreak = isBreak => {
+    return {
+        type: CHANGE_BREAK,
+        payload: isBreak
+    }
+}
 
 export default {
     showLoadingButton,
@@ -68,5 +87,8 @@ export default {
     showAnimate,
     hideAnimate,
     showLoadingData,
-    hideLoadingData
+    hideLoadingData,
+    showLoadingFetchEvent,
+    hideLoadingFetchEvent,
+    changeBreak
 };

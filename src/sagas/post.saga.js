@@ -54,15 +54,15 @@ function* createPostFlowSaga({ payload }) {
     const data = yield call(createPost, posts, mentions, idUser, urlImages);
     if (data) {
         yield put(allActions.postActions.createPostSuccess(data.message));
-        yield put(allActions.postActions.fetchPost(1, 10));
+        yield put(allActions.postActions.fetchPost(1, 10, idUser));
     }
     yield put(allActions.uiActions.hideLoadingButton());
 }
 
-function* fetchPost(page, page_size) {
+function* fetchPost(page, page_size, idUser) {
     try {
         const { response } = yield race({
-            response: call(allServices.postService.fetchPost, page, page_size),
+            response: call(allServices.postService.fetchPost, page, page_size, idUser),
             signout: take(SIGN_OUT)
         });
         if (response && response.status === SUCCESS) {
@@ -78,7 +78,7 @@ function* fetchPost(page, page_size) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const data = yield call(fetchPost, page, page_size);
+                const data = yield call(fetchPost, page, page_size, idUser);
                 return data;
             }
             return false;
@@ -87,16 +87,23 @@ function* fetchPost(page, page_size) {
         }
     }
 }
-function* fetchPostFlowSaga({ payload }) {
+function* fetchPostFlowSaga({ payload: {page, page_size, idUser} }) {
     yield put(allActions.uiActions.showLoadingFetchData());
-    const { page, page_size } = payload;
-    const data = yield call(fetchPost, page, page_size);
+    const data = yield call(fetchPost, page, page_size, idUser);
     if (data && data.message === 'LOADED ALL') {
         yield put(allActions.postActions.fetchPostOver(data.posts));
     } else {
         yield put(allActions.postActions.fetchPostSuccess(data.posts));
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
+}
+function* loadMorePostFlowSaga({ payload: {page, page_size, idUser} }) {
+    const data = yield call(fetchPost, page, page_size, idUser);
+    if (data && data.message === 'LOADED ALL') {
+        yield put(allActions.postActions.fetchPostOver(data.posts));
+    } else {
+        yield put(allActions.postActions.fetchPostSuccess(data.posts));
+    }
 }
 
 function* fetchPostById(idUser, page, page_size) {
@@ -130,9 +137,8 @@ function* fetchPostById(idUser, page, page_size) {
         }
     }
 }
-function* fetchPostByIdFlowSaga({ payload }) {
+function* fetchPostByIdFlowSaga({ payload: { idUser, page, page_size } }) {
     yield put(allActions.uiActions.showLoadingFetchData());
-    const { idUser, page, page_size } = payload;
     const data = yield call(fetchPostById, idUser, page, page_size);
     if (data && data.message === 'LOADED ALL') {
         yield put(allActions.postActions.fetchPostByIdOver(data.postsById));
@@ -140,6 +146,14 @@ function* fetchPostByIdFlowSaga({ payload }) {
         yield put(allActions.postActions.fetchPostByIdSuccess(data.postsById));
     }
     yield put(allActions.uiActions.hideLoadingFetchData());
+}
+function* loadMorePostByIdFlowSaga({ payload: { idUser, page, page_size } }) {
+    const data = yield call(fetchPostById, idUser, page, page_size);
+    if (data && data.message === 'LOADED ALL') {
+        yield put(allActions.postActions.fetchPostByIdOver(data.postsById));
+    } else if (data) {
+        yield put(allActions.postActions.fetchPostByIdSuccess(data.postsById));
+    }
 }
 
 function* likePost(idUser, idPost) {
@@ -170,7 +184,7 @@ function* likePostFlowSaga({payload: {idUser, idPost}}) {
     yield put(allActions.postActions.likePostSuccess(data.post));
     if (data && data.message !== 'UNLIKE') {
         yield put(allActions.uiActions.showAnimate(true, 'LIKE'));
-        yield delay(1400);
+        yield delay(2000);
         yield put(allActions.uiActions.hideAnimate(false, 'LIKE'));   
     }
 }
@@ -212,7 +226,9 @@ const allPostSaga = {
     fetchPostFlowSaga,
     fetchPostByIdFlowSaga,
     likePostFlowSaga,
-    dislikePostFlowSaga
+    dislikePostFlowSaga,
+    loadMorePostFlowSaga,
+    loadMorePostByIdFlowSaga
 };
 
 export default allPostSaga;

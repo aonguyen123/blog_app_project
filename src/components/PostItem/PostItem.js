@@ -1,7 +1,6 @@
 import React, { createElement } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Comment, Avatar, Tooltip, Tag } from 'antd';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import { Comment, Avatar, Tooltip, Tag, Typography } from 'antd';
 import {
     DislikeOutlined,
     LikeOutlined,
@@ -14,6 +13,8 @@ import PopOver from '../PopOver';
 import ContentPopOver from '../ContentPopover';
 import ImagesView from '../ImagesView';
 import './styles.css';
+
+const { Paragraph } = Typography;
 
 export default function PostItem({
     post,
@@ -48,7 +49,9 @@ export default function PostItem({
         <span key=' key="comment-basic-dislike"'>
             <Tooltip title="Dislike">
                 {React.createElement(
-                    post?.dislikes?.findIndex(dl => dl.idUser._id === idUser) !== -1
+                    post?.dislikes?.findIndex(
+                        dl => dl.idUser._id === idUser
+                    ) !== -1
                         ? DislikeTwoTone
                         : DislikeOutlined,
                     {
@@ -61,8 +64,7 @@ export default function PostItem({
         <span key="comment-basic-comments">
             <Tooltip title="Comments">
                 {React.createElement(MessageOutlined, {
-                    onClick: () =>
-                        history.push(`/comments/${post._id}`, { post })
+                    onClick: () => history.push(`/comments/${post._id}`)
                 })}
             </Tooltip>
             <span className="comment-action">{post?.comments?.length}</span>
@@ -107,8 +109,13 @@ export default function PostItem({
             }
             content={
                 <>
-                    <p>{post?.content}</p>
-                    {post?.mentions?.length > 0 && renderMentions(post?.mentions)}
+                    <Paragraph
+                        ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}
+                    >
+                        {post?.content}
+                    </Paragraph>
+                    {post?.mentions?.length > 0 &&
+                        renderMentions(post?.mentions)}
                     {post?.images?.length > 0 && (
                         <ImagesView images={post?.images} />
                     )}
@@ -116,7 +123,9 @@ export default function PostItem({
             }
             datetime={
                 <Tooltip
-                    title={moment(post?.createdAt).format('DD-MM-YYYY HH:mm:ss')}
+                    title={moment(post?.createdAt).format(
+                        'DD-MM-YYYY HH:mm:ss'
+                    )}
                 >
                     <span>{moment(post?.createdAt).fromNow()}</span>
                 </Tooltip>

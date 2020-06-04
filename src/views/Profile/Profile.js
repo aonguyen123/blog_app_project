@@ -20,13 +20,13 @@ export default function Profile(props) {
     const { idUser } = useParams();
 
     useEffect(() => {
-        dispatch(allActions.userActions.fetchUserById(idUser));
+        dispatch(allActions.userActions.fetchUserById(idUser, userCurrent._id));
         dispatch(allActions.postActions.fetchPostById(idUser, 1, 10));
         return () => {
             dispatch(allActions.postActions.unmountPostById());
             dispatch(allActions.errorActions.cleanError());
         };
-    }, [idUser, dispatch]);
+    }, [idUser, userCurrent._id, dispatch]);
 
     const likePostHome = idPost => {
         dispatch(allActions.postActions.likePost(userCurrent._id, idPost));

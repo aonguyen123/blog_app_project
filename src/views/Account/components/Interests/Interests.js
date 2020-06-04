@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, HeartOutlined } from '@ant-design/icons';
 import { Tag, Input } from 'antd';
 import './styles.css';
 
@@ -45,7 +45,7 @@ export default function Interests({
 
     return (
         <div className="tags">
-            <div className="tagsTitle">Interests</div>
+            <div className="tagsTitle"><HeartOutlined /> Interests</div>
             {interests && interests.map((item, key) => (
                 <Tag
                     key={key}

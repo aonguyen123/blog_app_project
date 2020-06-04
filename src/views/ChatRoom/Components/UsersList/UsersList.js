@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { List, Card } from 'antd';
 import moment from 'moment';
 import Extra from './../Extra';
-import { ExtraContent, ScrollToBottomCom } from './../../../../components';
+import { ExtraContent, ScrollToBottomCom } from 'components';
 import './styles.css';
 
 function UsersList() {

@@ -26,7 +26,7 @@ moment.locale('en');
 const baseSeparator = '-';
 const useLocalStorage = true;
 
-import { ConfigProvider, version } from 'antd';
+import { ConfigProvider } from 'antd';
 
 let defaultAntd = require('antd/es/locale/en_US');
 defaultAntd = defaultAntd.default || defaultAntd;
@@ -130,19 +130,9 @@ class LocaleWrapper extends React.Component {
                 </InjectedWrapper>
             </IntlProvider>
         );
-        // avoid antd ConfigProvider not found
-        let AntdProvider = ConfigProvider;
-        const [major, minor] = `${version || ''}`.split('.');
-        // antd 3.21.0 use ConfigProvider not LocaleProvider
-        const isConfigProvider =
-            Number(major) > 3 || (Number(major) >= 3 && Number(minor) >= 21);
-        if (isConfigProvider) {
-            try {
-                AntdProvider = require('antd/lib/config-provider').default;
-            } catch (e) {}
-        }
+        
         return (
-            <AntdProvider
+            <ConfigProvider
                 locale={
                     appLocale.antd
                         ? appLocale.antd.default
@@ -150,7 +140,7 @@ class LocaleWrapper extends React.Component {
                 }
             >
                 {ret}
-            </AntdProvider>
+            </ConfigProvider>
         );
     }
 }

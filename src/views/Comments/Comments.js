@@ -17,7 +17,6 @@ export default function Comments() {
     const contentError = useSelector(state => state.errorReducer.contentError);
     const dispatch = useDispatch();
 
-    console.log(post)
     useEffect(() => {
         dispatch(allActions.commentActions.fetchCommentByIdPost(idPost));
 

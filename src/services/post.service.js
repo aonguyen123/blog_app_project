@@ -8,9 +8,9 @@ const createPost = (posts, mentions, idUser, urlImages) => {
         urlImages
     });
 };
-const fetchPost = (page, page_size) => {
+const fetchPost = (page, page_size, idUser) => {
     return allCommons.callAPICommon.callAPI(
-        `/posts/fetch-posts/page=${page}&page_size=${page_size}`,
+        `/posts/fetch-posts/${idUser}/page=${page}&page_size=${page_size}`,
         'GET',
         null
     );

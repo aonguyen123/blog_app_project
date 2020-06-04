@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown, Button } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
+import { MoreOutlined } from '@ant-design/icons';
 
 export default function ExtraContent({menu}) {
 
@@ -12,12 +12,10 @@ export default function ExtraContent({menu}) {
                     padding: 0
                 }}
             >
-                <EllipsisOutlined
+                <MoreOutlined
                     style={{
-                        fontSize: 20,
-                        verticalAlign: 'top'
+                        fontSize: 20
                     }}
-                    rotate={90}
                 />
             </Button>
         </Dropdown>

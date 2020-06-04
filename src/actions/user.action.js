@@ -24,24 +24,31 @@ import {
     REMOVE_INTEREST_SUCCESS,
     REMOVE_INTEREST_ERROR,
     REMOVE_INTEREST,
+    SEARCH_MENTIONS,
+    SEARCH_MENTIONS_SUCCESS,
+    SEARCH_MENTIONS_ERROR,
+    CLEAN_USER_BY_ID,
+    SEND_ADD_FRIEND_SUCCESS,
+    SEARCH_USER_EMPTY,
+    ADD_FRIEND_SUCCESS,
 } from './../constants/types';
 
-const searchUser = q => {
+const searchMentions = q => {
     return {
-        type: SEARCH_USER,
+        type: SEARCH_MENTIONS,
         payload: { q }
     };
 };
-const searchUserSuccess = data => {
+const searchMentionsSuccess = data => {
     return {
-        type: SEARCH_USER_SUCCESS,
+        type: SEARCH_MENTIONS_SUCCESS,
         payload: data
     };
 };
-const searchUserError = notice => {
+const searchMentionsError = notice => {
     message.error(notice, 4);
     return {
-        type: SEARCH_USER_ERROR
+        type: SEARCH_MENTIONS_ERROR
     }
 }
 const fetchUser = (idUser) => {
@@ -64,10 +71,10 @@ const fetchUserError = notice => {
         type: FETCH_USER_ERROR
     }
 }
-const fetchUserById = idUser => {
+const fetchUserById = (idUser, idUserCurrent) => {
     return {
         type: FETCH_USER_BY_ID,
-        payload: { idUser }
+        payload: { idUser, idUserCurrent }
     }
 }
 const fetchUserByIdSuccess = data => {
@@ -80,6 +87,11 @@ const fetchUserByIdError = error => {
     return {
         type: FETCH_USER_BY_ID_ERROR,
         payload: error
+    }
+}
+const cleanUserById = () => {
+    return {
+        type: CLEAN_USER_BY_ID        
     }
 }
 const updatePhotoURL = (photoURL, idUser) => {
@@ -173,17 +185,53 @@ const removeInterestError = error => {
         type: REMOVE_INTEREST_ERROR
     }
 }
+const searchUser = (q, idUser) => {
+    return {
+        type: SEARCH_USER,
+        payload: {q, idUser}
+    }
+}
+const searchUserSuccess = data => {
+    return {
+        type: SEARCH_USER_SUCCESS,
+        payload: data
+    }
+}
+const searchUserError = error => {
+    message.error(error, 4);
+    return {
+        type: SEARCH_USER_ERROR
+    }
+}
+const searchUserEmpty = () => {
+    return {
+        type: SEARCH_USER_EMPTY
+    }
+}
+const sendAddFriendSuccess = data => {
+    return {
+        type: SEND_ADD_FRIEND_SUCCESS,
+        payload: data
+    }
+}
+const addFriendSuccess = friend => {
+    return {
+        type: ADD_FRIEND_SUCCESS,
+        payload: friend
+    }
+}
 
 export default {
-    searchUser,
-    searchUserSuccess,
-    searchUserError,
+    searchMentions,
+    searchMentionsSuccess,
+    searchMentionsError,
     fetchUser,
     fetchUserSuccess,
     fetchUserError,
     fetchUserById,
     fetchUserByIdSuccess,
     fetchUserByIdError,
+    cleanUserById,  
     updatePhotoURL,
     updatePhotoURLSuccess, 
     updatePhotoURLError,
@@ -198,5 +246,11 @@ export default {
     updateInterestError,
     removeInterest,
     removeInterestSuccess,
-    removeInterestError
+    removeInterestError,
+    searchUser, 
+    searchUserSuccess,
+    searchUserError,
+    searchUserEmpty,
+    sendAddFriendSuccess,
+    addFriendSuccess
 };
