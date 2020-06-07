@@ -31,6 +31,9 @@ import {
     SEND_ADD_FRIEND_SUCCESS,
     SEARCH_USER_EMPTY,
     ADD_FRIEND_SUCCESS,
+    SETTING_PHONE,
+    SETTING_PHONE_SUCCESS,
+    SETTING_PHONE_ERROR,
 } from './../constants/types';
 
 const searchMentions = q => {
@@ -220,6 +223,24 @@ const addFriendSuccess = friend => {
         payload: friend
     }
 }
+const settingPhone = (idUser, settingPhone)  => {
+    return {
+        type: SETTING_PHONE,
+        payload: {idUser, settingPhone}
+    }
+}
+const settingPhoneSuccess = data => {
+    return {
+        type: SETTING_PHONE_SUCCESS,
+        payload: data
+    }
+}
+const settingPhoneError = error => {
+    message.error(error, 4);
+    return {
+        type: SETTING_PHONE_ERROR
+    }
+}
 
 export default {
     searchMentions,
@@ -252,5 +273,8 @@ export default {
     searchUserError,
     searchUserEmpty,
     sendAddFriendSuccess,
-    addFriendSuccess
+    addFriendSuccess,
+    settingPhone,
+    settingPhoneSuccess,
+    settingPhoneError
 };

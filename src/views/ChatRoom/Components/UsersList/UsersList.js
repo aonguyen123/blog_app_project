@@ -2,15 +2,16 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { List, Card } from 'antd';
 import moment from 'moment';
+import { formatMessage } from 'umi-plugin-react/locale';
 import Extra from './../Extra';
 import { ExtraContent, ScrollToBottomCom } from 'components';
 import './styles.css';
 
-function UsersList() {
+function UsersList({idCur}) {
     const userRoom = useSelector(state => state.chatsReducer.userRoom);
     
     return (
-        <Card size="small" hoverable={true} title="List users">
+        <Card size="small" hoverable={true} title={formatMessage({id: 'chatroom.listUser'})}>
             <ScrollToBottomCom height='492px' width='100%'>
             <List
                 itemLayout='vertical'
@@ -18,7 +19,7 @@ function UsersList() {
                 dataSource={userRoom}
                 renderItem={item => (
                     <List.Item
-                        extra={[<ExtraContent key="more" menu={Extra} />]}
+                        extra={[<ExtraContent key="more" menu={Extra(idCur, item.idUser._id)} />]}
                     >
                         <List.Item.Meta
                             title={item.idUser.displayName}

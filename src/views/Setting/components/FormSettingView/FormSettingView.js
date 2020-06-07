@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Input, Row, Col, Select, Button } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import GeographicView from './../GeographicView';
 const { Item } = Form;
 const { TextArea } = Input;
@@ -18,12 +20,10 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
         if (Object.keys(value).length > 0) {
             const { province, district } = value;
             if (!province.key) {
-                return Promise.reject(
-                    'Please input your province or city!'
-                );
+                return Promise.reject(formatMessage({id: 'basicSetting.valid.provinceOrCity'}));
             }
             if (!district.key) {
-                return Promise.reject('Please input your district!');
+                return Promise.reject(formatMessage({id: 'basicSetting.valid.district'}));
             }    
         }
         return Promise.resolve();
@@ -33,7 +33,7 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
             value = value.trim();
             value = value.replace(/\s+/g, '');
             if (value.length < 5) {
-                return Promise.reject('Nickname of at least 5 characters');
+                return Promise.reject(formatMessage({id: 'basicSetting.valid.minNickname'}));
             }
             return Promise.resolve();
         }
@@ -65,32 +65,32 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                             rules={[
                                 {
                                     type: 'email',
-                                    message: 'The input is not valid E-mail!'
+                                    message: formatMessage({id: 'basicSetting.valid.notEmail'})
                                 },
                                 {
                                     required: true,
-                                    message: 'Please input your E-mail!'
+                                    message: formatMessage({id: 'basicSetting.valid.email'})
                                 }
                             ]}
                         >
                             <Input />
                         </Item>
                         <Item
-                            label="Nickname"
+                            label={formatMessage({id: 'setting.basicSetting.nickname'})}
                             name="nickname"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your nickname!'
+                                    message: formatMessage({id: 'basicSetting.valid.nickname'})
                                 },
                                 {
                                     whitespace: true,
-                                    message: 'Nickname does not whitespace'
+                                    message: formatMessage({id: 'basicSetting.valid.spaceNickname'})
                                 },
                                 {
                                     max: 13,
-                                    message: 'Nickname cannot exceed 13 characters'
+                                    message: formatMessage({id: 'basicSetting.valid.maxNickname'})
                                 },
                                 {
                                     validator: checkNickname
@@ -99,21 +99,21 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                         >
                             <Input />
                         </Item>
-                        <Item label="Personal profile" name="profile">
+                        <Item label={formatMessage({id: 'setting.basicSetting.introduce'})} name="profile">
                             <TextArea rows={3} />
                         </Item>
                         <Item
-                            label="Phone Number"
+                            label={formatMessage({id: 'setting.basicSetting.phone'})}
                             name="phone"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your phone number!'
+                                    message: formatMessage({id: 'basicSetting.valid.phone'})
                                 },
                                 {
                                     len: 9,
-                                    message: 'Phone number invalid'
+                                    message: formatMessage({id: 'basicSetting.valid.notPhone'})
                                 }
                             ]}
                         >
@@ -124,14 +124,13 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                             />
                         </Item>
                         <Item
-                            label="Province or city"
+                            label={formatMessage({id: 'setting.basicSetting.province'})}
                             name="address"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message:
-                                        'Please input your province or city'
+                                    message: formatMessage({id: 'basicSetting.valid.provinceOrCity'})
                                 },
                                 {
                                     validator: checkProvince
@@ -141,8 +140,8 @@ export default function FormSettingView({userInfo, updateProfile, loadingButton}
                             <GeographicView provinceUser={userInfo.provinceOrCity} districtUser={userInfo.district} />
                         </Item>
                         <Item>
-                            <Button type="primary" htmlType="submit" loading={loadingButton}>
-                                Update Information
+                            <Button type="primary" htmlType="submit" loading={loadingButton} icon={<EditOutlined />}>
+                                {formatMessage({id: 'setting.basicSetting.button'})}
                             </Button>
                         </Item>
                     </Form>

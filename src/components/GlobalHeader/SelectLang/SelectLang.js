@@ -16,7 +16,7 @@ export default function SelectLang() {
         'en-US': formatMessage({id: 'globalHeader.english'})
     };
     const languageIcons = {
-        'vi-VN': '🇨🇳',
+        'vi-VN': '🇻🇳',
         'en-US': '🇺🇸',
     };
     const langMenu = (

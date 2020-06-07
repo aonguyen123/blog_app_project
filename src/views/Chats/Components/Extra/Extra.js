@@ -1,16 +1,15 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 export default function Extra({handleClick}) {
     return (
         <Menu>
             <Menu.Item onClick={handleClick}>
                 <PlusOutlined />
-                Create room
+                {formatMessage({id: 'chat.createRoom'})}
             </Menu.Item>
-            <Menu.Item>2nd menu item</Menu.Item>
-            <Menu.Item>3rd menu item</Menu.Item>
         </Menu>
     );
 }

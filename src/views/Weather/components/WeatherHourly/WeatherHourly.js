@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
 import { TimelineChart } from 'ant-design-pro/lib/Charts';
-
+import { formatMessage } from 'umi-plugin-react/locale';
 import moment from 'moment';
 
 export default function WeatherHourly({ weatherHourly }) {
@@ -32,7 +32,7 @@ export default function WeatherHourly({ weatherHourly }) {
     return (
         <Card
             size="small"
-            title="Hourly temperature"
+            title={formatMessage({id: 'weather.temperature'})}
             hoverable={true}
             loading={weatherHourly === undefined ? true : false}
         >

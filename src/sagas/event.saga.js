@@ -68,9 +68,9 @@ function* removeEventFlowSaga({payload: {idEvent}}) {
     yield put(allActions.uiActions.hideLoadingFetchEvent());
 }
 
-function* removeAllEvent(eventType) {
+function* removeAllEvent(eventType, idCur) {
     try {
-        const response = yield call(allServices.eventService.removeAllEvents, eventType);
+        const response = yield call(allServices.eventService.removeAllEvents, eventType, idCur);
         if (response && response.status === SUCCESS) {
             return response.data;
         }
@@ -82,7 +82,7 @@ function* removeAllEvent(eventType) {
             };
             const result = yield call(allAuthSaga.reAuth, { payload });
             if (result) {
-                const data = yield call(removeAllEvent, eventType);
+                const data = yield call(removeAllEvent, eventType, idCur);
                 return data;
             }
             return false;
@@ -91,11 +91,11 @@ function* removeAllEvent(eventType) {
         }
     }
 }
-function* removeAllEventFlowSaga({payload: {eventType}}) {
+function* removeAllEventFlowSaga({payload: {eventType, idCur}}) {
     yield put(allActions.uiActions.showLoadingFetchEvent());
-    const data = yield call(removeAllEvent, eventType);
+    const data = yield call(removeAllEvent, eventType, idCur);
     if (data) {
-        yield put(allActions.eventsActions.removeAllEventSuccess(eventType));
+        yield put(allActions.eventsActions.removeAllEventSuccess(data.eventType));
     }
     yield put(allActions.uiActions.hideLoadingFetchEvent());
 }

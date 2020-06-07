@@ -15,7 +15,7 @@ function* authorize({ payload }) {
         if(status === SUCCESS)
         {
             yield call(allConfigs.setAuthTokenConfigs.setAuthToken, accessToken);
-            yield put(allActions.userActions.fetchUserSuccess(data.payload));
+            yield put(allActions.userActions.fetchUserSuccess(data));
             yield put(allActions.authenticatedActions.authenticatedSuccess());
         }
     } catch (error) {
@@ -39,7 +39,7 @@ function* reAuth({payload}) {
             });
             yield call(allConfigs.setAuthTokenConfigs.setAuthToken, data.accessToken);
             yield put(allActions.authenticatedActions.reAuthSuccess());
-            yield put(allActions.userActions.fetchUserSuccess(data.payload));
+            yield put(allActions.userActions.fetchUserSuccess(data));
             return true;
         }
     } catch (error) {
@@ -78,7 +78,7 @@ function* signInFlowSaga({ payload }) {
     yield put(allActions.uiActions.showLoadingButton());
     let data = yield call(signin, email, password);
     if (data) {
-        const { accessToken, refreshToken, message, user } = data;
+        const { accessToken, refreshToken, message } = data;
 
         yield call(allConfigs.tokenConfigs.setToken, {
             accessToken,
@@ -86,7 +86,7 @@ function* signInFlowSaga({ payload }) {
         });
 
         yield call(allConfigs.setAuthTokenConfigs.setAuthToken, accessToken);
-        yield put(allActions.userActions.fetchUserSuccess(user));
+        yield put(allActions.userActions.fetchUserSuccess(data));
         yield put(allActions.authenticatedActions.loginSuccess(message));
         history.push('/home');
     }

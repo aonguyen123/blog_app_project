@@ -13,7 +13,8 @@ import {
     SEND_ADD_FRIEND_SUCCESS,
     SEARCH_USER_EMPTY,
     UNMOUNT_POST_BY_ID,
-    ADD_FRIEND_SUCCESS
+    ADD_FRIEND_SUCCESS,
+    SETTING_PHONE_SUCCESS
 } from './../constants/types';
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
     userById: {},
     statusAddFriend: null,
     searchUsers: [],
+    setting: true
 };
 
 export default function(state = initialState, action) {
@@ -39,7 +41,8 @@ export default function(state = initialState, action) {
         case FETCH_USER_SUCCESS:
             return {
                 ...state,
-                userInfo: action.payload
+                userInfo: action.payload.user,
+                setting: action.payload.setting
             };
         case SIGN_OUT_SUCCESS:
             return {
@@ -102,6 +105,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 userInfo: {...newUserInfo}
+            }
+        case SETTING_PHONE_SUCCESS:
+            return {
+                ...state,
+                setting: action.payload,
             }
         case UNMOUNT_POST_BY_ID:
             return {

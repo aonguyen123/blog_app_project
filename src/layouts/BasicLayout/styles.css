@@ -1,6 +1,7 @@
 .content-layout-basic {
     padding: 24px 24px;
     background: #fff;
+    min-height: 100vh;
 }
 .ant-layout-header {
     padding: 0;

@@ -287,6 +287,38 @@ function* searchUserFlowSaga({payload: {q, idUser}}) {
     yield put(allActions.uiActions.hideLoadingData());
 }
 
+function* settingPhoneNum(idUser, settingPhone) {
+    try {
+        const resp = yield call(allServices.userService.settingPhone, idUser, settingPhone);
+        const { status, data } = resp;
+        if (status === SUCCESS) {
+            return data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(settingPhoneNum, idUser, settingPhone);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.userActions.settingPhoneError(data.message));
+        }
+    }
+}
+function* settingPhoneFlowSaga({payload: {idUser, settingPhone}}) {
+    yield put(allActions.uiActions.showLoadingData());
+    const data = yield call(settingPhoneNum, idUser, settingPhone);
+    if(data) {
+        yield put(allActions.userActions.settingPhoneSuccess(settingPhone));
+    }
+    yield put(allActions.uiActions.hideLoadingData());
+}
 
 const allUserSaga = {
     fetchUserFlowSaga,
@@ -297,7 +329,8 @@ const allUserSaga = {
     updatePasswordFlowSaga,
     updateInterestFlowSaga,
     removeInterestFlowSaga,
-    searchUserFlowSaga
+    searchUserFlowSaga,
+    settingPhoneFlowSaga
 };
 
 export default allUserSaga;

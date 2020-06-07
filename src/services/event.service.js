@@ -12,9 +12,9 @@ const removeEvent = idEvent => {
         idEvent
     });
 };
-const removeAllEvents = eventType => {
+const removeAllEvents = (eventType, idCur) => {
     return allCommons.callAPICommon.callAPI('/events/removeAllEvents', 'POST', {
-        eventType
+        eventType, idCur
     });
 };
 const fetchHistorys = (page, page_size, idUser) => {

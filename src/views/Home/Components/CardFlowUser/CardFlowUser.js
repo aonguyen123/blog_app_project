@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Modal, Tooltip, Typography, Space, Spin } from 'antd';
+import { Card, Modal, Tooltip, Typography, Space, Spin, message } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     UserAddOutlined,
@@ -56,6 +57,8 @@ export default function CardFlowUser({
         socketRef.current.emit('sendAddFriend', {
             idSender: userCurrent._id,
             idReceiver: idFriend
+        }, (error) => {
+            message.error(error, 4);
         });
     };
 
@@ -83,7 +86,7 @@ export default function CardFlowUser({
                         />
                     }
                     actions={[
-                        <Tooltip title="View profile">
+                        <Tooltip title={formatMessage({id: 'home.modalViewUser.viewProfile'})}>
                             <Link to={`/profile/${idFriend}`}>
                                 <FundViewOutlined key="view-profile" />
                             </Link>
@@ -93,8 +96,8 @@ export default function CardFlowUser({
                                 userCurrent.friends.findIndex(
                                     friend => friend.idUser._id === idFriend
                                 ) !== -1
-                                    ? 'Friend'
-                                    : 'Add friend'
+                                    ? formatMessage({id: 'home.modalViewUser.follow'})
+                                    : formatMessage({id: 'home.modalViewUser.addFriend'})
                             }
                         >
                             {userCurrent.friends.findIndex(
@@ -133,7 +136,7 @@ export default function CardFlowUser({
                                     )}
                                     <Typography>
                                         <TeamOutlined />{' '}
-                                        {`${userById.friends.length} friends`}
+                                        {`${userById.friends.length} ${formatMessage({id: 'home.modalViewUser.friends'})}`}
                                     </Typography>
                                 </Space>
                             </div>

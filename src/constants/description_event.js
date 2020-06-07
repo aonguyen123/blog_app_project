@@ -1,5 +1,8 @@
+import React from 'react';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+
 export default {
-    'SEND_ADD_FRIEND': 'has sent a make friend request',
-    'ADD_FRIEND_OK': 'agreed to make friends',
-    'ADD_FRIEND_CANCEL': 'da tu choi yeu cau ket ban'
+    'SEND_ADD_FRIEND': <FormattedMessage id='notification.request.addFriend' />,
+    'ADD_FRIEND_OK': <FormattedMessage id='notification.request.addFriendOk' />,
+    'ADD_FRIEND_REFUSE': 'da tu choi yeu cau ket ban'
 }

@@ -1,5 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
-import { LazyLoading } from './../../../../components';
+import { formatMessage } from 'umi-plugin-react/locale';
+import { LazyLoading } from 'components';
 import { Card } from 'antd';
 
 const ListPosts = lazy(() => import('./../ListPosts/ListPosts'));
@@ -20,7 +21,7 @@ export default function AccountRight({
             key: 'posts',
             tab: (
                 <span>
-                    Posts{' '}
+                    {formatMessage({id: 'account.accountRight.title'})}{' '}
                     <span
                         style={{
                             fontSize: 14

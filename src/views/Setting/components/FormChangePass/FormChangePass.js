@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 const { Item } = Form;
 
 export default function FormChangePass({ form }) {
@@ -12,50 +12,47 @@ export default function FormChangePass({ form }) {
     return (
         <Form form={form} {...layout} name="changePasswordForm">
             <Item
-                label="Current password"
+                label={formatMessage({id: 'security.setting.currentPass'})}
                 name="current_password"
+                hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your current password'
+                        message: formatMessage({id: 'security.setting.validPass'})
                     },
                     {
                         min: 6,
-                        message: 'Password must be more than 6 characters'
+                        message: formatMessage({id: 'security.setting.minPass'})
                     }
                 ]}
             >
-                <Input.Password
-                    prefix={<LockOutlined className="site-form-item-icon" />}
-                    placeholder="Current password"
-                />
+                <Input.Password />
             </Item>
             <Item
-                label="New password"
+                label={formatMessage({id: 'security.setting.newPass'})}
                 name="new_password"
+                hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your new password'
+                        message: formatMessage({id: 'security.setting.validNewPass'})
                     },
                     {
                         min: 6,
-                        message: 'Password must be more than 6 characters'
+                        message: formatMessage({id: 'security.setting.minPass'})
                     }
                 ]}
             >
-                <Input.Password
-                    prefix={<LockOutlined className="site-form-item-icon" />}
-                    placeholder="New password"
-                />
+                <Input.Password />
             </Item>
             <Item
-                label="Confirm password"
+                label={formatMessage({id: 'security.setting.comfirmPass'})}
                 name="password_comfirm"
+                hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your confirm password'
+                        message: formatMessage({id: 'security.setting.validComfirmPass'})
                     },
                     ({ getFieldValue }) => ({
                         validator(rule, value) {
@@ -65,17 +62,12 @@ export default function FormChangePass({ form }) {
                             ) {
                                 return Promise.resolve();
                             }
-                            return Promise.reject(
-                                'The two passwords that you entered do not match!'
-                            );
+                            return Promise.reject(formatMessage({id: 'security.setting.matchComfirmPass'}));
                         }
                     })
                 ]}
             >
-                <Input.Password
-                    prefix={<LockOutlined />}
-                    placeholder="Confirm password"
-                />
+                <Input.Password />
             </Item>
         </Form>
     );

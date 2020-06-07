@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined, HeartOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { Tag, Input } from 'antd';
 import './styles.css';
 
@@ -45,7 +46,7 @@ export default function Interests({
 
     return (
         <div className="tags">
-            <div className="tagsTitle"><HeartOutlined /> Interests</div>
+            <div className="tagsTitle"><HeartOutlined /> {formatMessage({id: 'account.accountInfo.interests'})}</div>
             {interests && interests.map((item, key) => (
                 <Tag
                     key={key}

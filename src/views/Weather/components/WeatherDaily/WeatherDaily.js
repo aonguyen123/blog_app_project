@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, Typography, Table } from 'antd';
-import { WeatherIcon } from './../../../../components';
+import { WeatherIcon } from 'components';
 import moment from 'moment';
+import { formatMessage } from 'umi-plugin-react/locale';
 import './styles.css';
 
 export default function WeatherDaily({ weatherDaily }) {
@@ -67,7 +68,7 @@ export default function WeatherDaily({ weatherDaily }) {
 
     return (
         <Card
-            title="8 days forecast"
+            title={formatMessage({id: 'weather.forecast'})}
             size="small"
             loading={weatherDaily === undefined ? true : false}
             hoverable

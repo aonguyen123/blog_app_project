@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Comment, Avatar, Form, Input, Button } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const { TextArea } = Input;
 
@@ -26,7 +27,7 @@ function Editor({onChange, value, onSubmit, submitting}) {
                     size="small"
                     icon={<CommentOutlined />}
                 >
-                    Add Comment
+                    {formatMessage({id: 'comment.addComment'})}
                 </Button>
             </Form.Item>
         </div>

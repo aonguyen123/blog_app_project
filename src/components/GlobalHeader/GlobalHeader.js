@@ -38,7 +38,7 @@ export default function GlobalHeader() {
                     type="primary"
                 />
                 <div className="repoMenu">
-                    <NoticeIconView events={events} loadingEvent={loadingEvent} />
+                    <NoticeIconView events={events} loadingEvent={loadingEvent} idCur={userCurrent._id} />
                 </div>
                 <Drawer
                     placement="right"

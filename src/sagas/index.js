@@ -34,7 +34,8 @@ import {
     FETCH_HISTORYS,
     LOAD_MORE_POST,
     LOAD_MORE_POST_BY_ID,
-    LOAD_MORE_HISTORYS
+    LOAD_MORE_HISTORYS,
+    SETTING_PHONE
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
@@ -59,6 +60,7 @@ function* rootSaga() {
         takeLatest(UPDATE_INTEREST, allUserSaga.updateInterestFlowSaga),
         takeLatest(REMOVE_INTEREST, allUserSaga.removeInterestFlowSaga),
         takeLatest(SEARCH_USER, allUserSaga.searchUserFlowSaga),
+        takeLatest(SETTING_PHONE, allUserSaga.settingPhoneFlowSaga),
 
         takeLatest(SIGN_IN, allAuthSaga.signInFlowSaga),
         takeLatest(SIGN_OUT, allAuthSaga.signout),

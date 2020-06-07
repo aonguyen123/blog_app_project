@@ -6,12 +6,13 @@ import {
     UnlockOutlined,
     LoginOutlined
 } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import Extra from './../Extra';
 import {
     ExtraContent,
     ScrollToBottomCom,
     PopConfirm
-} from './../../../../components';
+} from 'components';
 
 export default function ListRoom({
     socketRef,
@@ -27,7 +28,7 @@ export default function ListRoom({
     return (
         <>
             <Card
-                title="Room list"
+                title={formatMessage({id: 'chat.roomList'})}
                 size="small"
                 hoverable={true}
                 extra={
@@ -80,7 +81,7 @@ export default function ListRoom({
                             >
                                 <List.Item.Meta
                                     title={item.roomName}
-                                    description={`${item.userId.displayName} created`}
+                                    description={`${item.userId.displayName} ${formatMessage({id: 'chat.created'})}`}
                                     avatar={
                                         <Avatar
                                             size="default"

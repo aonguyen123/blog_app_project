@@ -1,12 +1,13 @@
 import React from 'react';
 import { Menu } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 export default function ExtraFriend(showCardUser, idFriend) {
 
     return (
         <Menu>
             <Menu.Item onClick={() => showCardUser(idFriend)}>
-                View detail
+                {formatMessage({id: 'home.friends.viewDetail'})}
             </Menu.Item>
         </Menu>
     );

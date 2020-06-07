@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { Input } from 'antd';
 
 const { Search } = Input;
@@ -17,7 +18,7 @@ export default function SearchBox({searchUser, loadingData, searchEmpty}) {
 
     return (
         <Search
-            placeholder="Search here"
+            placeholder={formatMessage({id: 'home.friends.searchPlacehoder'})}
             loading={loadingData}
             onSearch={onSearch}
             onChange={onChange}

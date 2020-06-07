@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Switch } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
-export default function ListSetting(showModal) {
+export default function ListSetting(showModal, onClickSwitch, setting, loadingData) {
     return (
         [
             {
-                name: 'Account Password',
+                name: formatMessage({id: 'security.setting.password'}),
                 action: (
                     <Button
                         htmlType='button'
@@ -13,21 +14,23 @@ export default function ListSetting(showModal) {
                         onClick={() => showModal()}
                         style={{ margin: 0, padding: 0 }}
                     >
-                        Modify
+                        {formatMessage({id: 'security.setting.modifiPassword'})}
                     </Button>
                 ),
-                description: 'Account passwords may be modify'
+                description: formatMessage({id: 'security.setting.passwordDetail'})
             },
             {
-                name: 'Security Phone',
+                name: formatMessage({id: 'security.setting.phone'}),
                 action: (
                     <Switch
-                        checkedChildren="Show"
-                        unCheckedChildren="Hide"
-                        defaultChecked={false}
+                        checkedChildren={formatMessage({id: 'security.setting.showPhone'})}
+                        unCheckedChildren={formatMessage({id: 'security.setting.hidePhone'})}
+                        defaultChecked={setting}
+                        loading={loadingData}
+                        onClick={checked => onClickSwitch(checked)}
                     />
                 ),
-                description: 'Phone numbers can be shown or hidden to everyone'
+                description: formatMessage({id: 'security.setting.phoneDetail'})
             }
         ]
     )

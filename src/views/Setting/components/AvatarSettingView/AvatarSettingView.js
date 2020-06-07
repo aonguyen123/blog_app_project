@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Upload, Button, Row, Col } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import allCommons from 'common';
 import { UploadImage } from 'components';
 import firebaseConfig from './../../../../firebase';
@@ -61,7 +62,7 @@ export default function AvatarSettingView({ photo, updatePhotoURL }) {
         <div>
             <Row type="flex" justify="center">
                 <Col>
-                    <div className="avatar_title">Avatar</div>
+                    <div className="avatar_title">{formatMessage({id: 'setting.basicSetting.avatar'})}</div>
                     <div className="avatar-setting">
                         <img src={photo} alt="avatar" />
                     </div>
@@ -76,7 +77,7 @@ export default function AvatarSettingView({ photo, updatePhotoURL }) {
                         <div className="button_view-setting">
                             <Button>
                                 <UploadOutlined />
-                                Change avatar
+                                {formatMessage({id: 'setting.basicSetting.changeAvatar'})}
                             </Button>
                         </div>
                     </Upload>

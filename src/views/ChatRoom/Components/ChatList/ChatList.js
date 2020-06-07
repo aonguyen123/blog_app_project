@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Input, Tooltip } from 'antd';
 import { SendOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import ChatItem from './../ChatItem';
-import { ScrollToBottomCom } from './../../../../components';
+import { ScrollToBottomCom } from 'components';
 import './styles.css';
 
 const { Meta } = Card;
@@ -19,9 +20,9 @@ export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }
         <Card
             hoverable
             size="small"
-            title="Messages"
+            title={formatMessage({id: 'chatroom.mesage'})}
             extra={[
-                <Tooltip placement="topRight" title='Leave room' key="leaveRoom">
+                <Tooltip placement="topRight" title={formatMessage({id: 'chatroom.leaveRoom'})} key="leaveRoom">
                     <UsergroupDeleteOutlined onClick={() => handleLeaveRoom(roomInfo._id, userCurrent._id)} />
                 </Tooltip>
             ]}
@@ -38,7 +39,7 @@ export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }
                 }
                 title={roomInfo.roomName}
                 description={
-                    roomInfo.userId && `${roomInfo.userId.displayName} created`
+                    roomInfo.userId && `${roomInfo.userId.displayName} ${formatMessage({id: 'chat.created'})}`
                 }
             />
             <div className="chat_list_card_body_chat chat_list_msg_card_body">
@@ -57,7 +58,7 @@ export default function ChatList({ onSendMessage, userCurrent, handleLeaveRoom }
                 <Input.Group compact>
                     <TextArea
                         style={{ width: '90%' }}
-                        placeholder="Please your message input!"
+                        placeholder={formatMessage({id: 'chat.chatRoom.input'})}
                         autoSize={{ minRows: 2, maxRows: 6 }}
                         value={message}
                         onChange={ev => setMessage(ev.target.value)}

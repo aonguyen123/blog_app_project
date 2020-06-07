@@ -1,35 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
-export default function Extra() {
+export default function Extra(idCur, idUser) {
     return (
         <Menu>
             <Menu.Item>
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://www.alipay.com/"
-                >
-                    1st menu item
-                </a>
-            </Menu.Item>
-            <Menu.Item>
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://www.taobao.com/"
-                >
-                    2nd menu item
-                </a>
-            </Menu.Item>
-            <Menu.Item>
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://www.tmall.com/"
-                >
-                    3rd menu item
-                </a>
+                <Link to={idCur === idUser ? '/account' : `/profile/${idUser}`}>
+                    {formatMessage({id: 'chatroom.viewProfile'})}
+                </Link>
             </Menu.Item>
         </Menu>
     );

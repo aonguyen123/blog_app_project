@@ -43,6 +43,27 @@ const localeInfo = {
             ...(locale => (locale.__esModule ? locale.default : locale))(
                 require('./../Home/locales/en-US')
             ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Comments/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Account/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Setting/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Chats/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../ChatRoom/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Weather/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../History/locales/en-US')
+            )
         },
         locale: 'en-US',
         antd: require('antd/es/locale/en_US'),
@@ -60,6 +81,27 @@ const localeInfo = {
             ...(locale => (locale.__esModule ? locale.default : locale))(
                 require('./../Home/locales/vi-VN')
             ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Comments/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Account/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Setting/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Chats/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../ChatRoom/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Weather/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../History/locales/vi-VN')
+            )
         },
         locale: 'en',
         antd: require('antd/es/locale/vi_VN'),

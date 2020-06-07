@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card, Input } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import ChatItem from './../ChatItem';
-import { ScrollToBottomCom } from './../../../../components';
-import allActions from '../../../../actions';
+import { ScrollToBottomCom } from 'components';
+import allActions from 'actions';
 import './styles.css';
 
 const { TextArea } = Input;
@@ -22,7 +23,7 @@ export default function ChatRoomDefault({ onSendMessage, userCurrent }) {
         <Card
             hoverable
             size="small"
-            title="Chat room"
+            title={formatMessage({id: 'chat.chatRoom'})}
         >
             <div className="card_body_chat msg_card_body">
                 <ScrollToBottomCom height='400px' width='100%'>
@@ -40,7 +41,7 @@ export default function ChatRoomDefault({ onSendMessage, userCurrent }) {
                 <Input.Group compact>
                     <TextArea
                         style={{ width: '90%' }}
-                        placeholder="Please your message input!"
+                        placeholder={formatMessage({id: 'chat.chatRoom.input'})}
                         autoSize={{ minRows: 2, maxRows: 6 }}
                         value={message}
                         onChange={ev => setMessage(ev.target.value)}

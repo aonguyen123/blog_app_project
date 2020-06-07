@@ -1,0 +1,21 @@
+export default {
+    'setting.basicSetting.title': 'Cài đặt cơ bản',
+    'setting.basicSetting.avatar': 'Ảnh đại diện',
+    'setting.basicSetting.changeAvatar': 'Thay đổi ảnh',
+    'setting.basicSetting.nickname': 'Biệt danh',
+    'setting.basicSetting.introduce': 'Giới thiệu',
+    'setting.basicSetting.phone': 'Số điện thoại',
+    'setting.basicSetting.province': 'Tỉnh thành phố',
+    'setting.basicSetting.button': 'Cập nhật thông tin',
+
+    'basicSetting.valid.email': 'Vui lòng nhập email của bạn!',
+    'basicSetting.valid.notEmail': 'Email không đúng!',
+    'basicSetting.valid.nickname': 'Vui lòng nhập biệt danh của bạn!',
+    'basicSetting.valid.spaceNickname': 'Biệt danh không chứa khoảng trắng!',
+    'basicSetting.valid.maxNickname': 'Biệt danh không quá 13 kí tự!',
+    'basicSetting.valid.minNickname': 'Biệt danh ít nhất 5 kí tự!',
+    'basicSetting.valid.phone': 'Vui lòng nhập số điện thoại!',
+    'basicSetting.valid.notPhone': 'Số điện thoại không đúng!',
+    'basicSetting.valid.provinceOrCity': 'Vui lòng nhập tỉnh thành phố của bạn!',
+    'basicSetting.valid.district': 'Vui lòng nhập quận huyện của bạn!',
+}

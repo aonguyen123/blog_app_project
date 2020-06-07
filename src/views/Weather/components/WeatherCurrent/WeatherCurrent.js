@@ -2,13 +2,14 @@ import React from 'react';
 import { Card, Typography } from 'antd';
 import { EnvironmentTwoTone as LocationIcon } from '@ant-design/icons';
 import moment from 'moment';
-import { WeatherIcon } from './../../../../components';
+import { WeatherIcon } from 'components';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 export default function WeatherCurrent({ currentPlace, weatherCurrent }) {
 
     return (
         <Card
-            title="Today weather"
+            title={formatMessage({id: 'weather.todayWeather'})}
             loading={weatherCurrent === undefined ? true : false}
             hoverable={true}
             size="small"

@@ -26,6 +26,10 @@ function BasicLayout(props) {
 
     useEffect(() => {
         dispatch(allActions.eventsActions.fetchEvents(userCurrent._id));
+
+        return () => {
+            dispatch(allActions.eventsActions.cleanEvents());
+        }
     }, [dispatch, userCurrent._id]);
     useEffect(() => {
         const server = ROOT_URL_SERVER;
@@ -41,13 +45,20 @@ function BasicLayout(props) {
             dispatch(allActions.chatsActions.getStatusChat(text));
         });
         socketRef.current.on('subscribe', data => {
-            console.log(data); //dung de biet user online o home
+            // console.log(data); //dung de biet user online o home
         });
         socketRef.current.on('sendEvent', ({ newEvent }) => {
             dispatch(allActions.eventsActions.sendEventAddFriend(newEvent));
         });
         socketRef.current.on('addFriend', ({friendSender}) => {
             dispatch(allActions.userActions.addFriendSuccess(friendSender));
+        });
+        socketRef.current.on('addFriendCancel', ({idEvent}) => {
+            dispatch(allActions.eventsActions.removeEventSuccess(idEvent));
+        });
+        socketRef.current.on('addFriendSuccess',({ friendReceiver, idEvent }) => {
+            dispatch(allActions.userActions.addFriendSuccess(friendReceiver));
+            dispatch(allActions.eventsActions.removeEventSuccess(idEvent));
         });
 
         return () => {
@@ -56,6 +67,7 @@ function BasicLayout(props) {
             socketRef.current.off('subscribe');
             socketRef.current.off('addFriendSuccess');
             socketRef.current.off('addFriend');
+            socketRef.current.off('addFriendCancel');
         };
     }, [dispatch]);
     

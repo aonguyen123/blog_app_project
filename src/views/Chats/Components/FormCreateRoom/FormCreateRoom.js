@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Upload, Button } from 'antd';
-import { UploadOutlined, ProfileOutlined, LockOutlined } from '@ant-design/icons';
-import { UploadImage } from './../../../../components';
-import allCommons from '../../../../common';
+import { UploadOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
+import { UploadImage } from 'components';
+import allCommons from 'common';
 import firebaseConfig from '../../../../firebase';
 import './styles.css';
 const { Item } = Form;
@@ -24,7 +25,7 @@ export default function FormCreateRoom({form, visible}) {
     };
     const uploadButton = (
         <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
-            Click to upload
+            {formatMessage({id: 'chat.createRoom.uploadAvatar'})}
         </Button>
     );
     const normFile = ({ file, fileList }) => {
@@ -64,34 +65,36 @@ export default function FormCreateRoom({form, visible}) {
             name="createRoom"
         >
             <Item
-                label="Room name"
+                label={formatMessage({id: 'chat.createRoom.roomName'})}
                 name="roomName"
+                hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your room name'
+                        message: formatMessage({id: 'chat.createRoom.valid.roomName'})
                     },
                     {
                         max: 20,
-                        message: 'Room name not too 20 character'
+                        message: formatMessage({id: 'chat.createRoom.valid.MaxroomName'})
                     },
                     {
                         min: 5,
-                        message: 'Room name at least 5 character'
+                        message: formatMessage({id: 'chat.createRoom.valid.MinroomName'})
                     }
                 ]}
             >
-                <Input prefix={<ProfileOutlined />} placeholder='Room name' />
+                <Input />
             </Item>
             <Item
-                label="Room avatar"
+                label={formatMessage({id: 'chat.createRoom.roomAvatar'})}
                 name="upload"
                 valuePropName="fileList"
+                hasFeedback
                 getValueFromEvent={normFile}
                 rules={[
                     {
                         required: true,
-                        message: 'Photo is required'
+                        message: formatMessage({id: 'chat.createRoom.valid.roomAvatar'})
                     }
                 ]}
             >
@@ -105,10 +108,11 @@ export default function FormCreateRoom({form, visible}) {
                 </Upload>
             </Item>
             <Item
-                label="Password"
+                label={formatMessage({id: 'chat.createRoom.roomPass'})}
                 name="password"
+                hasFeedback
             >
-                <Input.Password prefix={<LockOutlined />} placeholder='Password' />
+                <Input.Password />
             </Item>
         </Form>
     );

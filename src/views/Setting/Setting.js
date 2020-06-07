@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { useSelector } from 'react-redux';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
@@ -7,9 +8,8 @@ import './styles.css';
 
 const { Item } = Menu;
 const menuMap = {
-    base: 'Basic Settings',
-    security: 'Security Settings',
-    notification: 'Message Notification'
+    base: formatMessage({id: 'setting.basicSetting.title'}),
+    security: formatMessage({id: 'security.setting.title'}),
 };
 
 export default function Setting() {
@@ -30,13 +30,8 @@ export default function Setting() {
         switch (selectKey) {
             case 'base':
                 return <BasicSetting userInfo={userInfo} />;
-
             case 'security':
                 return <SercuritySetting />;
-
-            case 'notification':
-                return <h1>notification</h1>;
-
             default:
                 break;
         }

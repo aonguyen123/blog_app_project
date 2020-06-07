@@ -128,12 +128,15 @@ export default function Home() {
             />
         );
     }, [visible, onCancelFlowUser, idFriend, userCurrent]);
+    const BannerMemo = useMemo(() => {
+        return <Banner />
+    }, [])
 
     return (
         <>
             <Row gutter={[16, 16]}>
                 <Col span={24}>
-                    <Banner />
+                    {BannerMemo}
                 </Col>
                 <Col xl={15} lg={15} md={15} sm={24} xs={24}>
                     <Row gutter={[20, 20]}>

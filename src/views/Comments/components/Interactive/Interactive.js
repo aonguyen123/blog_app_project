@@ -1,6 +1,7 @@
 import React from 'react';
 import { Divider } from 'antd';
 import AvatarList from 'ant-design-pro/lib/AvatarList';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 export default function Interactive({ likes, dislikes }) {
     return (
@@ -8,7 +9,7 @@ export default function Interactive({ likes, dislikes }) {
             {likes?.length > 0 && (
                 <>
                     <Divider orientation="left" plain>
-                        Liked
+                        {formatMessage({id: 'comment.liked'})}
                     </Divider>
                     <AvatarList size="default">
                         {likes.map(value => (
@@ -24,7 +25,7 @@ export default function Interactive({ likes, dislikes }) {
             {dislikes?.length > 0 && (
                 <>
                     <Divider orientation="left" plain>
-                        Disliked
+                        {formatMessage({id: 'comment.disliked'})}
                     </Divider>
                     <AvatarList size="default">
                         {dislikes.map(value => (

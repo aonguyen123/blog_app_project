@@ -1,0 +1,21 @@
+export default {
+    'setting.basicSetting.title': 'Basic Settings',
+    'setting.basicSetting.avatar': 'Avatar',
+    'setting.basicSetting.changeAvatar': 'Change Avatar',
+    'setting.basicSetting.nickname': 'Nickname',
+    'setting.basicSetting.introduce': 'Introduce',
+    'setting.basicSetting.phone': 'Phone Number',
+    'setting.basicSetting.province': 'Province or city',
+    'setting.basicSetting.button': 'Update Infomation',
+
+    'basicSetting.valid.email': 'Please input your E-mail!',
+    'basicSetting.valid.notEmail': 'The input is not valid E-mail!',
+    'basicSetting.valid.nickname': 'Please input your nickname!',
+    'basicSetting.valid.spaceNickname': 'Nickname does not whitespace!',
+    'basicSetting.valid.maxNickname': 'Nickname cannot exceed 13 characters!',
+    'basicSetting.valid.minNickname': 'Nickname of at least 5 characters!',
+    'basicSetting.valid.phone': 'Please input your phone number!',
+    'basicSetting.valid.notPhone': 'Phone number invalid!',
+    'basicSetting.valid.provinceOrCity': 'Please input your province or city!',
+    'basicSetting.valid.district': 'Please input your district!',
+}

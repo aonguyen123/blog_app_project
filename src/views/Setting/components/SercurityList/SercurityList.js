@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { List, Form } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import FormChangePass from '../FormChangePass';
 import ListSetting from './../ListSetting';
-import { ModalContent } from './../../../../components';
+import { ModalContent } from 'components';
 
 export default function SercurityList({
     updatePass,
@@ -10,10 +11,12 @@ export default function SercurityList({
     visible,
     showModal,
     closeModal,
+    setting,
+    onClickSwitch,
+    loadingData
 }) {
     const [form] = Form.useForm();
     const preVisibleRef = useRef();
-
 
     useEffect(() => {
         preVisibleRef.current = visible;
@@ -38,12 +41,12 @@ export default function SercurityList({
             updatePass(values);
         }
     };
-
+    
     return (
         <Form.Provider onFormFinish={onFormFinish}>
             <List
                 itemLayout="horizontal"
-                dataSource={ListSetting(showModal)}
+                dataSource={ListSetting(showModal, onClickSwitch, setting, loadingData)}
                 renderItem={item => (
                     <List.Item actions={[item.action]}>
                         <List.Item.Meta
@@ -54,7 +57,7 @@ export default function SercurityList({
                 )}
             />
             <ModalContent
-                title="Change the password"
+                title={formatMessage({id: 'security.setting.modalTitle'})}
                 width={500}
                 visible={visible}
                 handleCancel={handleCancel}

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Timeline, Empty } from 'antd';
 import { TeamOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { formatMessage } from 'umi-plugin-react/locale';
 import InfiniteScroll from 'react-infinite-scroller';
 import allActions from 'actions';
 import { FetchDataLoading } from 'components';
@@ -22,6 +23,10 @@ export default function History() {
         dispatch(
             allActions.eventsActions.fetchHistorys(1, 15, userCurrent._id)
         );
+
+        return () => {
+            dispatch(allActions.eventsActions.cleanHistorys());
+        }
     }, [dispatch, userCurrent._id]);
 
     const loadHistorys = () => {
@@ -67,9 +72,9 @@ export default function History() {
                             >
                                 {
                                     <>
-                                        You{' '}
+                                        {formatMessage({id: 'history.you'})}{' '}
                                         {descriptionEvent[history.description]}{' '}
-                                        with{' '}
+                                        {formatMessage({id: 'history.with'})}{' '}
                                         <strong>
                                             {history.idReceiver.displayName}
                                         </strong>

@@ -9,7 +9,9 @@ const SercurityList = lazy(() => import('./../SercurityList'));
 export default function SercuritySetting() {
     const userCurrent = useSelector(state => state.userReducer.userInfo);
     const loadingButton = useSelector(state => state.uiReducer.loadingButton);
+    const loadingData = useSelector(state => state.uiReducer.loadingData);
     const visible = useSelector(state => state.uiReducer.visible);
+    const setting = useSelector(state => state.userReducer.setting);
     const dispatch = useDispatch();
 
     const showModal = () => {
@@ -27,6 +29,9 @@ export default function SercuritySetting() {
             )
         );
     };
+    const onClickSwitch = (checked) => {
+        dispatch(allActions.userActions.settingPhone(userCurrent._id, checked));
+    }
 
     return (
         <Row>
@@ -38,6 +43,9 @@ export default function SercuritySetting() {
                         visible={visible}
                         showModal={showModal}
                         closeModal={closeModal}
+                        setting={setting}
+                        loadingData={loadingData}
+                        onClickSwitch={onClickSwitch}
                     />
                 </Suspense>
             </Col>

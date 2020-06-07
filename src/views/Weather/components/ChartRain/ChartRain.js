@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Typography } from 'antd';
 import { Bar } from 'ant-design-pro/lib/Charts';
 import moment from 'moment';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 export default function ChartRain({ weatherHourly }) {
     const renderChart = () => {
@@ -24,13 +25,10 @@ export default function ChartRain({ weatherHourly }) {
     return (
         <Card
             size="small"
-            title="Hourly rain"
+            title={formatMessage({id: 'weather.rain'})}
             hoverable={true}
             loading={weatherHourly === undefined ? true : false}
         >
-            {/* {weatherHourly !== undefined && (
-                <Typography>{weatherHourly.summary}</Typography>
-            )} */}
             {renderChart()}
         </Card>
     );

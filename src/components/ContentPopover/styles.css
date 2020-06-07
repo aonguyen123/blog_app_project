@@ -15,8 +15,13 @@
     margin-left: 8px;
     float: left;
 }
+.button-view {
+    position: relative;
+    height: 25px;
+}   
 .listContent-buttonView-profile {
-    margin-left: 68%;
+    position: absolute !important;
+    right: 0;
 }
 .listContent-story {
     margin: 10px 0 10px 0;

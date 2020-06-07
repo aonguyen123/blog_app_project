@@ -27,6 +27,9 @@ const removeInterest = (interest, idUser) => {
 const searchUser = (q, idUser) => {
     return allCommons.callAPICommon.callAPI(`/user/search-user?q=${q}&idUser=${idUser}`, 'GET', null);
 }
+const settingPhone = (idUser, settingPhone) => {
+    return allCommons.callAPICommon.callAPI('/user/settingPhone', 'POST', {idUser, settingPhone});
+}
 
 export default {
     searchMentions,
@@ -37,5 +40,6 @@ export default {
     updatePassword,
     updateInterest,
     removeInterest,
-    searchUser
+    searchUser,
+    settingPhone
 }

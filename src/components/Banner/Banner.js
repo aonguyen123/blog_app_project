@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
-import animateWork from 'assets/animate_work.json';
+import banner from 'assets/banner.json';
 
 export default function Banner() {
     const containerRef = useRef(null);
@@ -11,11 +11,11 @@ export default function Banner() {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            animationData: animateWork
+            animationData: banner
         });
     }, []);
 
     return (
-        <div ref={containerRef}></div>
+        <div style={{height: '500px'}} ref={containerRef}></div>
     )
 }

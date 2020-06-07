@@ -1,0 +1,20 @@
+export default {
+    'security.setting.title': 'Cài đặt bảo mật',
+    'security.setting.password': 'Mật khẩu tài khoản',
+    'security.setting.passwordDetail': 'Mật khẩu của tài khoản có thể thay đổi',
+    'security.setting.modifiPassword': 'Thay đổi',
+    'security.setting.phone': 'Bảo mật số điện thoại',
+    'security.setting.phoneDetail': 'Số điện thoại có thể được hiển thị hoặc ẩn với mọi người',
+    'security.setting.showPhone': 'Hiển thị',
+    'security.setting.hidePhone': 'Ẩn giấu',
+
+    'security.setting.modalTitle': 'Thay đổi mật khẩu',
+    'security.setting.currentPass': 'Mật khẩu hiện tại',
+    'security.setting.validPass': 'Vui lòng nhập mật khẩu hiện tại',
+    'security.setting.minPass': 'Mật khẩu ít nhất 6 kí tự',
+    'security.setting.newPass': 'Mật khẩu mới',
+    'security.setting.validNewPass': 'Vui lòng nhập mật khẩu mới',
+    'security.setting.comfirmPass': 'Xác nhận mật khẩu',
+    'security.setting.validComfirmPass': 'Vui lòng xác nhận mật khẩu',
+    'security.setting.matchComfirmPass': 'Xác nhận mật khẩu không đúng!',
+}

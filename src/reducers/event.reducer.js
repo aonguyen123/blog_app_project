@@ -4,7 +4,9 @@ import {
     REMOVE_EVENT_SUCCESS,
     REMOVE_ALL_EVENT_SUCCESS,
     FETCH_HISTORYS_SUCCESS,
-    FETCH_HISTORYS_OVER
+    FETCH_HISTORYS_OVER,
+    CLEAN_HISTORYS,
+    CLEAN_EVENTS
 } from 'constants/types';
 
 const initialState = {
@@ -50,6 +52,18 @@ export default function(state = initialState, action) {
                 ...state,
                 historys: [...state.historys, ...action.payload],
                 hasMoreItems: false
+            }
+        case CLEAN_HISTORYS:
+            return {
+                ...state,
+                historys: [],
+                nextPage: 1,
+                hasMoreItems: false
+            }
+        case CLEAN_EVENTS:
+            return {
+                ...state,
+                events: []
             }
         default:
             return state;

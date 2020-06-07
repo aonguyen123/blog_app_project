@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { ModalContent } from '../../../../components';
+import { formatMessage } from 'umi-plugin-react/locale';
+import { ModalContent } from 'components';
 import FormCreateRoom from '../FormCreateRoom';
 import FormJoinRoom from '../FormJoinRoom';
 
@@ -25,7 +26,7 @@ export default function ModalCreateRoom({
 
     return (
         <ModalContent
-            title={type === 'CREATE_ROOM' ? 'Create room' : 'Join room'}
+            title={type === 'CREATE_ROOM' ? formatMessage({id: 'chat.createRoom'}) : formatMessage({id: 'chat.joinRoom'})}
             width={type === 'CREATE_ROOM' ? 500 : 350}
             visible={visible}
             handleCancel={handleCancel}

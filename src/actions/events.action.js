@@ -14,7 +14,9 @@ import {
     FETCH_HISTORYS_SUCCESS,
     FETCH_HISTORYS_ERROR,
     FETCH_HISTORYS_OVER,
-    LOAD_MORE_HISTORYS
+    LOAD_MORE_HISTORYS,
+    CLEAN_HISTORYS,
+    CLEAN_EVENTS
 } from 'constants/types';
 
 const fetchEvents = idUser => {
@@ -35,6 +37,11 @@ const fetchEventsError = error => {
         type: FETCH_EVENTS_ERROR
     };
 };
+const cleanEvents = () => {
+    return {
+        type: CLEAN_EVENTS
+    }
+}
 const sendEventAddFriend = data => {
     return {
         type: SEND_EVENT_ADD_FRIEND,
@@ -59,10 +66,10 @@ const removeEventError = error => {
         type: REMOVE_EVENT_ERROR
     };
 };
-const removeAllEvent = eventType => {
+const removeAllEvent = (eventType, idCur) => {
     return {
         type: REMOVE_ALL_EVENT,
-        payload: { eventType }
+        payload: { eventType, idCur }
     };
 };
 const removeAllEventSuccess = eventType => {
@@ -107,11 +114,17 @@ const loadMoreHistorys = (page, page_size, idUser) => {
         payload: {page, page_size, idUser}
     }
 }
+const cleanHistorys = () => {
+    return {
+        type: CLEAN_HISTORYS
+    }
+}
 
 export default {
     fetchEvents,
     fetchEventsSuccess,
     fetchEventsError,
+    cleanEvents,
     sendEventAddFriend,
     removeEvent,
     removeEventSuccess,
@@ -123,5 +136,6 @@ export default {
     fetchHistorysSuccess,
     fetchHistorysOver,
     fetchHistorysError,
-    loadMoreHistorys
+    loadMoreHistorys,
+    cleanHistorys
 };

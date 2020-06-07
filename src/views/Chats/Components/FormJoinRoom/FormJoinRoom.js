@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 const { Item } = Form;
 
 export default function FormJoinRoom({form}) {
@@ -17,16 +17,17 @@ export default function FormJoinRoom({form}) {
             name="joinRoom"
         >
             <Item
-                label="Password"
+                label={formatMessage({id: 'chat.createRoom.roomPass'})}
                 name="password_room"
+                hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Password room required'
+                        message: formatMessage({id: 'chat.joinRoom.validRoomPass'})
                     }
                 ]}
             >
-                <Input.Password prefix={<LockOutlined />} placeholder='Password' />
+                <Input.Password />
             </Item>
         </Form>
     );

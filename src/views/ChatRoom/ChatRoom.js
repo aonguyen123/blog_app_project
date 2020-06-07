@@ -72,7 +72,7 @@ export default function ChatRoom() {
         <GridContent>
             <Row gutter={[16, 16]}>
                 <Col xxl={10} xl={10} lg={10} md={10} sm={24} xs={24}>
-                    <UsersList />
+                    <UsersList idCur={userCurrent._id} />
                 </Col>
                 <Col xxl={14} xl={14} lg={14} md={14} sm={24} xs={24}>
                     <ChatList
