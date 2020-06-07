@@ -110,7 +110,7 @@ export default function PostItem({
             content={
                 <>
                     <Paragraph
-                        ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}
+                        ellipsis={{ rows: 4, expandable: true, symbol: 'more' }}
                     >
                         {post?.content}
                     </Paragraph>

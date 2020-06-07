@@ -63,6 +63,9 @@ const localeInfo = {
             ),
             ...(locale => (locale.__esModule ? locale.default : locale))(
                 require('./../History/locales/en-US')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Register/locales/en-US')
             )
         },
         locale: 'en-US',
@@ -101,6 +104,9 @@ const localeInfo = {
             ),
             ...(locale => (locale.__esModule ? locale.default : locale))(
                 require('./../History/locales/vi-VN')
+            ),
+            ...(locale => (locale.__esModule ? locale.default : locale))(
+                require('./../Register/locales/vi-VN')
             )
         },
         locale: 'en',

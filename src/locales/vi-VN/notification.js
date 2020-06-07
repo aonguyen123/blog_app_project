@@ -6,5 +6,6 @@ export default {
     'notification.confirm': 'Bạn có đồng ý kết bạn?',
     'notification.confirm.cancel': 'Từ chối',
     'notification.request.addFriend': 'đã gửi một yêu cầu kết bạn',
-    'notification.request.addFriendOk': 'đã đồng ý kết bạn'
+    'notification.request.addFriendOk': 'đã đồng ý kết bạn',
+    'notification.request.addFriendCancel': 'đã từ chối yêu cầu kết bạn',
 }

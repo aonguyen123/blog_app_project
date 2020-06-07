@@ -6,5 +6,6 @@ export default {
     'notification.confirm': 'Do you want to make friend?',
     'notification.confirm.cancel': 'Refuse',
     'notification.request.addFriend': 'has sent a make friend request',
-    'notification.request.addFriendOk': 'agreed to make friends'
+    'notification.request.addFriendOk': 'agreed to make friends',
+    'notification.request.addFriendCancel': 'refuse make friend request',
 }

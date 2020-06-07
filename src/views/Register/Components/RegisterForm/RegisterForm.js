@@ -9,9 +9,10 @@ import {
     LockOutlined,
     SmileOutlined
 } from '@ant-design/icons';
-import allCommons from '../../../../common';
+import { formatMessage } from 'umi-plugin-react/locale';
+import allCommons from 'common';
 import firebaseConfig from '../../../../firebase';
-import { UploadImage } from './../../../../components';
+import { UploadImage } from 'components';
 import './styles.css';
 
 export default function RegisterForm({ loadingButton, onFinish }) {
@@ -32,7 +33,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
             value = value.trim();
             value = value.replace(/\s+/g, '');
             if (value.length < 5) {
-                return Promise.reject('Nickname of at least 5 characters');
+                return Promise.reject(formatMessage({id: 'basicSetting.valid.minNickname'}));
             }
             return Promise.resolve();
         }
@@ -40,7 +41,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
     };
     const uploadButton = (
         <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
-            Click to upload
+            {formatMessage({id: 'register.clickUpload'})}
         </Button>
     );
     const uploadSuccess = () => {
@@ -79,7 +80,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
         const values = await form.validateFields();
 
         if (values.upload[0].status === 'uploading') {
-            message.warning('Uploading photo, plase wait !!!', 3);
+            message.warning(formatMessage({id: 'register.uploadingAvatar'}), 3);
         } else {
             onFinish(values);
         }
@@ -100,11 +101,11 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                 rules={[
                     {
                         type: 'email',
-                        message: 'The input is not valid E-mail!'
+                        message: formatMessage({id: 'basicSetting.valid.notEmail'})
                     },
                     {
                         required: true,
-                        message: 'Please input your E-mail!'
+                        message: formatMessage({id: 'basicSetting.valid.email'})
                     }
                 ]}
             >
@@ -113,15 +114,15 @@ export default function RegisterForm({ loadingButton, onFinish }) {
 
             <Form.Item
                 name="password"
-                label="Password"
+                label={formatMessage({id: 'register.password'})}
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your password!'
+                        message: formatMessage({id: 'security.setting.validNewPass'})
                     },
                     {
                         min: 6,
-                        message: 'Password must be more than 6 characters'
+                        message: formatMessage({id: 'security.setting.minPass'})
                     }
                 ]}
                 hasFeedback
@@ -142,13 +143,13 @@ export default function RegisterForm({ loadingButton, onFinish }) {
 
             <Form.Item
                 name="confirm"
-                label="Confirm Password"
+                label={formatMessage({id: 'register.confirmPass'})}
                 dependencies={['password']}
                 hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Please confirm your password!'
+                        message: formatMessage({id: 'security.setting.validComfirmPass'})
                     },
                     ({ getFieldValue }) => ({
                         validator(rule, value) {
@@ -156,7 +157,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                                 return Promise.resolve();
                             }
                             return Promise.reject(
-                                'The two passwords that you entered do not match!'
+                                formatMessage({id: 'security.setting.matchComfirmPass'})
                             );
                         }
                     })
@@ -174,8 +175,8 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                 name="nickname"
                 label={
                     <span>
-                        Nickname&nbsp;
-                        <Tooltip title="What do you want others to call you?">
+                        {formatMessage({id: 'register.nickname'})}&nbsp;
+                        <Tooltip title={formatMessage({id: 'register.helpNickname'})}>
                             <QuestionCircleOutlined />
                         </Tooltip>
                     </span>
@@ -183,15 +184,15 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your nickname!'
+                        message: formatMessage({id: 'basicSetting.valid.nickname'})
                     },
                     {
                         whitespace: true,
-                        message: 'Nickname does not whitespace'
+                        message: formatMessage({id: 'basicSetting.valid.spaceNickname'})
                     },
                     {
                         max: 13,
-                        message: 'Nickname cannot exceed 13 characters'
+                        message: formatMessage({id: 'basicSetting.valid.maxNickname'})
                     },
                     {
                         validator: checkNickname
@@ -202,14 +203,14 @@ export default function RegisterForm({ loadingButton, onFinish }) {
             </Form.Item>
 
             <Form.Item
-                label="Upload avatar"
+                label={formatMessage({id: 'register.upload'})}
                 name="upload"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
                 rules={[
                     {
                         required: true,
-                        message: 'Photo is required'
+                        message: formatMessage({id: 'register.avatarRequire'})
                     }
                 ]}
             >
@@ -224,7 +225,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
             </Form.Item>
 
             <Form.Item>
-                You have a account, login <Link to="/login">here</Link>
+                {formatMessage({id: 'register.textLoginHere'})} <Link to="/login">{formatMessage({id: 'register.here'})}</Link>
             </Form.Item>
 
             <Form.Item>
@@ -235,7 +236,7 @@ export default function RegisterForm({ loadingButton, onFinish }) {
                     block
                     loading={loadingButton}
                 >
-                    Register
+                    {formatMessage({id: 'register.title'})}
                 </Button>
             </Form.Item>
         </Form>

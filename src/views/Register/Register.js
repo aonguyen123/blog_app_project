@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Divider } from 'antd';
 import { FormOutlined as RegisterIcon} from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-layout';
-import allActions from './../../actions';
+import { formatMessage } from 'umi-plugin-react/locale';
+import allActions from 'actions';
 import { RegisterForm } from './Components';
 
 export default function Register(props) {
@@ -24,7 +25,7 @@ export default function Register(props) {
                         <RegisterIcon
                             style={{ marginRight: '8px', color: '#08c' }}
                         />
-                        <span style={{ color: '#08c' }}>Register</span>
+                        <span style={{ color: '#08c' }}>{formatMessage({id: 'register.title'})}</span>
                     </Divider>
                     <Row justify='center' align='middle'>
                         <Col xl={24} lg={24} md={24} sm={24} xs={24}>

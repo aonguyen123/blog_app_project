@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'antd';
+import { Row, Col, Affix } from 'antd';
 import { ToolPost, ListContent, Friend, CardFlowUser } from './Components';
 import { Banner } from 'components';
 import allActions from 'actions';
@@ -148,7 +148,9 @@ export default function Home() {
                 </Col>
                 {!isBreak && (
                     <Col xl={9} lg={9} md={9} sm={24} xs={24}>
-                        {FriendMemo}
+                        <Affix>
+                            {FriendMemo}
+                        </Affix>
                     </Col>
                 )}
                 {visible && CardFlowUserMemo}
