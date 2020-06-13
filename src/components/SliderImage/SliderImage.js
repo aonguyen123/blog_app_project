@@ -10,22 +10,22 @@ export default function SliderImage({children}) {
         dots: true,
         infinite: false,
         speed: 500,
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
         responsive: [
             {
                 breakpoint: 1300,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 2,
                     slidesToScroll: 1,
                     infinite: false,
                     dots: true
                 },
             },
             {
-                breakpoint: 1024,
+                breakpoint: 1091,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 1,
                     slidesToScroll: 1,
                     infinite: false,
                     dots: true
@@ -41,6 +41,15 @@ export default function SliderImage({children}) {
                 },
             },
             {
+                breakpoint: 848,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    infinite: false,
+                    dots: true
+                }
+            },
+            {
                 breakpoint: 767,
                 settings: {
                     slidesToShow: 3,
@@ -50,20 +59,20 @@ export default function SliderImage({children}) {
                 }
             },
             {
-                breakpoint: 600,
+                breakpoint: 748,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
-                    initialSlide: 2
+                    infinite: false,
+                    dots: true
                 }
             },
             {
-                breakpoint: 480,
+                breakpoint: 547,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
-                    infinite: false,
-                    dots: true
+                    initialSlide: 2
                 }
             }
         ]

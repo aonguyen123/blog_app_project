@@ -13,7 +13,8 @@ export default function AccountRight({
     dislikePostHome,
     hasMorePostsById,
     nextPageById,
-    loadingFetchData
+    loadingFetchData,
+    deletePost
 }) {
     const [tabKey, setTabKey] = useState('posts');
     const operationTabList = [
@@ -46,6 +47,7 @@ export default function AccountRight({
                     hasMorePostsById={hasMorePostsById}
                     nextPageById={nextPageById}
                     loadingFetchData={loadingFetchData}
+                    deletePost={deletePost}
                 />
             );
         }

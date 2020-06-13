@@ -7,7 +7,10 @@ import {
     FETCH_POSTS_BY_ID_OVER,
     UNMOUNT_POST_BY_ID,
     LIKE_POST_SUCCESS,
-    DISLIKE_POST_SUCCESS
+    DISLIKE_POST_SUCCESS,
+    DELETE_POST_BY_ID_SUCCESS,
+    FETCH_POST_BY_ID_POST_SUCCESS,
+    CLEAR_POST_BY_ID_POST
 } from './../constants/types';
 
 const initialState = {
@@ -18,6 +21,7 @@ const initialState = {
     postsById: [],
     nextPageById: 1,
     hasMoreItemsById: false,
+    post: {}
 };
 
 export default function(state = initialState, action) {
@@ -92,6 +96,23 @@ export default function(state = initialState, action) {
                 posts: [...postsDis],
                 postsById: [...postByIdDis],
             };
+        case DELETE_POST_BY_ID_SUCCESS:
+            const { posts: deletePosts, postsById: deletePostsById } = deletePost(state.posts, state.postsById, action.payload);
+            return {
+                ...state,
+                posts: [...deletePosts],
+                postsById: [...deletePostsById]
+            }
+        case FETCH_POST_BY_ID_POST_SUCCESS:
+            return {
+                ...state,
+                post: action.payload
+            }
+        case CLEAR_POST_BY_ID_POST:
+            return {
+                ...state,
+                post: {}
+            }
         default:
             return state;
     }
@@ -109,4 +130,15 @@ function handlePost(posts, postsById, post) {
         postsById.splice(indexPostByIdUser, 0, post);
     }
     return { posts, postsById };
+}
+function deletePost(posts, postsById, idPost) {
+    const indexPost = posts.findIndex(post => post._id === idPost);
+    if(indexPost !== -1) {
+        posts.splice(indexPost, 1);
+    }
+    const indexPostById = postsById.findIndex(post => post._id === idPost);
+    if(indexPostById !== -1) {
+        postsById.splice(indexPostById, 1);
+    }
+    return {posts, postsById};
 }

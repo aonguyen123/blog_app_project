@@ -14,7 +14,8 @@ const ListPosts = ({
     dislikePostHome,
     hasMorePostsById,
     nextPageById,
-    loadingFetchData
+    loadingFetchData,
+    deletePost
 }) => {
     const dispatch = useDispatch();
 
@@ -50,6 +51,7 @@ const ListPosts = ({
                         likePostHome={likePostHome}
                         dislikePostHome={dislikePostHome}
                         idUser={userIdCurrent}
+                        deletePost={deletePost}
                     />
                 ))
             )}

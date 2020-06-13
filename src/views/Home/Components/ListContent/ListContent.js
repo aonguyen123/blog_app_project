@@ -12,7 +12,8 @@ export default function ListContent({
     dislikePostHome,
     hasMorePosts,
     nextPage,
-    loadingFetchData
+    loadingFetchData,
+    deletePost
 }) {
     const dispatch = useDispatch();
 
@@ -42,6 +43,7 @@ export default function ListContent({
                         idUser={idUser}
                         likePostHome={likePostHome}
                         dislikePostHome={dislikePostHome}
+                        deletePost={deletePost}
                     />
                 ))
             )}

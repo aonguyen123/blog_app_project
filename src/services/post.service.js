@@ -28,11 +28,19 @@ const likePost = (idUser, idPost) => {
 const dislikePost = (idUser, idPost) => {
     return allCommons.callAPICommon.callAPI('/posts/dislikePost', 'POST', {idUser, idPost});
 }
+const deletePostById = idPost => {
+    return allCommons.callAPICommon.callAPI('/posts/deletePostById', 'POST', {idPost});
+}
+const fetchPostByIdPost = idPost => {
+    return allCommons.callAPICommon.callAPI(`/posts/fetchPostByIdPost?idPost=${idPost}`, 'GET', null);
+}
 
 export default {
     createPost,
     fetchPost,
     fetchPostById,
     likePost,
-    dislikePost
+    dislikePost,
+    deletePostById,
+    fetchPostByIdPost
 };

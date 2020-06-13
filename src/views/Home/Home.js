@@ -1,7 +1,12 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Affix } from 'antd';
-import { ToolPost, ListContent, Friend, CardFlowUser } from './Components';
+import {
+    ToolPost,
+    ListContent,
+    Friend,
+    CardFlowUser,
+} from './Components';
 import { Banner } from 'components';
 import allActions from 'actions';
 
@@ -60,10 +65,12 @@ export default function Home() {
         },
         [dispatch]
     );
-
     const onCancelFlowUser = useCallback(() => {
         dispatch(allActions.uiActions.changeVisible(false));
     }, [dispatch]);
+    const deletePost = useCallback(idPost => {
+        dispatch(allActions.postActions.deletePostById(idPost));
+    },[dispatch]);
 
     const ListContentMemo = useMemo(
         () => (
@@ -75,6 +82,7 @@ export default function Home() {
                 loadingFetchData={loadingFetchData}
                 likePostHome={likePostHome}
                 dislikePostHome={dislikePostHome}
+                deletePost={deletePost}
             />
         ),
         [
@@ -84,7 +92,8 @@ export default function Home() {
             nextPage,
             loadingFetchData,
             likePostHome,
-            dislikePostHome
+            dislikePostHome,
+            deletePost
         ]
     );
     const ToolPostMemo = useMemo(
@@ -129,15 +138,13 @@ export default function Home() {
         );
     }, [visible, onCancelFlowUser, idFriend, userCurrent]);
     const BannerMemo = useMemo(() => {
-        return <Banner />
-    }, [])
+        return <Banner />;
+    }, []);
 
     return (
         <>
             <Row gutter={[16, 16]}>
-                <Col span={24}>
-                    {BannerMemo}
-                </Col>
+                <Col span={24}>{BannerMemo}</Col>
                 <Col xl={15} lg={15} md={15} sm={24} xs={24}>
                     <Row gutter={[20, 20]}>
                         <Col span={24}>{ToolPostMemo}</Col>
@@ -148,9 +155,7 @@ export default function Home() {
                 </Col>
                 {!isBreak && (
                     <Col xl={9} lg={9} md={9} sm={24} xs={24}>
-                        <Affix>
-                            {FriendMemo}
-                        </Affix>
+                        <Affix>{FriendMemo}</Affix>
                     </Col>
                 )}
                 {visible && CardFlowUserMemo}

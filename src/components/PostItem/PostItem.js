@@ -1,18 +1,26 @@
 import React, { createElement } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { Comment, Avatar, Tooltip, Tag, Typography } from 'antd';
+import {
+    Comment,
+    Avatar,
+    Tooltip,
+    Tag,
+    Typography
+} from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import {
     DislikeOutlined,
     LikeOutlined,
     LikeTwoTone,
     DislikeTwoTone,
-    MessageOutlined
+    MessageOutlined,
+    DeleteOutlined
 } from '@ant-design/icons';
 import moment from 'moment';
 import PopOver from '../PopOver';
 import ContentPopOver from '../ContentPopover';
 import ImagesView from '../ImagesView';
+import PopConfirm from './../PopConfirm';
 import './styles.css';
 
 const { Paragraph } = Typography;
@@ -22,7 +30,8 @@ export default function PostItem({
     children,
     idUser,
     likePostHome,
-    dislikePostHome
+    dislikePostHome,
+    deletePost
 }) {
     const history = useHistory();
 
@@ -35,7 +44,7 @@ export default function PostItem({
 
     const actions = [
         <span key="comment-basic-like">
-            <Tooltip title={formatMessage({id: 'home.post.like'})}>
+            <Tooltip title={formatMessage({ id: 'home.post.like' })}>
                 {createElement(
                     post?.likes?.findIndex(l => l.idUser._id === idUser) !== -1
                         ? LikeTwoTone
@@ -48,7 +57,7 @@ export default function PostItem({
             <span className="comment-action">{post?.likes?.length}</span>
         </span>,
         <span key=' key="comment-basic-dislike"'>
-            <Tooltip title={formatMessage({id: 'home.post.dislike'})}>
+            <Tooltip title={formatMessage({ id: 'home.post.dislike' })}>
                 {React.createElement(
                     post?.dislikes?.findIndex(
                         dl => dl.idUser._id === idUser
@@ -63,13 +72,24 @@ export default function PostItem({
             <span className="comment-action">{post?.dislikes?.length}</span>
         </span>,
         <span key="comment-basic-comments">
-            <Tooltip title={formatMessage({id: 'home.post.comment'})}>
+            <Tooltip title={formatMessage({ id: 'home.post.comment' })}>
                 {React.createElement(MessageOutlined, {
                     onClick: () => history.push(`/comments/${post._id}`)
                 })}
             </Tooltip>
             <span className="comment-action">{post?.comments?.length}</span>
-        </span>
+        </span>,
+        post?.idUser?._id === idUser && (
+            <span key="other-options">
+                <PopConfirm title='Are you want delete this post!' okText='OK' cancelText='Cancel' placement='topLeft' onConfirm={() => deletePost(post._id)}>
+                    <Tooltip title={formatMessage({ id: 'home.post.delete' })}>
+                        {React.createElement(DeleteOutlined, {
+                            onClick: (e) => e.preventDefault()
+                        })}
+                    </Tooltip>
+                </PopConfirm>
+            </span>
+        )
     ];
 
     const renderMentions = mentions => {
@@ -77,7 +97,12 @@ export default function PostItem({
             <PopOver
                 key={value.idUser._id}
                 placement="topRight"
-                content={<ContentPopOver user={value.idUser} idUserCurrent={idUser} />}
+                content={
+                    <ContentPopOver
+                        user={value.idUser}
+                        idUserCurrent={idUser}
+                    />
+                }
                 trigger="click"
             >
                 <Tag color="magenta" style={{ cursor: 'pointer' }}>

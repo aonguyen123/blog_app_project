@@ -35,7 +35,10 @@ export default function Account() {
     const removeInterest = useCallback((interest) => {
         dispatch(allActions.userActions.removeInterest(interest, userCurrent._id));
     }, [dispatch, userCurrent._id]);
-    
+    const deletePost = (idPost) => {
+        dispatch(allActions.postActions.deletePostById(idPost));
+    };
+
     const memoAccountInfo = useMemo(() => {
         return (
             <AccountInfo
@@ -63,6 +66,7 @@ export default function Account() {
                         loadingFetchData={loadingFetchData}
                         likePostHome={likePostHome}
                         dislikePostHome={dislikePostHome}
+                        deletePost={deletePost}
                     />
                 </Col>
             </Row>

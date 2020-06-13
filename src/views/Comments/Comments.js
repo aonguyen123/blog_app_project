@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Row, Col, Card } from 'antd';
 import { CommentEditor, CommentList, Interactive } from './components';
 import { FetchDataLoading, PostItem, Results } from 'components';
@@ -15,7 +15,10 @@ export default function Comments() {
     const post = useSelector(state => state.commentReducer.post);
     const error = useSelector(state => state.errorReducer.isError);
     const contentError = useSelector(state => state.errorReducer.contentError);
+    // const isDeletePost = useSelector(state => state.commentReducer.isDeletePost);
     const dispatch = useDispatch();
+    const history = useHistory();
+    const postRef = useRef({});
 
     useEffect(() => {
         dispatch(allActions.commentActions.fetchCommentByIdPost(idPost));
@@ -24,7 +27,18 @@ export default function Comments() {
             dispatch(allActions.errorActions.cleanError());
         }
     }, [idPost, dispatch]);
+    useEffect(() => {
+        postRef.current = post;
+    }, [post]);
+    const prePost = postRef.current;
+    useEffect(() => {
+        if(Object.keys(post).length === 0 && Object.keys(prePost).length !== 0) {
+            history.goBack();
+        }
+    }, [post, prePost, history]);
 
+    
+    
     const addCommentPost = value => {
         if (!value) return;
         dispatch(
@@ -41,6 +55,9 @@ export default function Comments() {
     const dislikePostHome = idPost => {
         dispatch(allActions.postActions.dislikePost(userCurrent._id, idPost));
     };
+    const deletePost = (idPost) => {
+        dispatch(allActions.postActions.deletePostById(idPost));
+    }
 
     if(loadingFetchData > 0) return <FetchDataLoading />
     if(error) return <Results error={contentError} />
@@ -53,6 +70,7 @@ export default function Comments() {
                         idUser={userCurrent._id}
                         likePostHome={likePostHome}
                         dislikePostHome={dislikePostHome}
+                        deletePost={deletePost}
                     >
                         <CommentList
                             comments={comments}

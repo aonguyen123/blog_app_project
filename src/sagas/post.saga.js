@@ -221,6 +221,66 @@ function* dislikePostFlowSaga({payload: {idUser, idPost}}) {
     }
 }
 
+function* deletePostById(idPost) {
+    try {
+        const response = yield call(allServices.postService.deletePostById, idPost);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(deletePostById, idPost);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.postActions.deletePostByIdError(data.message));
+        }
+    }
+}
+function* deletePostByIdFlowSaga({payload: {idPost}}) {
+    const data = yield call(deletePostById, idPost);
+    if (data) {
+        yield put(allActions.postActions.deletePostByIdSuccess(data.idPost));
+    }
+}
+
+function* fetchPostByIdPost(idPost) {
+    try {
+        const response = yield call(allServices.postService.fetchPostByIdPost, idPost);
+        if (response && response.status === SUCCESS) {
+            return response.data;
+        }
+    } catch (e) {
+        const { data, status } = e.response;
+        if (status === UNAUTHORIZED) {
+            const payload = {
+                refreshToken: allConfigs.tokenConfigs.getToken().refreshToken
+            };
+            const result = yield call(allAuthSaga.reAuth, { payload });
+            if (result) {
+                const data = yield call(fetchPostByIdPost, idPost);
+                return data;
+            }
+            return false;
+        } else {
+            yield put(allActions.postActions.fetchPostByIdPostError(data.message));
+        }
+    }
+}
+function* fetchPostByIdPostFlowSaga({payload: {idPost}}) {
+    const data = yield call(fetchPostByIdPost, idPost);
+    if (data) {
+        yield put(allActions.postActions.fetchPostByIdPostSuccess(data.post));
+    }
+}
+
 const allPostSaga = {
     createPostFlowSaga,
     fetchPostFlowSaga,
@@ -228,7 +288,9 @@ const allPostSaga = {
     likePostFlowSaga,
     dislikePostFlowSaga,
     loadMorePostFlowSaga,
-    loadMorePostByIdFlowSaga
+    loadMorePostByIdFlowSaga,
+    deletePostByIdFlowSaga,
+    fetchPostByIdPostFlowSaga
 };
 
 export default allPostSaga;

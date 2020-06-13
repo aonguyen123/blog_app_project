@@ -35,7 +35,9 @@ import {
     LOAD_MORE_POST,
     LOAD_MORE_POST_BY_ID,
     LOAD_MORE_HISTORYS,
-    SETTING_PHONE
+    SETTING_PHONE,
+    DELETE_POST_BY_ID,
+    FETCH_POST_BY_ID_POST
 } from './../constants/types';
 import allAuthSaga from './auth.saga';
 import allPostSaga from './post.saga';
@@ -73,6 +75,8 @@ function* rootSaga() {
         takeLatest(LOAD_MORE_POST_BY_ID, allPostSaga.loadMorePostByIdFlowSaga),
         takeLatest(LIKE_POST, allPostSaga.likePostFlowSaga),
         takeLatest(DISLIKE_POST, allPostSaga.dislikePostFlowSaga),
+        takeLatest(DELETE_POST_BY_ID, allPostSaga.deletePostByIdFlowSaga),
+        takeLatest(FETCH_POST_BY_ID_POST, allPostSaga.fetchPostByIdPostFlowSaga),
 
         takeLatest(ADD_COMMENT, allCommentSaga.addCommentFlowSaga),
         takeLatest(FETCH_COMMENTS_BY_IDPOST, allCommentSaga.fetchCommentByIdPostFlowSaga),

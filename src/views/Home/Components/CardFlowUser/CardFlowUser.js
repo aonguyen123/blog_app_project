@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Modal, Tooltip, Typography, Space, Spin, message } from 'antd';
+import { Card, Modal, Tooltip, Typography, Space, message } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,10 +8,10 @@ import {
     FundViewOutlined,
     EnvironmentOutlined,
     PhoneOutlined,
-    TeamOutlined,
-    LoadingOutlined
+    TeamOutlined
 } from '@ant-design/icons';
-import Img from 'react-image';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { FetchDataLoading } from 'components';
 import allActions from 'actions';
 import Context from 'context';
@@ -54,12 +54,16 @@ export default function CardFlowUser({
 
     const handleSendAddFriend = () => {
         if (statusAddFriend) return;
-        socketRef.current.emit('sendAddFriend', {
-            idSender: userCurrent._id,
-            idReceiver: idFriend
-        }, (error) => {
-            message.error(error, 4);
-        });
+        socketRef.current.emit(
+            'sendAddFriend',
+            {
+                idSender: userCurrent._id,
+                idReceiver: idFriend
+            },
+            error => {
+                message.error(error, 4);
+            }
+        );
     };
 
     return (
@@ -76,17 +80,22 @@ export default function CardFlowUser({
                 <Card
                     bordered={false}
                     cover={
-                        <Img
-                            src={userById.photoURL}
-                            alt="avatar"
-                            style={{ height: '200px', objectFit: 'cover' }}
-                            loader={
-                                <Spin indicator={<LoadingOutlined spin />} />
-                            }
-                        />
+                        <div>
+                            <LazyLoadImage
+                                alt=""
+                                height={200}
+                                width='100%'
+                                src={userById.photoURL}
+                                effect="blur"
+                            />
+                        </div>
                     }
                     actions={[
-                        <Tooltip title={formatMessage({id: 'home.modalViewUser.viewProfile'})}>
+                        <Tooltip
+                            title={formatMessage({
+                                id: 'home.modalViewUser.viewProfile'
+                            })}
+                        >
                             <Link to={`/profile/${idFriend}`}>
                                 <FundViewOutlined key="view-profile" />
                             </Link>
@@ -96,8 +105,12 @@ export default function CardFlowUser({
                                 userCurrent.friends.findIndex(
                                     friend => friend.idUser._id === idFriend
                                 ) !== -1
-                                    ? formatMessage({id: 'home.modalViewUser.follow'})
-                                    : formatMessage({id: 'home.modalViewUser.addFriend'})
+                                    ? formatMessage({
+                                          id: 'home.modalViewUser.follow'
+                                      })
+                                    : formatMessage({
+                                          id: 'home.modalViewUser.addFriend'
+                                      })
                             }
                         >
                             {userCurrent.friends.findIndex(
@@ -136,7 +149,11 @@ export default function CardFlowUser({
                                     )}
                                     <Typography>
                                         <TeamOutlined />{' '}
-                                        {`${userById.friends.length} ${formatMessage({id: 'home.modalViewUser.friends'})}`}
+                                        {`${
+                                            userById.friends.length
+                                        } ${formatMessage({
+                                            id: 'home.modalViewUser.friends'
+                                        })}`}
                                     </Typography>
                                 </Space>
                             </div>

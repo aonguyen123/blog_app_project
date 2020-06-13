@@ -4,11 +4,12 @@ import {
     FETCH_COMMENTS_BY_IDPOST,
     LIKE_POST_SUCCESS,
     DISLIKE_POST_SUCCESS,
+    DELETE_POST_BY_ID_SUCCESS,
 } from '../constants/types';
 
 const initialState = {
     comments: [],
-    post: {}
+    post: {},
 };
 
 export default function(state = initialState, action) {
@@ -41,6 +42,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 post: action.payload
+            }
+        case DELETE_POST_BY_ID_SUCCESS:
+            return {
+                ...state,
+                post: {},
             }
         default:
             return state;

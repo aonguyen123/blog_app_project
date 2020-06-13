@@ -12,7 +12,7 @@ export default function SiderMenuLeft({ collapsedWidth }) {
     const dispatch = useDispatch();
 
     const resize = useCallback(() => {
-        if(window.innerWidth < 767) {
+        if(window.innerWidth <= 767) {
             dispatch(allActions.uiActions.changeBreak(true));
         } else {
             dispatch(allActions.uiActions.changeBreak(false));

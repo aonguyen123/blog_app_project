@@ -21,6 +21,13 @@ import {
     DISLIKE_POST_ERROR,
     LOAD_MORE_POST,
     LOAD_MORE_POST_BY_ID,
+    DELETE_POST_BY_ID,
+    DELETE_POST_BY_ID_SUCCESS,
+    DELETE_POST_BY_ID_ERROR,
+    FETCH_POST_BY_ID_POST,
+    FETCH_POST_BY_ID_POST_SUCCESS,
+    FETCH_POST_BY_ID_POST_ERROR,
+    CLEAR_POST_BY_ID_POST,
 } from './../constants/types';
 
 const createPost = (posts, mentions, idUser, urlImages) => {
@@ -169,6 +176,47 @@ const dislikePostError = error => {
         type: DISLIKE_POST_ERROR
     }
 }
+const deletePostById = idPost => {
+    return {
+        type: DELETE_POST_BY_ID,
+        payload: {idPost}
+    }
+}
+const deletePostByIdSuccess = data => {
+    return {
+        type: DELETE_POST_BY_ID_SUCCESS,
+        payload: data
+    }
+}
+const deletePostByIdError = error => {
+    message.error(error, 4);
+    return {
+        type: DELETE_POST_BY_ID_ERROR
+    }
+}
+const fetchPostByIdPost = idPost => {
+    return {
+        type: FETCH_POST_BY_ID_POST,
+        payload: {idPost}
+    }
+}
+const fetchPostByIdPostSuccess = data => {
+    return {
+        type: FETCH_POST_BY_ID_POST_SUCCESS,
+        payload: data
+    }
+}
+const fetchPostByIdPostError = error => {
+    message.error(error, 4);
+    return {
+        type: FETCH_POST_BY_ID_POST_ERROR
+    }
+}
+const clearPostByIdPost = () => {
+    return {
+        type: CLEAR_POST_BY_ID_POST
+    }
+}
 
 export default {
     createPost,
@@ -191,5 +239,12 @@ export default {
     likePostError,
     dislikePost,
     dislikePostSuccess,
-    dislikePostError
+    dislikePostError,
+    deletePostById, 
+    deletePostByIdSuccess,
+    deletePostByIdError,
+    fetchPostByIdPost,
+    fetchPostByIdPostSuccess,
+    fetchPostByIdPostError,
+    clearPostByIdPost
 };
