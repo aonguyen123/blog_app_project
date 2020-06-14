@@ -16,7 +16,8 @@ import {
     FETCH_HISTORYS_OVER,
     LOAD_MORE_HISTORYS,
     CLEAN_HISTORYS,
-    CLEAN_EVENTS
+    CLEAN_EVENTS,
+    UN_FRIEND
 } from 'constants/types';
 
 const fetchEvents = idUser => {
@@ -119,6 +120,12 @@ const cleanHistorys = () => {
         type: CLEAN_HISTORYS
     }
 }
+const unFriend = idUser => {
+    return {
+        type: UN_FRIEND,
+        payload: idUser
+    }
+}
 
 export default {
     fetchEvents,
@@ -137,5 +144,6 @@ export default {
     fetchHistorysOver,
     fetchHistorysError,
     loadMoreHistorys,
-    cleanHistorys
+    cleanHistorys,
+    unFriend
 };

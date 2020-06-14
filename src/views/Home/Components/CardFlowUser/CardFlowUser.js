@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Modal, Tooltip, Typography, Space, message } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -14,7 +14,6 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { FetchDataLoading } from 'components';
 import allActions from 'actions';
-import Context from 'context';
 import './styles.css';
 
 const { Meta } = Card;
@@ -23,14 +22,14 @@ export default function CardFlowUser({
     visible,
     onCancelFlowUser,
     idFriend,
-    userCurrent
+    userCurrent,
+    socketRef
 }) {
     const dispatch = useDispatch();
     const userById = useSelector(state => state.userReducer.userById);
     const statusAddFriend = useSelector(
         state => state.userReducer.statusAddFriend
     );
-    const { socketRef } = useContext(Context);
 
     useEffect(() => {
         dispatch(

@@ -14,7 +14,8 @@ import {
     SEARCH_USER_EMPTY,
     UNMOUNT_POST_BY_ID,
     ADD_FRIEND_SUCCESS,
-    SETTING_PHONE_SUCCESS
+    SETTING_PHONE_SUCCESS,
+    UN_FRIEND
 } from './../constants/types';
 
 const initialState = {
@@ -117,6 +118,12 @@ export default function(state = initialState, action) {
                 userById: {},
                 searchUsers: []
             }
+        case UN_FRIEND:
+            const userUnFriend = unFriend(state.userInfo, action.payload);
+            return {
+                ...state,
+                userInfo: {...userUnFriend}
+            }
         default:
             return state;
     }
@@ -149,5 +156,12 @@ function removeInterest(userInfo, interest) {
 function addFriend(userInfo, friend) {
     const idUser = Object.assign({}, friend);
     userInfo.friends.push({idUser});
+    return userInfo;
+}
+function unFriend(userInfo, idUser) {
+    const index = userInfo.friends.findIndex(friend => friend.idUser._id === idUser);
+    if(index !== -1) {
+        userInfo.friends.splice(index, 1);
+    }
     return userInfo;
 }

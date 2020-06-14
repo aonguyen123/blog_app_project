@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback, useState } from 'react';
+import React, { useEffect, useMemo, useCallback, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Affix } from 'antd';
 import {
@@ -9,6 +9,7 @@ import {
 } from './Components';
 import { Banner } from 'components';
 import allActions from 'actions';
+import Context from 'context';
 
 export default function Home() {
     const [idFriend, setIdFriend] = useState('');
@@ -26,7 +27,9 @@ export default function Home() {
     const nextPage = useSelector(state => state.postReducer.nextPage);
     const searchUsers = useSelector(state => state.userReducer.searchUsers);
     const isBreak = useSelector(state => state.uiReducer.isBreak);
+    const { socketRef } = useContext(Context);
     const dispatch = useDispatch();
+
 
     useEffect(() => {
         dispatch(allActions.postActions.fetchPost(1, 10, userCurrent._id));
@@ -71,6 +74,11 @@ export default function Home() {
     const deletePost = useCallback(idPost => {
         dispatch(allActions.postActions.deletePostById(idPost));
     },[dispatch]);
+    const cancelFriend = useCallback(idFriend => {
+        socketRef.current.emit('cancelFriend', {idFriend, idUser: userCurrent._id}, (idFriend) => {
+            dispatch(allActions.eventsActions.unFriend(idFriend));
+        });
+    }, [socketRef, userCurrent._id, dispatch]);
 
     const ListContentMemo = useMemo(
         () => (
@@ -117,12 +125,14 @@ export default function Home() {
                 searchUsers={searchUsers}
                 friends={userCurrent.friends}
                 searchEmpty={searchEmpty}
+                cancelFriend={cancelFriend}
             />
         );
     }, [
         searchUser,
         showCardUser,
         searchEmpty,
+        cancelFriend,
         loadingData,
         searchUsers,
         userCurrent
@@ -134,9 +144,10 @@ export default function Home() {
                 onCancelFlowUser={onCancelFlowUser}
                 idFriend={idFriend}
                 userCurrent={userCurrent}
+                socketRef={socketRef}
             />
         );
-    }, [visible, onCancelFlowUser, idFriend, userCurrent]);
+    }, [visible, onCancelFlowUser, idFriend, userCurrent, socketRef]);
     const BannerMemo = useMemo(() => {
         return <Banner />;
     }, []);

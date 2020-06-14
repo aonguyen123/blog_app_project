@@ -7,10 +7,10 @@ import ExtraFriend from './../ExtraFriend';
 
 const { Item } = List;
 
-export default function ItemFriend({friend, showCardUser, friends}) {
+export default function ItemFriend({friend, showCardUser, friends, cancelFriend}) {
     
     return (
-        <Item key={friend._id} extra={<ExtraContent key='more' menu={ExtraFriend(showCardUser, friend._id)} />}>
+        <Item key={friend._id} extra={<ExtraContent key='more' menu={ExtraFriend(showCardUser, friend._id, friends, cancelFriend)} />}>
             <Item.Meta
                 avatar={<Avatar src={friend.photoURL} />}
                 title={<Link to={`/profile/${friend._id}`}>{friend.displayName}</Link>}

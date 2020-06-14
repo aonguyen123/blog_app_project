@@ -8,4 +8,5 @@ export default {
     'notification.request.addFriend': 'has sent a make friend request',
     'notification.request.addFriendOk': 'agreed to make friends',
     'notification.request.addFriendCancel': 'refuse make friend request',
+    'notification.request.unFriend': 'have unfriended'
 }

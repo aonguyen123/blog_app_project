@@ -10,7 +10,8 @@ export default function Friend({
     searchUsers,
     searchEmpty,
     showCardUser,
-    friends
+    friends,
+    cancelFriend
 }) {
     return (
         <Card title={formatMessage({ id: 'home.friends.title' })} size="small">
@@ -23,6 +24,7 @@ export default function Friend({
                 searchUsers={searchUsers}
                 showCardUser={showCardUser}
                 friends={friends}
+                cancelFriend={cancelFriend}
             />
         </Card>
     );

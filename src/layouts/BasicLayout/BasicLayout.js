@@ -60,6 +60,9 @@ function BasicLayout(props) {
             dispatch(allActions.userActions.addFriendSuccess(friendReceiver));
             dispatch(allActions.eventsActions.removeEventSuccess(idEvent));
         });
+        socketRef.current.on('unFriend', ({idUser}) => {
+            dispatch(allActions.eventsActions.unFriend(idUser));
+        });
 
         return () => {
             socketRef.current.off('notice');
@@ -68,6 +71,7 @@ function BasicLayout(props) {
             socketRef.current.off('addFriendSuccess');
             socketRef.current.off('addFriend');
             socketRef.current.off('addFriendCancel');
+            socketRef.current.off('unFriend');
         };
     }, [dispatch]);
     
