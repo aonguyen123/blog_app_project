@@ -24,6 +24,7 @@ const initialState = {
     userById: {},
     statusAddFriend: null,
     searchUsers: [],
+    isSearchUser: false,
     setting: true
 };
 
@@ -83,7 +84,8 @@ export default function(state = initialState, action) {
         case SEARCH_USER_SUCCESS:
             return {
                 ...state,
-                searchUsers: action.payload
+                searchUsers: action.payload,
+                isSearchUser: true
             }
         case SEND_ADD_FRIEND_SUCCESS:
             return {
@@ -99,7 +101,7 @@ export default function(state = initialState, action) {
         case SEARCH_USER_EMPTY:
             return {
                 ...state,
-                searchUsers: []
+                isSearchUser: false,
             }
         case ADD_FRIEND_SUCCESS:
             const newUserInfo = addFriend(state.userInfo, action.payload);

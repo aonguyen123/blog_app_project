@@ -8,6 +8,7 @@ export default function Friend({
     searchUser,
     loadingData,
     searchUsers,
+    isSearchUser,
     searchEmpty,
     showCardUser,
     friends,
@@ -22,6 +23,7 @@ export default function Friend({
             />
             <ListFriend
                 searchUsers={searchUsers}
+                isSearchUser={isSearchUser}
                 showCardUser={showCardUser}
                 friends={friends}
                 cancelFriend={cancelFriend}

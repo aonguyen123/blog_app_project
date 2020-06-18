@@ -9,6 +9,7 @@ export default function Friends() {
     const [idFriend, setIdFriend] = useState('');
     const loadingData = useSelector(state => state.uiReducer.loadingData);
     const searchUsers = useSelector(state => state.userReducer.searchUsers);
+    const isSearchUser = useSelector(state => state.userReducer.isSearchUser);
     const userCurrent = useSelector(state => state.userReducer.userInfo);
     const visible = useSelector(state => state.uiReducer.visible);
     const { socketRef } = useContext(Context);
@@ -41,6 +42,7 @@ export default function Friends() {
                 loadingData={loadingData}
                 searchUsers={searchUsers}
                 friends={userCurrent.friends}
+                isSearchUser={isSearchUser}
                 searchEmpty={searchEmpty}
                 cancelFriend={cancelFriend}
             />

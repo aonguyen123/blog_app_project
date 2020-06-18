@@ -3,14 +3,22 @@ import { List } from 'antd';
 import ItemFriend from './../ItemFriend';
 import './styles.css';
 
-export default function ListFriend({ searchUsers, showCardUser, friends, cancelFriend }) {
+export default function ListFriend({
+    searchUsers,
+    showCardUser,
+    friends,
+    cancelFriend,
+    isSearchUser
+}) {
     return (
         <div className="list-friend-container">
             <List
-                dataSource={searchUsers.length === 0 ? friends : searchUsers}
+                dataSource={
+                    isSearchUser ? searchUsers : friends
+                }
                 renderItem={item => (
                     <ItemFriend
-                        friend={searchUsers.length === 0 ? item.idUser : item}
+                        friend={isSearchUser ? item : item.idUser}
                         showCardUser={showCardUser}
                         friends={friends}
                         cancelFriend={cancelFriend}

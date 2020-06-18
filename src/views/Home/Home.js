@@ -26,10 +26,10 @@ export default function Home() {
     const hasMorePosts = useSelector(state => state.postReducer.hasMoreItems);
     const nextPage = useSelector(state => state.postReducer.nextPage);
     const searchUsers = useSelector(state => state.userReducer.searchUsers);
+    const isSearchUser = useSelector(state => state.userReducer.isSearchUser);
     const isBreak = useSelector(state => state.uiReducer.isBreak);
     const { socketRef } = useContext(Context);
     const dispatch = useDispatch();
-
 
     useEffect(() => {
         dispatch(allActions.postActions.fetchPost(1, 10, userCurrent._id));
@@ -123,6 +123,7 @@ export default function Home() {
                 showCardUser={showCardUser}
                 loadingData={loadingData}
                 searchUsers={searchUsers}
+                isSearchUser={isSearchUser}
                 friends={userCurrent.friends}
                 searchEmpty={searchEmpty}
                 cancelFriend={cancelFriend}
@@ -135,7 +136,8 @@ export default function Home() {
         cancelFriend,
         loadingData,
         searchUsers,
-        userCurrent
+        userCurrent,
+        isSearchUser
     ]);
     const CardFlowUserMemo = useMemo(() => {
         return (
