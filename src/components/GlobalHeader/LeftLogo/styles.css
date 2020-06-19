@@ -3,6 +3,10 @@
     width: 150px;
     float: left;
     position: relative;
+
+    font-size: 1.6rem;
+    font-family: 'Pacifico';
+    color: #424242;
 }
 .logo-header a
 {

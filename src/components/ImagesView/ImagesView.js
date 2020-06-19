@@ -13,7 +13,7 @@ export default function ImagesView({ images }) {
                 <SliderImage>
                     {images.map((item, index) => (
                         <PhotoConsumer key={index} src={item.url}>
-                            <div>
+                            <div style={{cursor: 'pointer'}}>
                                 <LazyLoadImage
                                     alt=''
                                     height={200}
