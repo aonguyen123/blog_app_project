@@ -8,6 +8,7 @@ import LocaleWrapper from './views/.umi/LocaleWrapper';
 import Routes from './routes/Router';
 import allConfigs from './config';
 import allActions from './actions';
+import { ScrollToTop } from './components';
 import './App.css';
 
 const browserHistory = createBrowserHistory();
@@ -28,6 +29,7 @@ export default function App() {
         <Provider store={store}>
             <LocaleWrapper>
                 <Router history={browserHistory}>
+                    <ScrollToTop />
                     <Routes />
                 </Router>
             </LocaleWrapper>

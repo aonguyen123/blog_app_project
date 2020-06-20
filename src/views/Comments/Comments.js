@@ -15,7 +15,6 @@ export default function Comments() {
     const post = useSelector(state => state.commentReducer.post);
     const error = useSelector(state => state.errorReducer.isError);
     const contentError = useSelector(state => state.errorReducer.contentError);
-    // const isDeletePost = useSelector(state => state.commentReducer.isDeletePost);
     const dispatch = useDispatch();
     const history = useHistory();
     const postRef = useRef({});
@@ -37,8 +36,6 @@ export default function Comments() {
         }
     }, [post, prePost, history]);
 
-    
-    
     const addCommentPost = value => {
         if (!value) return;
         dispatch(

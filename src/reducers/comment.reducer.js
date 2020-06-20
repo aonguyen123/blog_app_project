@@ -18,7 +18,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 comments: [],
-                post: {}
+                //post: {}
             }
         case FETCH_COMMENTS_BY_IDPOST_SUCCESS:
             return {

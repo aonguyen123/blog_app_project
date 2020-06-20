@@ -17,3 +17,4 @@ export { default as PostItem } from './PostItem';
 export { default as Animation } from './Animation';
 export { default as Banner } from './Banner';
 export { default as Results } from './Results';
+export { default as ScrollToTop } from './ScrollToTop';
